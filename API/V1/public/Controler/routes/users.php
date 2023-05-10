@@ -57,7 +57,7 @@
         //The type field must be an uppercase alphabetic character
         if (empty($type)) {
             error_function(400, "Please provide the (type) field.");
-        } 
+        }
 
         //The type field must be an uppercase alphabetic character
         if (empty($add_date)) {
@@ -154,22 +154,14 @@
 		
 		return $response;
 	});
-    
-    $app->delete("/User/{name}", function (Request $request, Response $response, $args) {
-		$id = user_validation("A");
-        validate_token();
+
+    $app->put("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+        $user_id = $args["id"];
+
+        $request_body_string = file_get_contents("php://input");
+		$request_data = json_decode($request_body_string, true);
+
+        
 		
-		$name = $args["name"];
-		
-		$result = delete_user($name);
-		
-		if (!$result) {
-			error_function(404, "No user found for the Name ( " . $name . " ).");
-		}
-		else {
-			message_function(200, "The user was succsessfuly deleted.");
-		}
-		
-		return $response;
 	});
 ?>
