@@ -45,31 +45,31 @@
         $JSON_data = json_decode($body_content, true);
 
         // if JSON data doesn't have these then there is an error
-        if (isset($JSON_data["username"]) && isset($JSON_data["password"])) {
+        if (isset($JSON_data["email"]) && isset($JSON_data["password"])) {
         } else {
             error_function(400, "Empty request");
         }
 
         // Prepares the data to prevent bad data, SQL injection andCross site scripting
-        $name = validate_string($JSON_data["username"]);
+        $email = validate_string($JSON_data["email"]);
         $password = validate_string($JSON_data["password"]);
 
         if (!$password) {
             error_function(400, "password is invalid, must contain at least 5 characters");
         }
-        if (!$name) {
-            error_function(400, "username is invalid, must contain at least 5 characters");
+        if (!$email) {
+            error_function(400, "email is invalid, must contain at least 5 characters");
         }
 
         $password = hash("sha256", $password);
 
-        $user = get_user_by_username($name);
+        $user = get_user_by_username($email);
 
         if ($user["password_hash"] !==  $password) {
             error_function(404, "not Found");
         }
 
-        $token = create_token($name, $password, $user["id"]);
+        $token = create_token($email, $password, $user["id"]);
 
         setcookie("token", $token, time() + 3600);
 

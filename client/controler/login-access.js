@@ -6,7 +6,7 @@ const loginButton = document.querySelector("#login");
 
 loginButton.addEventListener("click", function (e) {
   if (namePlace.innerText == "Bitte Logen sie sich Ein!") {
-    window.location.href = "/frontend/view/login.html";
+    window.location.href = "/client/view/login.html";
   } else {
     document.cookie =
       "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/API/V1;";

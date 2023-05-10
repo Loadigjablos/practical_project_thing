@@ -72,10 +72,12 @@
         }
     }
        
-    function get_user_by_username($name) {
+    function get_user_by_username($email) {
         global $database;
 
-        $result = $database->query("SELECT * FROM users WHERE name = '$name';");
+        $result = $database->query("SELECT * FROM users WHERE email = '$email';");
+
+        echo $result;
 
         if ($result == false) {
             error_function(500, "Error");
