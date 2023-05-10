@@ -90,7 +90,7 @@
     
 
     $app->get("/WhoAmI", function (Request $request, Response $response, $args) {
-// unotherized pepole will get rejected
+        // unotherized pepole will get rejected
         $id = user_validation();
 		$user = get_user_id($id);
 
@@ -105,30 +105,6 @@
 		}
 
         return $response;
-    });
-
-    $app->get('/Time', function (Request $request, Response $response, $args) {
-        // Connect to the database
-        global $database;
-    
-        // Query the database for expired reservations
-        $result = $database->query("SELECT id FROM `events` WHERE to_date < NOW();");
-    
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $id = $row['id'];
-    
-            // Delete the expired reservation
-            $delete_result = $database->query("DELETE FROM `events` WHERE id = '$id';");
-    
-            if ($delete_result) {
-                echo "Expired reservation with ID $id has been deleted. \n";
-            } else {
-                echo "Error deleting reservation. \n";
-            }
-        } else {
-            echo "No expired reservations found. \n";
-        }
     });
    
     require "Controler/routes/users.php";
