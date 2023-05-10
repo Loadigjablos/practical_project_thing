@@ -77,8 +77,6 @@
 
         $result = $database->query("SELECT * FROM users WHERE email = '$email';");
 
-        echo $result;
-
         if ($result == false) {
             error_function(500, "Error");
 		} 
@@ -92,10 +90,76 @@
         }
     }
 
-    function get_user_by_id($id) {
+    function get_user_by_id($user_id) {
         global $database;
 
-        $result = $database->query("SELECT * FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT * FROM users WHERE id = '$user_id';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function create_temp($user_id, $message2, $timeout) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function get_id_by_email($email) {
+        global $database;
+
+        $result = $database->query("SELECT id FROM users WHERE email = '$email';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function get_temp_by_user_id($tempData) {
+        global $database;
+
+        $result = $database->query("SELECT hash FROM temp WHERE user_id = '$tempData';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -154,17 +218,17 @@
         }
     }
 
-    function create_user($name, $email, $password, $type, $add_date) {
+    function create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
         global $database;
 
-        $existing_place = $database->query("SELECT * FROM `users` WHERE `name` = '$name'")->fetch_assoc();
+        $existing_place = $database->query("SELECT * FROM `users` WHERE `email` = '$email'")->fetch_assoc();
         if ($existing_place) {
             // handle error
-            error_function(400, "A place with the name '$name' already exists.");
+            error_function(400, "A user with the email '$email' already exists.");
             return false;
         }
 
-        $result = $database->query("INSERT INTO `users` (`name`,`email`, `password_hash`, `type`, `add_date`) VALUES ('$name', '$email', '$password', '$type', '$add_date');");
+        $result = $database->query("INSERT INTO `users` (`name`,`email`, `passwdhash`, `picture_id`, `parents`, `birthdate`, `ahvnumer`, `role`) VALUES ('$name', '$email', '$password', '$picture_id', '$parents', '$birthdate', '$ahvnumer', '$role');");
 
         if ($result) {
             return true;
@@ -174,10 +238,10 @@
         }
     }
 
-    function update_user($user_id, $name, $email, $password, $type, $add_date) {
+    function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
 		global $database;
 
-		$result = $database->query("UPDATE `users` SET name = '$name', email = '$email', password_hash = '$password', type = '$type', add_date = '$add_date' WHERE id = '$user_id';");
+		$result = $database->query("UPDATE `users` SET name = '$name', email = '$email', passwdhash = '$password', picture_id = '$picture_id', parents = '$parents', birthdate = '$birthdate', ahvnumer = '$ahvnumer', role = '$role' WHERE id = '$user_id';");
 
 		if (!$result) {
 			return false;

@@ -42,11 +42,7 @@
      */
     function create_token($id) {
         global $secret;
-
         $token = Token::getToken($id, $secret, '6h');
-
-
-
         return $token;
     }
 
