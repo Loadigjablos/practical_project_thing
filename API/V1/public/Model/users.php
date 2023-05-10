@@ -77,8 +77,6 @@
 
         $result = $database->query("SELECT * FROM users WHERE email = '$email';");
 
-        echo $result;
-
         if ($result == false) {
             error_function(500, "Error");
 		} 
@@ -96,6 +94,72 @@
         global $database;
 
         $result = $database->query("SELECT * FROM users WHERE id = '$id';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function create_temp($user_id, $message2, $timeout) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function get_id_by_email($email) {
+        global $database;
+
+        $result = $database->query("SELECT id FROM users WHERE email = '$email';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
+    function get_temp_by_user_id($tempData) {
+        global $database;
+
+        $result = $database->query("SELECT hash FROM temp WHERE user_id = '$tempData';");
 
         if ($result == false) {
             error_function(500, "Error");

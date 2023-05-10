@@ -40,11 +40,8 @@
     /**
      * 
      */
-    function create_token($name, $password_hash, $id) {
+    function create_token($id) {
         global $secret;
-        $token = $name . $secret . $password_hash;
-        $token = hash("sha256", $token);
-        $token = $token . "[tr]" . $id;
         return $token;
     }
 
@@ -68,7 +65,7 @@
 
         $user = get_user_by_id($token_exploded[1]); // array of all users
 
-        $user_token = create_token($user["name"], $user["password_hash"], $token_exploded[1]);
+        $user_token = create_token($user["email"], $user["passwdHash"], $token_exploded[1]);
 
         if ($user_token === $the_set_token) {
             return $token_exploded[1];
