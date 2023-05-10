@@ -6,7 +6,7 @@
     }
     
     //set error handler
-    set_error_handler("customError");
+    //set_error_handler("customError");
 
     // this handel the request and response.
     use Psr\Http\Message\ResponseInterface as Response; 
@@ -86,8 +86,6 @@
         }
         return $current_user_id;
     }
-    
-    
 
     $app->get("/WhoAmI", function (Request $request, Response $response, $args) {
         // unotherized pepole will get rejected
