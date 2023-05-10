@@ -213,13 +213,50 @@
 		return $response;
 	});
 
-    $app->put("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+    $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+
         $user_id = $args["id"];
 
         $request_body_string = file_get_contents("php://input");
 		$request_data = json_decode($request_body_string, true);
 
-        
+        $file = addslashes($request_data['file']);
+        $type = strip_tags(addslashes($request_data['type']));
+
+        add_files_to_user($user_id, $file, $type);
 		
+        //checking if everything was good
+        if (add_files_to_user($user_id, $file, $type) === true) {
+            message_function(200, "successfully added files");
+        } else {
+            error_function(500, "An error occurred");
+        }
+        return $response;   
 	});
+
+    $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+
+        $user_id = $args["id"];
+
+        $request_body_string = file_get_contents("php://input");
+		$request_data = json_decode($request_body_string, true);
+
+        $file = addslashes($request_data['file']);
+        $type = strip_tags(addslashes($request_data['type']));
+
+        add_files_to_user($user_id, $file, $type);
+		
+        //checking if everything was good
+        if (add_files_to_user($user_id, $file, $type) === true) {
+            message_function(200, "successfully added files");
+        } else {
+            error_function(500, "An error occurred");
+        }
+        return $response;   
+	});
+
 ?>
