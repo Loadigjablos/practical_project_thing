@@ -14,6 +14,6 @@ Place this code in public/util/config.php:
 	$db_hostname = "localhost";
 	$db_username = "root";
 	$db_password = "";
-	$db_database = "test";
+	$db_database = "projektwoche";
 ?>
 ```
