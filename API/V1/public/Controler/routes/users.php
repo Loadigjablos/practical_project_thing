@@ -35,6 +35,11 @@
         $birthdate = trim($request_data["birthdate"]);
         $ahvnumer = trim($request_data["ahvnumer"]);
         $role = trim($request_data["role"]);
+        $class_name = trim($request_data["class_name"]);
+        $land = trim($request_data["land"]);
+        $street = trim($request_data["street"]);
+        $plz = trim($request_data["plz"]);
+        $city = trim($request_data["city"]);
     
         //The position field cannot be empty and must not exceed 2048 characters
         if (empty($name)) {
@@ -84,6 +89,40 @@
         elseif (strlen($ahvnumer) > 255) {
             error_function(400, "The (email) field must be less than 255 characters.");
         } 
+        if (empty($class_name)) {
+            error_function(400, "Please provide the (class_name) field.");
+        }
+        elseif (strlen($class_name) > 255) {
+            error_function(400, "The (class_name) field must be less than 255 characters.");
+        } 
+
+        if (empty($land)) {
+            error_function(400, "Please provide the (land) field.");
+        }
+        elseif (strlen($land) > 255) {
+            error_function(400, "The (land) field must be less than 255 characters.");
+        } 
+
+        if (empty($street)) {
+            error_function(400, "Please provide the (street) field.");
+        }
+        elseif (strlen($street) > 255) {
+            error_function(400, "The (street) field must be less than 255 characters.");
+        } 
+
+        if (empty($plz)) {
+            error_function(400, "Please provide the (plz) field.");
+        }
+        elseif (strlen($plz) > 255) {
+            error_function(400, "The (plz) field must be less than 255 characters.");
+        } 
+
+        if (empty($city)) {
+            error_function(400, "Please provide the (city) field.");
+        }
+        elseif (strlen($city) > 255) {
+            error_function(400, "The (city) field must be less than 255 characters.");
+        } 
         
         if (empty($role)) {
             $role = "C";
@@ -92,7 +131,7 @@
         $password = hash("sha256", $password);
     
         //checking if everything was good
-        if (create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) === true) {
+        if (create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) === true) {
             message_function(200, "The user was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the userdata.");

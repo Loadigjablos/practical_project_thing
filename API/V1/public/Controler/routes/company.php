@@ -43,52 +43,84 @@
         return $response;
     });
 
-    $app->post("/Reservation", function (Request $request, Response $response, $args) {
+    $app->post("/Company", function (Request $request, Response $response, $args) {
         //everyone
-        validate_token();
+        //validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
 
-        $from_date = trim($request_data["from_date"]);
-        $to_date = trim($request_data["to_date"]);
-        $place_name = trim($request_data["place_name"]);
-        $host = trim($request_data["host"]);
-        $description = trim($request_data["description"]);
+        $companyname = trim($request_data["companyname"]);
+        $phone = trim($request_data["phone"]);
+        $mail = trim($request_data["mail"]);
+        $owner = trim($request_data["owner"]);
+        $land = trim($request_data["land"]);
+        $street = trim($request_data["street"]);
+        $plz = trim($request_data["plz"]);
+        $city = trim($request_data["city"]);
     
-        //The position field cannot be empty and must not exceed 2048 characters
-        if (empty($to_date)) {
-            error_function(400, "The (to date) field must not be empty.");
+        if (empty($companyname)) {
+            error_function(400, "Please provide the (companyname) field.");
         } 
-        elseif (strlen($to_date) > 2048) {
-            error_function(400, "The (date_time) field must be less than 2048 characters.");
+        elseif (strlen($companyname) > 255) {
+            error_function(400, "The (companyname) field must be less than 255 characters.");
         }
 
-        $place_name = "NULL";
-		if (isset($request_data["place_name"])) {
-			$place_name = $request_data["place_name"];
-		}
-
-        $host = "NULL";
-        if (isset($request_data["host"])) {
-			$host = $request_data["host"];
-		}
-
-        $description = "NULL";
-        if (isset($request_data["description"])) {
-			$description = "'" . $request_data["description"] . "'";
-		}
-
-        if (strlen($description) > 2048) {
-            error_function(400, "The (host) field must be less than 255 characters.");
+        if (empty($phone)) {
+            error_function(400, "Please provide the (phone) field.");
+        } 
+        elseif (strlen($phone) > 255) {
+            error_function(400, "The (phone) field must be less than 255 characters.");
         }
+
+        if (empty($mail)) {
+            error_function(400, "Please provide the (mail) field.");
+        } 
+        elseif (strlen($mail) > 255) {
+            error_function(400, "The (mail) field must be less than 255 characters.");
+        }
+
+        if (empty($owner)) {
+            error_function(400, "Please provide the (owner) field.");
+        } 
+        elseif (strlen($owner) > 255) {
+            error_function(400, "The (owner) field must be less than 255 characters.");
+        }
+
+        if (empty($land)) {
+            error_function(400, "Please provide the (land) field.");
+        }
+        elseif (strlen($land) > 255) {
+            error_function(400, "The (land) field must be less than 255 characters.");
+        } 
+
+        if (empty($street)) {
+            error_function(400, "Please provide the (street) field.");
+        }
+        elseif (strlen($street) > 255) {
+            error_function(400, "The (street) field must be less than 255 characters.");
+        } 
+
+        if (empty($plz)) {
+            error_function(400, "Please provide the (plz) field.");
+        }
+        elseif (strlen($plz) > 255) {
+            error_function(400, "The (plz) field must be less than 255 characters.");
+        } 
+
+        if (empty($city)) {
+            error_function(400, "Please provide the (city) field.");
+        }
+        elseif (strlen($city) > 255) {
+            error_function(400, "The (city) field must be less than 255 characters.");
+        } 
 
         //checking if everything was good
-        if (create_reservation($from_date, $to_date, $place_name, $host, $description) === true) {
-            message_function(200, "The reservation was successfully created.");
+        if (create_company($companyname, $phone, $mail, $owner, $land, $street, $plz, $city) === true) {
+            message_function(200, "The company was successfully created.");
         } 
         else {
-            error_function(500, "An error occurred while saving the reservation.");
+            error_function(500, "An error occurred while saving the company.");
         }
         return $response;        
     });
