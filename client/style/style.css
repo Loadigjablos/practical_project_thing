@@ -5,7 +5,6 @@
     font-family: "Graviola-CsBe-regular", "Bahnschrift", Arial, sans-serif;
     font-size: 20px;
     border: none;
-    color: black;
 }
 @font-face {
     font-family: 'Graviola-CsBe-regular';
@@ -202,4 +201,15 @@ a:hover, button:hover {
 .thing {    
     font-size: 13px;
     color:rgb(0, 0, 0)
+}
+.footerdesign {
+    position: relative;
+    min-height: 10vh;
+    margin-top: auto;
+	bottom: 0;
+	height: auto;
+	text-align: center;
+	width: 100%;
+	background-color: #3c3c3c;
+	color: #ffffff;
 }
