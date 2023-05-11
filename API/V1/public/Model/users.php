@@ -218,7 +218,7 @@
         }
     }
 
-    function create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
+    function create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
         global $database;
 
         $existing_place = $database->query("SELECT * FROM `users` WHERE `email` = '$email'")->fetch_assoc();
@@ -231,7 +231,60 @@
         $result = $database->query("INSERT INTO `users` (`name`,`email`, `passwdhash`, `picture_id`, `parents`, `birthdate`, `ahvnumer`, `role`) VALUES ('$name', '$email', '$password', '$picture_id', '$parents', '$birthdate', '$ahvnumer', '$role');");
 
         if ($result) {
-            return true;
+            $class_id_query = $database->query("SELECT id FROM class WHERE `class_name` = '$class_name'");
+            if ($class_id_query->num_rows > 0) {
+                $class_id = $class_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The class does not exist");
+                return false;
+            }
+    
+            $user_id_query = $database->query("SELECT id FROM users WHERE `email` = '$email'");
+            if ($user_id_query->num_rows > 0) {
+                $user_id = $user_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The user does not exist");
+                return false;
+            }
+    
+
+            $defineClass = $database->query("INSERT INTO `user_class` (`user_id`, `class_id`) VALUES ('$user_id', '$class_id');");
+
+            if (!$defineClass) {
+                error_function(400, "faild to create the user");
+                return false;
+            }
+
+            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
+
+            if (!$addAdress) {
+                error_function(400, "faild to create the address");
+                return false;
+            }
+            else {
+               echo $addAdress;
+            }
+
+            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
+            if ($adress_id_query->num_rows > 0) {
+                $adress_id = $adress_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The adress does not exist");
+                return false;
+            }
+    
+            $defineAdress = $database->query("INSERT INTO `user_adress` (`adress_id`, `user_id`) VALUES ('$adress_id', '$user_id');");
+
+            if ($defineAdress) {
+                return true;
+            }
+            else {
+                error_function(400, "faild to create the user");
+                return false;
+            }
         }
         else {
             return false;

@@ -21,8 +21,8 @@
     // self made functions
     require_once "Controler/validation.php";
     require "Model/users.php";
-    require "Model/place.php";
-    require "Model/events.php";
+    require "Model/classes.php";
+    require "Model/company.php";
     require_once "Controler/error-and-info-messages.php";
 
     // all response data will be in the Json Fromat
@@ -195,8 +195,8 @@
         });
    
     require "Controler/routes/users.php";
-    require "Controler/routes/events.php";
-    require "Controler/routes/place.php";
+    require "Controler/routes/company.php";
+    require "Controler/routes/classes.php";
 
     $app->run();
 ?>

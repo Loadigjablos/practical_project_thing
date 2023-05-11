@@ -25,26 +25,17 @@
 
     }
 
-    function create_place($position, $name, $type) {
+    function create_class($class_name, $specialization, $yaer_qv) {
         global $database;
     
         // check if a place with the same name already exists
-        $existing_place = $database->query("SELECT * FROM `places` WHERE `name` = '$name'")->fetch_assoc();
+        $existing_place = $database->query("SELECT * FROM `class` WHERE `class_name` = '$class_name'")->fetch_assoc();
         if ($existing_place) {
-            // handle error
-            error_function(400, "A place with the name '$name' already exists.");
-            return false;
-        }
-
-        // check if a place with the same position already exists
-        $existing_place = $database->query("SELECT * FROM `places` WHERE `position` = '$position'")->fetch_assoc();
-        if ($existing_place) {
-            // handle error
-            error_function(400, "A place with the position '$position' already exists.");
+            error_function(400, "A place with the name '$class_name' already exists.");
             return false;
         }
     
-        $result = $database->query("INSERT INTO `places` (`position`,`name`, `type`) VALUES ('$position', '$name', '$type');");
+        $result = $database->query("INSERT INTO `class` (`class_name`,`specialization`, `yaer_qv`) VALUES ('$class_name', '$specialization', '$yaer_qv');");
     
         if (!$result) {
             // handle error
