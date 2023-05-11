@@ -1,3 +1,22 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    font-style: normal;
+    font-family: "Graviola-CsBe-regular", "Bahnschrift", Arial, sans-serif;
+    font-size: 20px;
+    border: none;
+    color: black;
+}
+@font-face {
+    font-family: 'Graviola-CsBe-regular';
+    src: url("Graviola/Harbor\ Type\ -\ Graviola-Regular.otf");
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Graviola-CsBe-light';
+    src: url("Graviola/Harbor\ Type\ -\ Graviola-Light.otf");
+}
+
 nav {
 	background: #3c3e3c;
 	height: auto;
@@ -32,14 +51,9 @@ nav ul li a {
 }
 h1, h2, h3 {
     font-size: 30px;
-    font-family: "Graviola-CsBe-light";
 }
 a, img {
     padding: 5px;
-}
-body {
-    text-align: center;
-    background-color: #BBBBBB;
 }
 header {
     background-color: #FFFFFF;
@@ -88,6 +102,18 @@ main {
 td h2, td button, .black-box h1, td a, td p {
     color: #FFFFFF;
     background-color: #0A0A32;
+}
+@keyframes appear {
+    0%{
+        top: -500px;
+        background-color: rgba(0, 0, 0, 0);
+        border: 10px solid rgba(0, 0, 0, 0);
+    }
+    100%{
+        top: 0px;
+        background-color: #ffffff;
+        border: 10px solid #E50010;
+    }
 }
 .message-and-error {
     position: fixed;
