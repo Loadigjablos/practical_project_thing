@@ -27,7 +27,7 @@ nav {
 }
 
 nav ul {
-	float: ;
+	float: left;
 	margin-left: 0px;
 }
 
@@ -198,4 +198,8 @@ canvas {
 }
 a:hover, button:hover {
     color: #888888;
+}
+.thing {    
+    font-size: 13px;
+    color:rgb(0, 0, 0)
 }
