@@ -4,24 +4,33 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="./client/style/style.css">
     </head>
-    <body class="">
+    <body class="bg-black">
         <header class="bg-red-500">
             <nav>
 
             </nav>
         </header>
-        <main class="">
-            <div class="bg-gradient-to-r from-black to-gray-500 w-[20%] mx-auto">
-                <h1>Email</h1>
-                <input type="email" id="e-mail" class="w-[100%]">
-
-                <h1>Password</h1>
-                <input type="password" id="e-mail" class="w-[100%]">
-
-                <h1>Password Again</h1>
-                <input type="password" id="e-mail" class="w-[100%]">
+        <main class="bg-blue p-[20%] ">
+            <div class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%]">
+                <table class="w-[100%]">
+                    <tr>
+                        <td><h1 class="w-[50%]">Email</h1></td>
+                        <td><input type="email" id="e-mail" class="w-[100%]"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[50%]">Password</h1></td>
+                        <td><input type="password" id="pwd" class="w-[100%]"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[100%]">Password Again</h1></td>
+                        <td><input type="password" id="pwd-a" class="w-[100%]"></td>
+                    </tr>
+                </table>
+                <button class="w-[50%] mt-[5%] ml-[25%] bg-blue-400">Send</button>
             </div>
         </main>
     </body>
+    <script src="./client/controler/functions.js"></script>
 </html>
