@@ -1,4 +1,4 @@
-$nav {
+nav {
 	background: #3c3e3c;
 	height: auto;
 	width: auto;
@@ -9,17 +9,17 @@ $nav {
 
 nav ul {
 	float: ;
-	margin-left: 20px;
+	margin-left: 0px;
 }
 
 nav ul li {
 	display: inline-block;
-	line-height: 80px;
+	line-height: 60px;
 	margin: 0%;
 }
 
 nav ul li a {
-	color: #111111;
+	color: #ffffff;
 	font-size: 13px;
 	text-transform: uppercase;
 }
