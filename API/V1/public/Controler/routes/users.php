@@ -68,9 +68,6 @@
         if (empty($picture_id)) {
             error_function(400, "Please provide the (password) field.");
         }
-        elseif (strlen($picture_id) > 255) {
-            error_function(400, "The (email) field must be less than 255 characters.");
-        } 
 
         if (empty($parents)) {
             error_function(400, "Please provide the (password) field.");
@@ -254,22 +251,51 @@
 		
 		return $response;
 	});
-    
-    $app->delete("/User/{name}", function (Request $request, Response $response, $args) {
-		$id = user_validation("A");
-        validate_token();
+
+    $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+
+        $user_id = $args["id"];
+
+        $request_body_string = file_get_contents("php://input");
+		$request_data = json_decode($request_body_string, true);
+
+        $file = addslashes($request_data['file']);
+        $type = strip_tags(addslashes($request_data['type']));
+
+        add_files_to_user($user_id, $file, $type);
 		
-		$name = $args["name"];
-		
-		$result = delete_user($name);
-		
-		if (!$result) {
-			error_function(404, "No user found for the Name ( " . $name . " ).");
-		}
-		else {
-			message_function(200, "The user was succsessfuly deleted.");
-		}
-		
-		return $response;
+        //checking if everything was good
+        if (add_files_to_user($user_id, $file, $type) === true) {
+            message_function(200, "successfully added files");
+        } else {
+            error_function(500, "An error occurred");
+        }
+        return $response;   
 	});
+
+    $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+
+        $user_id = $args["id"];
+
+        $request_body_string = file_get_contents("php://input");
+		$request_data = json_decode($request_body_string, true);
+
+        $file = addslashes($request_data['file']);
+        $type = strip_tags(addslashes($request_data['type']));
+
+        add_files_to_user($user_id, $file, $type);
+		
+        //checking if everything was good
+        if (add_files_to_user($user_id, $file, $type) === true) {
+            message_function(200, "successfully added files");
+        } else {
+            error_function(500, "An error occurred");
+        }
+        return $response;   
+	});
+
 ?>

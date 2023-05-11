@@ -16,17 +16,31 @@
     font-family: 'Graviola-CsBe-light';
     src: url("Graviola/Harbor\ Type\ -\ Graviola-Light.otf");
 }
-@keyframes appear {
-    0%{
-        top: -500px;
-        background-color: rgba(0, 0, 0, 0);
-        border: 10px solid rgba(0, 0, 0, 0);
-    }
-    100%{
-        top: 0px;
-        background-color: #ffffff;
-        border: 10px solid #E50010;
-    }
+
+nav {
+	background: #3c3e3c;
+	height: auto;
+	width: auto;
+	top: 0;
+	left: 0;
+	padding: 0px 20px;
+}
+
+nav ul {
+	float: ;
+	margin-left: 0px;
+}
+
+nav ul li {
+	display: inline-block;
+	line-height: 60px;
+	margin: 0%;
+}
+
+nav ul li a {
+	color: #ffffff;
+	font-size: 13px;
+	text-transform: uppercase;
 }
 .block, div {
     display: block;
@@ -37,41 +51,20 @@
 }
 h1, h2, h3 {
     font-size: 30px;
-    font-family: "Graviola-CsBe-light";
-}
-table, th {
-    border: 1px solid;
-    border-collapse: collapse;
-    color: #BBBBBB;
-    border-color: #BBBBBB;
-}
-td {
-    color: #FFFFFF;
-}
-table {
-    width: 99%;
-    margin: 0.5%;
 }
 a, img {
     padding: 5px;
 }
-body {
-    text-align: center;
-    background-color: #BBBBBB;
-}
 header {
     background-color: #FFFFFF;
 }
-.flex {
+.flex-w {
     display: inline-flex;
     width: 100%;
 }
 canvas {
     border: solid#0A0A32;
     margin: 2px;
-}
-#login {
-    text-align: right;
 }
 main {
     text-align: center;
@@ -110,9 +103,17 @@ td h2, td button, .black-box h1, td a, td p {
     color: #FFFFFF;
     background-color: #0A0A32;
 }
-input {
-    width: 70%;
-    border: 1px solid #0A0A32;
+@keyframes appear {
+    0%{
+        top: -500px;
+        background-color: rgba(0, 0, 0, 0);
+        border: 10px solid rgba(0, 0, 0, 0);
+    }
+    100%{
+        top: 0px;
+        background-color: #ffffff;
+        border: 10px solid #E50010;
+    }
 }
 .message-and-error {
     position: fixed;
@@ -193,9 +194,6 @@ canvas {
     }
     h1, h2, h3 {
         font-size: 20px;
-    }
-    input {
-        width: 80%;
     }
 }
 a:hover, button:hover {

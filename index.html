@@ -3,102 +3,48 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <link rel="stylesheet" href="client/style/style.css">
+        <link rel="stylesheet" href="./client/style/style.css">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title> Anmeldung</title>
     </head>
-    <body>
+    <body class="bg-black">
         <header>
-            <nav class="block">
-                <div class="flex">
-                    <div>
-                        <h1><a href="#"><img src="client/images/logo.jpg"></a></h1>
-                    </div>
-                    <div>
-                        <p id="name"></p>
-                    </div>
-                    <div>
-                        <a href="client/view/profile.html">profile</a>
-                    </div>
-                </div>
-                <div class="flex">
-                    <div>
-                        <a href="#" class="underlined">Start seite</a>
-                    </div>
-                    <div>
-                        <a href="client/view/rp.html">Reserviere einen Parkplatz oder Raum</a>
-                    </div>
-                    <div>
-                        <a href="client/view/rp-admin.html">Admin</a>
-                    </div>
-                    <div>
-                        <a id="login" href="#">Login/Logout</a>
-                        <script src="client/controler/login-access.js"></script>
-                    </div>
-                    <div>
-                        <a href="client/view/users.html">users Admin</a>
-                    </div>
-                </div>
+            <nav>
+                <ul>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
+                    <li><a href="./client/view/firmen-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
+                    <li><a href="./client/view/firmenliste-ohne-bewerbungen.html">Firmen ohne Bewerbungen</a></li>
+                    <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
+                    <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
+                    <li><a href="./client/view/lernender.html">Lerende</a></li>
+                    <li><a href="./client/view/praktikas.html">Praktikas</a></li>
+                </ul>
             </nav>
         </header>
-        <main>
-            <div class="left">
-                <h2>Schon Reservierte Orte:</h2>
-                <table id="tabel-reservations">
+        <main class="bg-blue p-[20%]">
+            <div class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%]">
+                <table class="w-[100%]">
                     <tr>
-                        <th>Name</th>
-                        <th>Datum</th>
+                        <td><h1 class="w-[50%]">Email</h1></td>
+                        <td><input type="email" id="e-mail" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[50%]">Password</h1></td>
+                        <td><input type="password" id="pwd" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[100%]">Password Again</h1></td>
+                        <td><input type="password" id="pwd-a" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
                     </tr>
                 </table>
-            </div>
-            <div class="right">
-                <h1>Hier Ist eine Hilfestellung wie sie sich in dieser Webseite Orientieren können</h1>
-
-                <h2>Die Navigation</h2>
-                <br>
-                <p>
-                    <p>Oben gibt es 6 Links:</p>
-                    <br>
-                    <li>
-                        "Startseite" Hier Befinden wir uns jetzt gerade.
-                    </li>
-                    <br>
-                    <li>
-                        "Reserviere eine Parkplatz oder Raum"
-                        Hier kann eine Reservation Gemacht,
-                        Gelöscht, bearbeitet Auf einer Liste
-                        sehen und auch auf eine Karte die Position
-                        dieses Raumes oder parkplatzes Ansehen.
-                    </li>
-                    <br>
-                    <li>
-                        "Admin" Hier können Admins Neue Räume und parkplätze Machen.
-                    </li>
-                    <br>
-                    <li>
-                        "Login/Logout" Hier kann man sich anmelden. Falls man schon
-                        angemeldet ist kann man sich hier wieder aus Loggen.
-                        Die Anmeldung ist nur für 1/2 Stunde Gültig.
-                    </li>
-                    <br>
-                    <p>
-                        Oben neben dem logo wo "Bitte Logen sie sich Ein!" Steht.
-                        Wird deine Rolle wie auch dein namen stehen wenn du dich auch
-                        angemeldest hast.
-                    </p>
-                </p>
-                <br>
-                <h2>Was sind die Verschiedensten sachen die du Machen kannst?</h2>
-                <br>
-                <li>
-                    Du Kannst Reservationen die schon existieren auf der linken seite dieser webseite einsehen. 
-                </li>
-                <br>
-
-
-
-
-
-                <script src="client/controler/start-site.js"></script>
+                <button class="w-[50%] mt-[5%] ml-[25%] bg-blue-400" id="send">Send</button>
             </div>
         </main>
+	    <footer>
+		    <h3>Impressum</h3>
+	    </footer>
+        <script src="./client/controler/functions.js"></script>
+        <script src="./client/controler/login.js"></script>
     </body>
 </html>

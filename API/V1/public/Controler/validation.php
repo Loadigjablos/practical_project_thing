@@ -42,6 +42,7 @@
      */
     function create_token($id) {
         global $secret;
+        $token = Token::getToken($id, $secret, '6h');
         return $token;
     }
 
@@ -49,7 +50,7 @@
      * validates the token in the cookies if it matches with a user.
      */
     function validate_token($token = false) {
-
+        global $secret;
         require_once "Model/users.php";
 
         $the_set_token = validate_string($_COOKIE["token"]); // cookie from the browser
@@ -61,15 +62,11 @@
             $the_set_token = $token;
         }
 
-        $token_exploded = explode("[tr]", $the_set_token);
+        $result = Token::validate($token, 'secret');
 
-        $user = get_user_by_id($token_exploded[1]); // array of all users
+        $user = get_user_by_id($result); // array of this user
 
-        $user_token = create_token($user["email"], $user["passwdHash"], $token_exploded[1]);
-
-        if ($user_token === $the_set_token) {
-            return $token_exploded[1];
-        }
+        return $user;
  
         error_function(403, "Authentication Failed ;_;");
     }

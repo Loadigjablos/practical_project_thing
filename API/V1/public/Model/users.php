@@ -330,4 +330,69 @@
 			return true;
 		}
 	}
+
+    function add_files_to_user($id, $file, $type) {
+        global $database;
+
+        $result = $database->query("SELECT id FROM blobfiles WHERE file = $file;");
+
+        if ($result == false) {
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+			} else {
+                $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+                if (!$result) {
+                    return false;
+                }
+                else if ($database->affected_rows == 0) {
+                    return false;
+                }
+            }
+		} else {
+            $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+            if (!$result) {
+                return false;
+            }
+            else if ($database->affected_rows == 0) {
+                return false;
+            }
+        }
+		
+        $result = $database->query("SELECT id FROM blobfiles WHERE file = $file;");
+
+        if (!$result) {
+			return false;
+		}
+
+        $result = $result['id'];
+
+        $result = $database->query("INSERT INTO user_files (user_id, file_id) VALUES ($id, $result);");
+
+        if (!$result) {
+			return false;
+		}
+		else if ($database->affected_rows == 0) {
+			return null;
+		}
+		else {
+			return true;
+		}
+    }
+
+    function remove_files_from_user($user_id, $file_id) {
+        global $database;
+
+        $result = $database->query("DELETE FROM user_files WHERE user_id = $user_id AND file_id = $file_id;");
+
+        if (!$result) {
+			return false;
+		}
+		else if ($database->affected_rows == 0) {
+			return null;
+		}
+		else {
+			return true;
+		}
+    }
+
 ?>

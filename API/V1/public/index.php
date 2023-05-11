@@ -18,6 +18,7 @@
 
     // all the libraries we need.
     require __DIR__ . "/../vendor/autoload.php";
+    
     // self made functions
     require_once "Controler/validation.php";
     require "Model/users.php";
