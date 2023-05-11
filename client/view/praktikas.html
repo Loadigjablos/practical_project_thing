@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <link rel="stylesheet" href="../style/style.css">
     </head>
-    <body>
+
+    <body class="bg-black">
         <header>
             <nav>
                 <ul>
@@ -20,74 +22,26 @@
                 </ul>
             </nav>
         </header>
-        <main>
-            <div class="left">
-                <h2>Kreiere ein Neues Objekt Hier:</h2>
-                <table>
-                    <tr>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>Position X</td>
-                        <td><input type="number" id="position-x"></td>
-                    </tr>
-                    <tr>
-                        <td>Position Y</td>
-                        <td><input type="number" id="position-y"></td>
-                    </tr>
-                    <tr>
-                        <td>Width</td>
-                        <td><input type="number" id="position-width"></td>
-                    </tr>
-                    <tr>
-                        <td>Lenght</td>
-                        <td><input type="number" id="position-lenght"></td>
-                    </tr>
-                    <tr>
-                        <td><div>.</div></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Name</td>
-                        <td><input type="text" id="object-name"></td>
-                    </tr>
-                    <tr>
-                        <td>Type</td>
-                        <td>Parkplatz<input name="type" value="p" type="radio" class="small-input" id="radio-p"> Raum<input name="type" value="r" type="radio" class="small-input" id="radio-r"></td>
-                    </tr>
-                    <tr>
-                        <td><div>.</div></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button id="confirm">Confirm</button></td>
-                    </tr>
-                </table>
-                <br>
-                <table id="tabel-places">
-                    <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Löschen</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="right">
-                <div class="flex">
-                    <p>Etage</p>
-                    <p id="etage-number">EG</p>
-                    <div class="block">
-                        <button id="etage-up">/\</button>
-                        <button id="etage-down">\/</button>
-                    </div>
-                </div>
-                <canvas id="canvas">
+        <title>Praktikas</title>
+        </head>
 
-                </canvas>
-            </div>
-        </main>
-        <script src="../controler/rp-admin.js"></script>
+        <h1>Praktikas</h1>
+        <ul>
+            <h2>Klassenliste mit Praktikas</h2>
+            <li>Schüler 2</li>
+            <li>Schüler 2</li>
+            <li>Schüler 2</li>
+        </ul>
+
+        <ul>
+            <h2>Klassenliste ohne Praktikas</h2>
+            <li>Schüler 2</li>
+            <li>Schüler 2</li>
+            <li>Schüler 2</li>
+        </ul>
+
+        <h2>Neuer Eintrag</h2>
+        <h2>Eintrag ändern</h2>
     </body>
+
 </html>
