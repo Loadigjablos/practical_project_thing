@@ -7,21 +7,42 @@
         <title> Anmeldung</title>
     </head>
     <body>
-        <header>
             <nav>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="Navi/Geschichte.html">Geschichte</a></li>
-                    <li><a href="Navi/Gürtel.html">Gürtel</a></li>
-                    <li><a href="Navi/video.html">Turniere</a></li>
-                    <li><a href="Navi/Ueberuns.html">Über uns</a></li>
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
+                    <li><a href="./client/view/firmen-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
+                    <li><a href="./client/view/firmenliste-ohne-bewerbungen.html">Firmen ohne Bewerbungen</a></li>
+                    <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
+                    <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
+                    <li><a href="./client/view/lernender.html">Lerende</a></li>
+                    <li><a href="./client/view/praktikas.html">Praktikas</a></li>
                 </ul>
             </nav>
-
-	<footer>
-		<h3>Impressum</h3>
-	</footer>
-
-</body>
-
+        </header>
+        <main class="bg-blue p-[20%]">
+            <div class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%]">
+                <table class="w-[100%]">
+                    <tr>
+                        <td><h1 class="w-[50%]">Email</h1></td>
+                        <td><input type="email" id="e-mail" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[50%]">Password</h1></td>
+                        <td><input type="password" id="pwd" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[100%]">Password Again</h1></td>
+                        <td><input type="password" id="pwd-a" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                </table>
+                <button class="w-[50%] mt-[5%] ml-[25%] bg-blue-400" id="send">Send</button>
+            </div>
+        </main>
+	    <footer>
+		    <h3>Impressum</h3>
+	    </footer>
+        <script src="./client/controler/functions.js"></script>
+        <script src="./client/controler/login.js"></script>
+    </body>
 </html>

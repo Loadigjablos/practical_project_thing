@@ -21,5 +21,3 @@ function MessageUI(head, information) {
   
     document.body.appendChild(thing);
 }
-
-MessageUI("thing", "thing")
