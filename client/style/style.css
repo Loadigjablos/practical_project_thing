@@ -39,19 +39,6 @@ h1, h2, h3 {
     font-size: 30px;
     font-family: "Graviola-CsBe-light";
 }
-table, th {
-    border: 1px solid;
-    border-collapse: collapse;
-    color: #BBBBBB;
-    border-color: #BBBBBB;
-}
-td {
-    color: #FFFFFF;
-}
-table {
-    width: 99%;
-    margin: 0.5%;
-}
 a, img {
     padding: 5px;
 }
@@ -62,16 +49,13 @@ body {
 header {
     background-color: #FFFFFF;
 }
-.flex {
+.flex-w {
     display: inline-flex;
     width: 100%;
 }
 canvas {
     border: solid#0A0A32;
     margin: 2px;
-}
-#login {
-    text-align: right;
 }
 main {
     text-align: center;
@@ -109,10 +93,6 @@ main {
 td h2, td button, .black-box h1, td a, td p {
     color: #FFFFFF;
     background-color: #0A0A32;
-}
-input {
-    width: 70%;
-    border: 1px solid #0A0A32;
 }
 .message-and-error {
     position: fixed;
@@ -193,9 +173,6 @@ canvas {
     }
     h1, h2, h3 {
         font-size: 20px;
-    }
-    input {
-        width: 80%;
     }
 }
 a:hover, button:hover {
