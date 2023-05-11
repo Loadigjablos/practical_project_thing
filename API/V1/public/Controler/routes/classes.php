@@ -43,49 +43,43 @@
     });
 
 
-    $app->post("/Place", function (Request $request, Response $response, $args) {
-        $id = user_validation("A");
-        validate_token();
+    $app->post("/Class", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
-        $position = trim($request_data["position"]);
-        $name = trim($request_data["name"]);
-        $type = trim($request_data["type"]);
+        $class_name = trim($request_data["class_name"]);
+        $specialization = trim($request_data["specialization"]);
+        $yaer_qv = trim($request_data["yaer_qv"]);
     
         //The position field cannot be empty and must not exceed 2048 characters
-        if (empty($position)) {
-            error_function(400, "The (position) field must not be empty.");
+        if (empty($class_name)) {
+            error_function(400, "The (class_name) field must not be empty.");
         } 
-        elseif (strlen($position) > 2048) {
-            error_function(400, "The (position) field must be less than 2048 characters.");
+        elseif (strlen($class_name) > 2048) {
+            error_function(400, "The (class_name) field must be less than 2048 characters.");
         }
     
         //The name field cannot be empty and must not exceed 255 characters
-        if (empty($name)) {
+        if (empty($specialization)) {
             error_function(400, "The (name) field must not be empty.");
         } 
-        elseif (strlen($name) > 255) {
+        elseif (strlen($specialization) > 255) {
             error_function(400, "The (name) field must be less than 255 characters.");
         }
     
         //The type field must be an uppercase alphabetic character
-        if (empty($type)) {
+        if (empty($yaer_qv)) {
             error_function(400, "Please provide the (type) field.");
         } 
-        elseif (!ctype_alpha($type)) {
-            error_function(400, "The (type) field must contain only alphabetic characters.");
-        } 
-        elseif (!ctype_upper($type)) {
-            error_function(400, "The (type) field must be an uppercase alphabetic character.");
-        } 
-        elseif ($type !== 'R' && $type !== 'P') {
-            error_function(400, "The (type) field must be either 'R' or 'P'.");
+        elseif (strlen($yaer_qv) > 255) {
+            error_function(400, "The (name) field must be less than 255 characters.");
         }
     
         //checking if everything was good
-        if (create_place($position, $name, $type) === true) {
-            message_function(200, "The Place was successfully created.");
+        if (create_class($class_name, $specialization, $yaer_qv) === true) {
+            message_function(200, "The class was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the place.");
         }

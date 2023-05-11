@@ -60,65 +60,51 @@
         }
     }
 
-    function create_reservation($from_date, $to_date, $place_name, $host, $description) {
+    function create_company($companyname, $phone, $mail, $owner, $land, $street, $plz, $city) {
         global $database;
-        
-        // Check if place_name already exists
-        $result = $database->prepare("SELECT COUNT(*) FROM `events` WHERE `place_name` = ? AND `to_date` > ?");
-        $result->bind_param("ss", $place_name, $from_date);
-        $result->execute();
-        $result = $result->get_result()->fetch_row()[0];
-        if ($result > 0) {
-            // place_name already exists, return false
-            error_function(400, "It's look like someone booked ( " . $place_name . " ) before you.");        
+
+        $result = $database->query("INSERT INTO `company` (`companyname`,`phone`, `mail`, `owner`) VALUES ('$companyname', '$phone', '$mail', '$owner');");
+
+        if ($result) {
+            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
+
+            if (!$addAdress) {
+                error_function(400, "faild to create the address");
+                return false;
+            }
+
+            $company_id_query = $database->query("SELECT id FROM company WHERE `mail` = '$mail'");
+            if ($company_id_query->num_rows > 0) {
+                $company_id = $company_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The user does not exist");
+                return false;
+            }
+
+            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
+            if ($adress_id_query->num_rows > 0) {
+                $adress_id = $adress_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The adress does not exist");
+                return false;
+            }
+    
+            $defineAdress = $database->query("INSERT INTO `company_adress` (`company_id`, `adress_id`) VALUES ('$company_id', '$adress_id');");
+
+            if ($defineAdress) {
+                return true;
+            }
+            else {
+                error_function(400, "faild to create the user");
+                return false;
+            }
         }
-        
-        // Insert new reservation
-        $result = $database->prepare("INSERT INTO `events` (`from_date`, `to_date`, `place_name`, `host`, `description`) VALUES (?, ?, ?, ?, ?)");
-        $result->bind_param("sssss", $from_date, $to_date, $place_name, $host, $description);
-        $result = $result->execute();
-        
-        if (!$result) {
-            // handle error
+        else {
             return false;
         }
-                
-        // Convert date and time to UTC format
-        $from_date_utc = gmdate('Ymd\THis\Z', strtotime($from_date));
-        $to_date_utc = gmdate('Ymd\THis\Z', strtotime($to_date));
-        
-        // Generate unique ID for the event
-        $uid = uniqid();
-        
-        // Generate .ics file contents
-        $ical = "BEGIN:VCALENDAR\nVERSION:2.0
-PRODID:-//hacksw/handcal//NONSGML v1.0//EN
-BEGIN:VEVENT
-UID:" . $uid . "
-DTSTAMP:" . $from_date_utc . "
-DTSTART:" . $from_date_utc . "
-DTEND:" . $to_date_utc . "
-SUMMARY:" . $place_name . "
-END:VEVENT
-END:VCALENDAR";
-
-        // Send email with .ics file contents as the email body
-        $to = "mouayad.alnhlawe@ict.csbe.ch";
-        $subject = "Event Reservation";
-        $message = "Please find below the event reservation details in iCalendar format:\r\n\r\n";
-        $headers = "From: morhaf.mouayad@gmail.com\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/calendar; charset=utf-8; method=REQUEST\r\n";
-        $body = $message . $ical;
-        
-        if (!mail($to, $subject, $body, $headers, "-r morhaf.mouayad@gmail.com")) {
-            error_function(400, "Email sending failed, but the reservation was seccussfully created.");
-        }
-        
-        return true;
     }
-    
-    
         
     function update_reservation($id, $from_date, $to_date, $place_name, $host, $description) {
         global $database;
