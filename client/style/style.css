@@ -1,32 +1,27 @@
-* {
-    padding: 0px;
-    margin: 0px;
-    font-style: normal;
-    font-family: "Graviola-CsBe-regular", "Bahnschrift", Arial, sans-serif;
-    font-size: 20px;
-    border: none;
-    color: black;
+nav {
+	background: #3c3e3c;
+	height: auto;
+	width: auto;
+	top: 0;
+	left: 0;
+	padding: 0px 20px;
 }
-@font-face {
-    font-family: 'Graviola-CsBe-regular';
-    src: url("Graviola/Harbor\ Type\ -\ Graviola-Regular.otf");
-    font-style: normal;
+
+nav ul {
+	float: ;
+	margin-left: 0px;
 }
-@font-face {
-    font-family: 'Graviola-CsBe-light';
-    src: url("Graviola/Harbor\ Type\ -\ Graviola-Light.otf");
+
+nav ul li {
+	display: inline-block;
+	line-height: 60px;
+	margin: 0%;
 }
-@keyframes appear {
-    0%{
-        top: -500px;
-        background-color: rgba(0, 0, 0, 0);
-        border: 10px solid rgba(0, 0, 0, 0);
-    }
-    100%{
-        top: 0px;
-        background-color: #ffffff;
-        border: 10px solid #E50010;
-    }
+
+nav ul li a {
+	color: #ffffff;
+	font-size: 13px;
+	text-transform: uppercase;
 }
 .block, div {
     display: block;
