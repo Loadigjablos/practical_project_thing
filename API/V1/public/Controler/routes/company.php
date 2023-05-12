@@ -45,7 +45,7 @@
 
     $app->post("/Company", function (Request $request, Response $response, $args) {
         //everyone
-        //validate_token();
+        validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
@@ -117,6 +117,65 @@
 
         //checking if everything was good
         if (create_company($companyname, $phone, $mail, $owner, $land, $street, $plz, $city) === true) {
+            message_function(200, "The company was successfully created.");
+        } 
+        else {
+            error_function(500, "An error occurred while saving the company.");
+        }
+        return $response;        
+    });
+
+    $app->post("/UserCompany", function (Request $request, Response $response, $args) {
+        //everyone
+        $id = user_validation("A");
+        validate_token();
+
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+
+        $company_id = trim($request_data["company_id"]);
+        $user_id = trim($request_data["user_id"]);
+        $salary = trim($request_data["salary"]);
+        $date_of_approval = trim($request_data["date_of_approval"]);
+        $date_of_the_contract = trim($request_data["date_of_the_contract"]);
+    
+        if (empty($company_id)) {
+            error_function(400, "Please provide the (company_id) field.");
+        } 
+        elseif (strlen($company_id) > 255) {
+            error_function(400, "The (company_id) field must be less than 255 characters.");
+        }
+
+        if (empty($user_id)) {
+            error_function(400, "Please provide the (user_id) field.");
+        } 
+        elseif (strlen($user_id) > 255) {
+            error_function(400, "The (user_id) field must be less than 255 characters.");
+        }
+
+        if (empty($salary)) {
+            error_function(400, "Please provide the (salary) field.");
+        } 
+        elseif (strlen($salary) > 255) {
+            error_function(400, "The (salary) field must be less than 255 characters.");
+        }
+
+        if (empty($date_of_approval)) {
+            error_function(400, "Please provide the (date_of_approval) field.");
+        } 
+        elseif (strlen($date_of_approval) > 255) {
+            error_function(400, "The (date_of_approval) field must be less than 255 characters.");
+        }
+
+        if (empty($date_of_the_contract)) {
+            error_function(400, "Please provide the (date_of_the_contract) field.");
+        }
+        elseif (strlen($date_of_the_contract) > 255) {
+            error_function(400, "The (date_of_the_contract) field must be less than 255 characters.");
+        } 
+
+        //checking if everything was good
+        if (create_user_company($company_id, $user_id, $salary, $date_of_approval, $date_of_the_contract) === true) {
             message_function(200, "The company was successfully created.");
         } 
         else {

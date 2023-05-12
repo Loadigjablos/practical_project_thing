@@ -168,35 +168,6 @@
 
         return $response;
     });
-
-        //old hash should be deleted
-        $app->get('/Time', function (Request $request, Response $response, $args) {
-            // Connect to the database
-            global $database;
-        
-            // Query the database for expired temp
-            $result = $database->query("SELECT id FROM temp WHERE timeout < NOW();");
-        
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $id = $row['id'];
-        
-                // Delete the expired temp
-                $delete_result = $database->query("DELETE FROM temp WHERE id = '$id';");
-        
-                if ($delete_result) {
-                    error_function(200, "Expired reservation with ID $id has been deleted. ");
-                    return true;
-                } else {
-                    error_function(400, "Error deleting reservation.");
-                    return false;
-                }
-            } 
-            else {
-                error_function(400, "No expired reservations found.");
-                return  false;
-            }
-        });
    
     require "Controler/routes/users.php";
     require "Controler/routes/company.php";

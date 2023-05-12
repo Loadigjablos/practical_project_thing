@@ -114,61 +114,37 @@
 
     function create_temp($user_id, $message2, $timeout) {
         global $database;
-
-        // Query the database for expired temp
-        $resultId = $database->query("SELECT id FROM temp WHERE timeout < NOW();");
-        
-        if ($resultId->num_rows > 0) {
-            $row = $resultId->fetch_assoc();
-            $id = $row['id'];
     
-            // Delete the expired temp
-            $delete_result = $database->query("DELETE FROM temp WHERE id = '$id';");
+        // Check for expired temp and delete it
+        $expired_temp_id = $database->query("SELECT id FROM temp WHERE timeout < NOW();")->fetch_assoc()["id"];
     
-            if ($delete_result) {
-                error_function(200, "Expired reservation with ID $id has been deleted. ");
-                return true;
-            } else {
-                error_function(400, "Error deleting reservation.");
-                return false;
-            }
+        if ($expired_temp_id) {
+            $delete_result = $database->query("DELETE FROM temp WHERE id = '$expired_temp_id';");
         }
-
-        $get_my_temp_query = $database->query("SELECT id FROM temp WHERE user_id = $user_id;");
-
-        if ($get_my_temp_query->num_rows > 0) {
-            $get_my_temp = $get_my_temp_query->fetch_assoc()['id'];
+    
+        // Check for user's existing temp and delete it
+        $existing_temp_id = $database->query("SELECT id FROM temp WHERE user_id = $user_id;")->fetch_assoc()["id"];
+    
+        if ($existing_temp_id) {
+            $delete_result = $database->query("DELETE FROM temp WHERE id = '$existing_temp_id';");
         }
-
-        $deleteOld = $database->query("DELETE FROM temp WHERE id = '$get_my_temp';");
-        
-        if ($deleteOld) {
-            $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
-
-            if ($result == false) {
-                error_function(500, "Error");
-            } else if ($result !== true) {
-                if ($result->num_rows > 0) {
-                    return $result->fetch_assoc();
-                } else {
-                    error_function(404, "not Found");
-                }
-            } 
-            return; 
-        }
-
+    
+        // Create new temp
         $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
-
+    
         if ($result == false) {
-            error_function(500, "Error");
+            error_function(500, "Error creating new reservation.");
+            return false;
         } else if ($result !== true) {
             if ($result->num_rows > 0) {
                 return $result->fetch_assoc();
             } else {
-                error_function(404, "not Found");
+                error_function(404, "Not found.");
+                return false;
             }
         } 
-        return; 
+    
+        return true;
     }
 
     function get_id_by_email($email) {
@@ -293,7 +269,7 @@
                 $class_id = $class_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The class does not exist");
+                error_function(400, "The user does not exist");
                 return false;
             }
     
@@ -348,21 +324,30 @@
         }
     }
 
-    function create_file($role, $file) {
+    function create_file($type, $file, $myId) {
         global $database;
 
-        $result = $database->query("INSERT INTO `blobfiles` (`role`, `file`) VALUES ('$role', '$file');");
+        $result = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+
+        if ($result) {
+            $file_id = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'")->fetch_assoc()['id'];
+
+            $userFileDefine = $database->query("INSERT INTO user_files (`user_id`, `file_id`) VALUES ('$file_id', '$myId');");
+
+            if ($userFileDefine) {
+                message_function(200, "Very nice");
+            }
+            return;
+        }
 
         if (!$result) {
             // handle error
             error_function(400, "An error occurred while saving the file.");
             return false;
         }
-    
-        return true;
     }
 
-    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) {
+    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId, $type, $file) {
         global $database;
 
         $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
@@ -373,15 +358,24 @@
                 $cv_id = $cv_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The class does not exist");
-                return false;
+                error_function(400, "The cv does not exist");
             }
 
             $defineClass = $database->query("INSERT INTO `user_cv` (`cv_id`, `user_id`) VALUES ('$cv_id', '$myId');");
 
             if (!$defineClass) {
                 error_function(400, "faild to define the cv");
-                return false;
+            }
+
+            $insertFile = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+
+            if ($insertFile) {
+                $getId_query = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'");
+                if ($getId_query->num_rows > 0) {
+                    $file_id = $getId_query->fetch_assoc()['id'];
+
+                    $defineFile = $database->query("INSERT INTO `cv_files` (`cv_id`, `file_id`) VALUES ('$cv_id', '$file_id');");
+                }
             }
             message_function(200, "Thanks");
         }

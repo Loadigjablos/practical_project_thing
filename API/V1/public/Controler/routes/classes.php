@@ -44,8 +44,8 @@
 
 
     $app->post("/Class", function (Request $request, Response $response, $args) {
-        //$id = user_validation("A");
-        //validate_token();
+        $id = user_validation("A");
+        validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
