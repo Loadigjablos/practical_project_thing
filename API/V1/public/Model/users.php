@@ -22,6 +22,28 @@
         } else {
             error_function(404, "not Found");
         }
+
+        $result_id = $result["id"];
+
+        $class_id = $database->query("SELECT class_id FROM user_class WHERE user_id = '$result_id';");
+
+        if ($class_id == false) {
+            error_function(500, "Error");
+        } else if ($class_id !== true) {
+            if ($class_id->num_rows > 0) {
+                $class_id_array = array();
+                while ($user = $class_id->fetch_assoc()) {
+                    $class_id_array[] = $user;
+                }
+                return $class_id_array;
+            } else {
+                error_function(404, "not Found");
+            }
+        } else {
+            error_function(404, "not Found");
+        }
+
+        echo $result . $class_id;
     }
 
     function get_user($myId) {
