@@ -139,6 +139,88 @@
         return $response;        
     });
 
+    $app->post("/File", function (Request $request, Response $response, $args) {
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+        $type = trim($request_data["type"]);
+        $file = trim($request_data["file"]);
+
+
+        //The position field cannot be empty and must not exceed 2048 characters
+        if (empty($type)) {
+            error_function(400, "The (type) field must not be empty.");
+        } 
+        elseif (strlen($type) > 255) {
+            error_function(400, "The (type) field must be less than 2048 characters.");
+        }
+    
+        //The name field cannot be empty and must not exceed 255 characters
+        if (empty($file)) {
+            error_function(400, "The (file) field must not be empty.");
+        } 
+        elseif (strlen($file) > 255) {
+            error_function(400, "The (file) field must be less than 255 characters.");
+        }
+
+        $file = base64_encode($file);
+
+        if (create_file($type, $file) === true) {
+            message_function(200, "The file was successfully created.");
+        } else {
+            error_function(500, "An error occurred while saving the file.");
+        }
+        return $response; 
+    });
+
+    $app->post("/CV", function (Request $request, Response $response, $args) {
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+        $company_id = trim($request_data["company_id"]);
+        $responsible_person = trim($request_data["responsible_person"]);
+        $state_cv = trim($request_data["state_cv"]);
+        $dateoftrialvisit = trim($request_data["dateoftrialvisit"]);
+
+
+
+        //The position field cannot be empty and must not exceed 2048 characters
+        if (empty($company_id)) {
+            error_function(400, "The (company_id) field must not be empty.");
+        } 
+        elseif (strlen($company_id) > 255) {
+            error_function(400, "The (company_id) field must be less than 2048 characters.");
+        }
+    
+        //The name field cannot be empty and must not exceed 255 characters
+        if (empty($responsible_person)){
+            error_function(400, "The (responsible_person) field must not be empty.");
+        } 
+        elseif (strlen($responsible_person) > 255) {
+            error_function(400, "The (responsible_person) field must be less than 255 characters.");
+        }
+
+        if (empty($state_cv)) {
+            error_function(400, "The (state_cv) field must not be empty.");
+        } 
+        elseif (strlen($state_cv) > 255) {
+            error_function(400, "The (state_cv) field must be less than 255 characters.");
+        }
+
+        if (empty($dateoftrialvisit)) {
+            error_function(400, "The (dateoftrialvisit) field must not be empty.");
+        } 
+        elseif (strlen($dateoftrialvisit) > 255) {
+            error_function(400, "The (dateoftrialvisit) field must be less than 255 characters.");
+        }
+
+
+        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit) === true) {
+            message_function(200, "The CV was successfully created.");
+        } else {
+            error_function(500, "An error occurred while saving the CV.");
+        }
+        return $response; 
+    });
+
     $app->put("/User/{id}", function (Request $request, Response $response, $args) {
 
 		//$id = user_validation("A");
@@ -251,7 +333,7 @@
 		
 		return $response;
 	});
-
+/*
     $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
         //$id = user_validation("A");
         //validate_token();
@@ -296,6 +378,6 @@
             error_function(500, "An error occurred");
         }
         return $response;   
-	});
+	});*/
 
 ?>

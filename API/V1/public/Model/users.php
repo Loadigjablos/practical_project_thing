@@ -156,6 +156,28 @@
 	    echo json_decode($result);
     }
 
+    function get_password_by_id($tempData) {
+        global $database;
+
+        $result = $database->query("SELECT passwdhash FROM users WHERE id = $tempData;");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
     function get_temp_by_user_id($tempData) {
         global $database;
 
@@ -240,6 +262,86 @@
                 return false;
             }
     
+            $user_id_query = $database->query("SELECT id FROM users WHERE `email` = '$email'");
+            if ($user_id_query->num_rows > 0) {
+                $user_id = $user_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The user does not exist");
+                return false;
+            }
+    
+
+            $defineClass = $database->query("INSERT INTO `user_class` (`user_id`, `class_id`) VALUES ('$user_id', '$class_id');");
+
+            if (!$defineClass) {
+                error_function(400, "faild to create the user");
+                return false;
+            }
+
+            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
+
+            if (!$addAdress) {
+                error_function(400, "faild to create the address");
+                return false;
+            }
+            else {
+               echo $addAdress;
+            }
+
+            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
+            if ($adress_id_query->num_rows > 0) {
+                $adress_id = $adress_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The adress does not exist");
+                return false;
+            }
+    
+            $defineAdress = $database->query("INSERT INTO `user_adress` (`adress_id`, `user_id`) VALUES ('$adress_id', '$user_id');");
+
+            if ($defineAdress) {
+                return true;
+            }
+            else {
+                error_function(400, "faild to create the user");
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    function create_file($type, $file) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+
+        if (!$result) {
+            // handle error
+            error_function(400, "An error occurred while saving the file.");
+            return false;
+        }
+    
+        return true;
+    }
+
+    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
+
+        if ($result) {
+            $cv_id_query = $database->query("SELECT id FROM cv WHERE `responsible_person` = '$responsible_person'");
+            if ($cv_id_query->num_rows > 0) {
+                $cv_id = $cv_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The class does not exist");
+                return false;
+            }
+
             $user_id_query = $database->query("SELECT id FROM users WHERE `email` = '$email'");
             if ($user_id_query->num_rows > 0) {
                 $user_id = $user_id_query->fetch_assoc()['id'];

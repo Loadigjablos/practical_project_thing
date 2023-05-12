@@ -122,21 +122,24 @@
         }
 
         $tempData = get_id_by_email($email);
-
         $tempData = $tempData["id"];
 
         $temp = get_temp_by_user_id($tempData);
-
         $temp = $temp["hash"];
+
+        $password = get_password_by_id($tempData);
+        $password = $password["passwdhash"];
 
         if ($temp !==  $hash) {
             error_function(404, "not Found");
             return false;
         }
 
-        $token = create_token($user["id"]);
+        $token = create_token($email, $password, $tempData);
 
         setcookie("token", $token, time() + 3600);
+
+        return $response;
     });
 
     function user_validation($required_role = null) {
