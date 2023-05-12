@@ -115,17 +115,59 @@
     function create_temp($user_id, $message2, $timeout) {
         global $database;
 
+        // Query the database for expired temp
+        $resultId = $database->query("SELECT id FROM temp WHERE timeout < NOW();");
+        
+        if ($resultId->num_rows > 0) {
+            $row = $resultId->fetch_assoc();
+            $id = $row['id'];
+    
+            // Delete the expired temp
+            $delete_result = $database->query("DELETE FROM temp WHERE id = '$id';");
+    
+            if ($delete_result) {
+                error_function(200, "Expired reservation with ID $id has been deleted. ");
+                return true;
+            } else {
+                error_function(400, "Error deleting reservation.");
+                return false;
+            }
+        }
+
+        $get_my_temp_query = $database->query("SELECT id FROM temp WHERE user_id = $user_id;");
+
+        if ($get_my_temp_query->num_rows > 0) {
+            $get_my_temp = $get_my_temp_query->fetch_assoc()['id'];
+        }
+
+        $deleteOld = $database->query("DELETE FROM temp WHERE id = '$get_my_temp';");
+        
+        if ($deleteOld) {
+            $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
+
+            if ($result == false) {
+                error_function(500, "Error");
+            } else if ($result !== true) {
+                if ($result->num_rows > 0) {
+                    return $result->fetch_assoc();
+                } else {
+                    error_function(404, "not Found");
+                }
+            } 
+            return; 
+        }
+
         $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
 
         if ($result == false) {
             error_function(500, "Error");
-		} else if ($result !== true) {
-			if ($result->num_rows > 0) {
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
                 return $result->fetch_assoc();
-			} else {
+            } else {
                 error_function(404, "not Found");
             }
-		} 
+        } 
         return; 
     }
 
