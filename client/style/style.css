@@ -15,7 +15,6 @@
     font-family: 'Graviola-CsBe-light';
     src: url("Graviola/Harbor\ Type\ -\ Graviola-Light.otf");
 }
-
 nav {
 	background: #3c3e3c;
 	height: auto;
@@ -66,8 +65,6 @@ canvas {
     margin: 2px;
 }
 main {
-    text-align: center;
-    display: inline-flex;
     width: 100%;
     min-height: 100%;
 }
