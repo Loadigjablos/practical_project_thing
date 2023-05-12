@@ -21,6 +21,27 @@
         return $response;
     });
 
+    $app->get("/User", function (Request $request, Response $response, $args) {
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+        $myId = get_user_id($id);
+        $myId = $myId["id"];
+
+        $users = get_user($myId);
+
+        if ($users) {
+            echo json_encode($users);
+        }
+        else if (is_string($users)) {
+            error($users, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
     $app->post("/User", function (Request $request, Response $response, $args) {
         $id = user_validation("A");
         validate_token();
