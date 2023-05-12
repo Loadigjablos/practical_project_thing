@@ -1,37 +1,84 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style/style.css">
-</head>
+    <link rel="stylesheet" href="../style/style.css" />
+  </head>
 
-<body class="bg-black">
+  <body class="bg-black">
     <header>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="bewerbungen.html">Bewerbung</a></li>
-                <li><a href="firmenliste-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                <li><a href="firmenliste-mit-praktikas.html">Firmenliste mit Praktikas</a></li>
-                <li><a href="firmenliste.html">Fimenliste</a></li>
-                <li><a href="klassenliste.html">Klassenliste</a></li>
-                <li><a href="lernender.html">Lernende</a></li>
-                <li><a href="praktikas.html">Praktikas</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="bewerbungen.html">Bewerbung</a></li>
+          <li>
+            <a href="firmenliste-mit-bewerbungen.html"
+              >Firmen mit Bewerbungen</a
+            >
+          </li>
+          <li>
+            <a href="firmenliste-mit-praktikas.html"
+              >Firmenliste mit Praktikas</a
+            >
+          </li>
+          <li><a href="firmenliste.html">Fimenliste</a></li>
+          <li><a href="klassenliste.html">Klassenliste</a></li>
+          <li><a href="lernender.html">Lernende</a></li>
+          <li><a href="praktikas.html">Praktikas</a></li>
+        </ul>
+      </nav>
     </header>
     <div class="content">
-        <h1>Klassenliste</h1>
-        <ul>
-            <li>Klasse 1</li>
-            <li>Klasse 2</li>
-        </ul>
+      <h1>Klassenliste</h1>
+      <table
+        class="bg-blue-400 table-auto border-collapse border border-slate-400 pl-[5%] w-[90%]"
+        id="firms"
+      >
+        <tr>
+          <th>name</th>
+          <th>class</th>
+          <th>stelle</th>
+          <th>adresse</th>
+        </tr>
+      </table>
+
+      <h1>benutzer Erstellen</h1>
+      <table
+        id="create-user"
+        class="bg-blue-200 table-auto border-collapse border border-slate-400"
+      >
+        <tr>
+          <td><h2>name</h2></td>
+          <td><input type="text" id="user-name" /></td>
+        </tr>
+        <tr>
+          <td><h2>email</h2></td>
+          <td><input type="text" id="user-email" /></td>
+        </tr>
+        <tr>
+          <td><h2>land</h2></td>
+          <td><input type="text" id="user-land" /></td>
+        </tr>
+        <tr>
+          <td><h2>strasse</h2></td>
+          <td><input type="text" id="user-street" /></td>
+        </tr>
+        <tr>
+          <td><h2>PLZ</h2></td>
+          <td><input type="text" id="user-plz" /></td>
+        </tr>
+        <tr>
+          <td><h2>City</h2></td>
+          <td><input type="text" id="user-city" /></td>
+        </tr>
+      </table>
+      <button id="create-user">Kreieren</button>
     </div>
     <footer class="footerdesign">
-        <h3><a href="Impressum.html">Impressum</a></h3>
+      <h3><a href="Impressum.html">Impressum</a></h3>
     </footer>
-</body>
+    <script src="../controler/classlist.js"></script>
+  </body>
 </html>
