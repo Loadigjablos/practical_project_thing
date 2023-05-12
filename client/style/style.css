@@ -47,9 +47,10 @@ nav ul li a {
     font-style: normal;
     color: #E50010;
 }
-h1, h2, h3 {
+/*h1, h2, h3 {
     font-size: 30px;
 }
+*/
 a, img {
     padding: 5px;
 }
@@ -188,9 +189,10 @@ canvas {
     * {
         font-size: 15px;
     }
-    h1, h2, h3 {
+   /* h1, h2, h3 {
         font-size: 20px;
     }
+    */
 }
 a:hover, button:hover {
     color: #888888;
@@ -209,4 +211,16 @@ a:hover, button:hover {
 	width: 100%;
 	background-color: #3c3c3c;
 	color: #ffffff;
+}
+
+/* Fix the website */
+.content {
+    color: white;
+}
+
+nav,
+footer,
+section { 
+    display: block;
+    height: 100px;
 }
