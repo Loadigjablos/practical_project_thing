@@ -198,7 +198,7 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT id, name, role FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT id, name, email, role FROM users WHERE id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -208,13 +208,11 @@
 			} else {
                 error_function(404, "not Found");
             }
-		} else {
-            error_function(404, "not Found");
-        }
+		}
 
         $result = $result->fetch_assoc();
 
-	    echo json_decode($result);
+	    return $result;
     }
 
     function get_skill_by_id($id) {

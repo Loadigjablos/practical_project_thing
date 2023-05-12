@@ -157,7 +157,7 @@
 		$user = get_user_id($id);
 
 		if ($user) {
-	        echo $user["role"];
+	        echo json_encode($user);
 		}
 		else if (is_string($user)) {
 			error_function(500, $user);
