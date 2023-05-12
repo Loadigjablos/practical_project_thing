@@ -144,7 +144,7 @@
 
     function user_validation($required_role = null) {
         $current_user_id = validate_token();
-        $current_user_role = get_user_type($current_user_id);
+        $current_user_role = get_user_role($current_user_id);
         if ($required_role !== null && $current_user_role !== $required_role) {
             error_function(403, "Access Denied");
         }
@@ -157,7 +157,7 @@
 		$user = get_user_id($id);
 
 		if ($user) {
-	        echo json_encode(200, $user);
+	        echo $user["role"];
 		}
 		else if (is_string($user)) {
 			error_function(500, $user);

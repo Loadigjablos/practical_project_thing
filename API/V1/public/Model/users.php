@@ -53,17 +53,17 @@
         }
     }
     
-    function get_user_type($id) {
+    function get_user_role($id) {
         global $database;
     
-        $result = $database->query("SELECT type FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT role FROM users WHERE id = '$id';");
     
         if ($result == false) {
             error_function(500, "Error");
         } else if ($result !== true) {
             if ($result->num_rows > 0) {
                 $user = $result->fetch_assoc();
-                return $user['type'];
+                return $user['role'];
             } else {
                 error_function(404, "not Found");
             }
@@ -203,7 +203,7 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT name, type FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT name, role FROM users WHERE id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -313,10 +313,10 @@
         }
     }
 
-    function create_file($type, $file) {
+    function create_file($role, $file) {
         global $database;
 
-        $result = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+        $result = $database->query("INSERT INTO `blobfiles` (`role`, `file`) VALUES ('$role', '$file');");
 
         if (!$result) {
             // handle error
@@ -433,7 +433,7 @@
 		}
 	}
 
-    function add_files_to_user($id, $file, $type) {
+    function add_files_to_user($id, $file, $role) {
         global $database;
 
         $result = $database->query("SELECT id FROM blobfiles WHERE file = $file;");
@@ -442,7 +442,7 @@
 		} else if ($result !== true) {
 			if ($result->num_rows > 0) {
 			} else {
-                $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+                $result = $database->query("INSERT INTO blobfiles (id, role, file) VALUES (NULL, '$file', '$role');");
                 if (!$result) {
                     return false;
                 }
@@ -451,7 +451,7 @@
                 }
             }
 		} else {
-            $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+            $result = $database->query("INSERT INTO blobfiles (id, role, file) VALUES (NULL, '$file', '$role');");
             if (!$result) {
                 return false;
             }
