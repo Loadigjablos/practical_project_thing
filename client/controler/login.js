@@ -60,10 +60,10 @@ document.querySelector("#send").addEventListener('click', async (e) => {
 
   const loginData = {
     email: emailB.value,
-    password: pwdB.value
+    hash: pwdB.value
   }
 
-  const response = await fetch('/', {
+  const response = await fetch('/API/V1/Validatemail', {
     method: "post",
     body: JSON.stringify(loginData),
     cache: "no-cache",
@@ -71,15 +71,27 @@ document.querySelector("#send").addEventListener('click', async (e) => {
       "Content-Type": "application/json"
     }
   });
-
-  const jsonData = await response.json();
-  console.log(jsonData);
-
-  document.querySelector("#send").className = "w-[50%] mt-[5%] ml-[25%] bg-blue-400";
-  document.body.className = "bg-black";
-
   if (!response.ok) {
     MessageUI("Login Failed", "Please Try Again")
     return;
   }
+  (async () => {
+
+    const response = await fetch('/API/V1/WhoAmI', {
+      method: "get",
+      cache: "no-cache"
+    });
+    if (!response.ok) {
+      MessageUI("Login Failed", "Please Try Again")
+      return;
+    }
+    localStorage.setItem("me", JSON.stringify(await response.json()))
+  
+    document.querySelector("#send").className = "w-[50%] mt-[5%] ml-[25%] bg-blue-400";
+    document.body.className = "bg-black";
+  
+    window.location.href = "./";
+
+  })()
+
 })
