@@ -86,7 +86,7 @@
             return false;
         }
         
-        $timeout = date('H:i:s', strtotime('+20 minutes'));
+        $timeout = date('H:i:s', strtotime('+5 minutes'));
         $user_id = $user["id"];
         $temp = create_temp($user_id, $message2, $timeout);
 
