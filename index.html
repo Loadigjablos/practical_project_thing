@@ -13,13 +13,8 @@
                 <ul>
                     <li><a href="./index.html">Home</a></li>
                     <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
-<<<<<<< HEAD
                     <li><a href="./client/view/firmen-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                    <li><a href="./client/view/firmenliste-mit-praktikas.html">Firmenliste mit Praktikas</a></li>
-=======
-                    <li><a href="./client/view/firmenliste-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                    <li><a href="./client/view/firmenliste-mit-praktikas.html">Firmen mit Praktikas</a></li>
->>>>>>> 061b8f6089ce7579a5599ba25e4b0deba60d1070
+                    <li><a href="./client/view/firmenliste-mit-pr">Fimenliste mit pr</a></li>
                     <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
                     <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
                     <li><a href="./client/view/lernender.html">Lernende</a></li>
@@ -28,7 +23,7 @@
             </nav>
         </header>
         <main class="bg-blue p-[20%]">
-            <div class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%]">
+            <div id="login-view" class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%]">
                 <table class="w-[100%]">
                     <tr>
                         <td><h1 class="w-[50%]">Email</h1></td>
@@ -41,6 +36,20 @@
                     <tr>
                         <td><h1 class="w-[100%]">Password Again</h1></td>
                         <td><input type="password" id="pwd-a" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                </table>
+                <button class="w-[50%] mt-[5%] ml-[25%] bg-blue-400" id="send-mail">Send</button>
+            </div>
+            <div id="login-mail" class="bg-gradient-to-r from-blue-300 to-gray-200 w-[20%] mx-auto w-[70%] p-[5%] hidden">
+                <h1>Please enter the password provided by the mail!</h1>
+                <table class="w-[100%]">
+                    <tr>
+                        <td><h1 class="w-[50%]">password</h1></td>
+                        <td><input type="email" id="pwd-hash-a" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
+                    </tr>
+                    <tr>
+                        <td><h1 class="w-[50%]">Email</h1></td>
+                        <td><input type="email" id="e-mail-a" class="w-[100%] rounded border-2 border-indigo-500/100"></td>
                     </tr>
                 </table>
                 <button class="w-[50%] mt-[5%] ml-[25%] bg-blue-400" id="send">Send</button>

@@ -1,37 +1,60 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="../style/style.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style/style.css">
-</head>
+    <title>Firmenliste</title>
+  </head>
+  <body class="bg-black">
+    <header>
+      <nav>
+        <ul>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
+          <li>
+            <a href="./client/view/firmenliste-mit-bewerbungen.html"
+              >Firmen mit Bewerbungen</a
+            >
+          </li>
+          <li>
+            <a href="./client/view/firmenliste-mit-praktikas.html"
+              >Firmen mit Praktikas</a
+            >
+          </li>
+          <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
+          <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
+          <li><a href="./client/view/lernender.html">Lerende</a></li>
+          <li><a href="./client/view/praktikas.html">Praktikas</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Firmenliste</h1>
+      <table class="bg-blue-200 table-auto border-collapse border border-slate-400 pl-[5%] w-[90%]" id="firms">
+        <tr>
+          <th>id</th>
+          <th>name</th>
+          <th>phone</th>
+          <th>mail</th>
+          <th>owner</th>
+          <th>adress</th>
+        </tr>
+      </table>
 
-        <nav>
-            <ul>
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
-                <li><a href="./client/view/firmenliste-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                <li><a href="./client/view/firmenliste-mit-praktikas.html">Firmen mit Praktikas</a></li>
-                <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
-                <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
-                <li><a href="./client/view/lernender.html">Lerende</a></li>
-                <li><a href="./client/view/praktikas.html">Praktikas</a></li>
-            </ul>
-        </nav>
-        <title>Firmenliste</title>
-        </head>
+      <h2>Firmenliste mit Bewerbungen</h2>
 
-        <body>
-            <h1>Firmenliste</h1>
-            <h2>Firmenliste mit Bewerbungen</h2>
-            <h2>Klassenliste ohne Praktikas</h2>
+      <h2>Klassenliste ohne Praktikas</h2>
 
-            <h2>Neuer Eintrag</h2>
-            <h2>Eintrag ändern</h2>
-        </body>
-<footer>
-
-</footer>
+      <button>Neuer Eintrag</button>
+      <button>Eintrag ändern</button>
+      <footer></footer>
+    </main>
+    <footer class="footerdesign">
+      <h3><a href="./Impressum.html">Impressum</a></h3>
+    </footer>
+    <script src="./functions.js"></script>
+    <script src="../controler/firmenliste.js"></script>
+  </body>
 </html>
