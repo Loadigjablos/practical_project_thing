@@ -65,7 +65,7 @@
 
         $password = hash("sha256", $password);
 
-        $user = get_user_by_username($email);
+        $user = get_user_by_email($email);
 
         if ($user["passwdhash"] !==  $password) {
             error_function(404, "not Found");
@@ -122,26 +122,29 @@
         }
 
         $tempData = get_id_by_email($email);
-
         $tempData = $tempData["id"];
 
         $temp = get_temp_by_user_id($tempData);
-
         $temp = $temp["hash"];
+
+        $password = get_password_by_id($tempData);
+        $password = $password["passwdhash"];
 
         if ($temp !==  $hash) {
             error_function(404, "not Found");
             return false;
         }
 
-        $token = create_token($user["id"]);
+        $token = create_token($email, $password, $tempData);
 
         setcookie("token", $token, time() + 3600);
+
+        return $response;
     });
 
     function user_validation($required_role = null) {
         $current_user_id = validate_token();
-        $current_user_role = get_user_type($current_user_id);
+        $current_user_role = get_user_role($current_user_id);
         if ($required_role !== null && $current_user_role !== $required_role) {
             error_function(403, "Access Denied");
         }
@@ -154,7 +157,7 @@
 		$user = get_user_id($id);
 
 		if ($user) {
-	        echo json_encode(200, $user);
+	        echo json_encode($user);
 		}
 		else if (is_string($user)) {
 			error_function(500, $user);

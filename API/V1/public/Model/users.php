@@ -53,17 +53,17 @@
         }
     }
     
-    function get_user_type($id) {
+    function get_user_role($id) {
         global $database;
     
-        $result = $database->query("SELECT type FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT role FROM users WHERE id = '$id';");
     
         if ($result == false) {
             error_function(500, "Error");
         } else if ($result !== true) {
             if ($result->num_rows > 0) {
                 $user = $result->fetch_assoc();
-                return $user['type'];
+                return $user['role'];
             } else {
                 error_function(404, "not Found");
             }
@@ -72,7 +72,7 @@
         }
     }
        
-    function get_user_by_username($email) {
+    function get_user_by_email($email) {
         global $database;
 
         $result = $database->query("SELECT * FROM users WHERE email = '$email';");
@@ -125,6 +125,23 @@
 			} else {
                 error_function(404, "not Found");
             }
+		} 
+        return; 
+    }
+
+    function get_id_by_email($email) {
+        global $database;
+
+        $result = $database->query("SELECT id FROM users WHERE email = '$email';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
 		} else {
             error_function(404, "not Found");
         }
@@ -134,10 +151,10 @@
 	    echo json_decode($result);
     }
 
-    function get_id_by_email($email) {
+    function get_password_by_id($tempData) {
         global $database;
 
-        $result = $database->query("SELECT id FROM users WHERE email = '$email';");
+        $result = $database->query("SELECT passwdhash FROM users WHERE id = $tempData;");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -181,7 +198,7 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT name, type FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT id, name, email, role FROM users WHERE id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -191,13 +208,11 @@
 			} else {
                 error_function(404, "not Found");
             }
-		} else {
-            error_function(404, "not Found");
-        }
+		}
 
         $result = $result->fetch_assoc();
 
-	    echo json_decode($result);
+	    return $result;
     }
 
     function get_skill_by_id($id) {
@@ -291,6 +306,48 @@
         }
     }
 
+    function create_file($role, $file) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `blobfiles` (`role`, `file`) VALUES ('$role', '$file');");
+
+        if (!$result) {
+            // handle error
+            error_function(400, "An error occurred while saving the file.");
+            return false;
+        }
+    
+        return true;
+    }
+
+    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
+
+        if ($result) {
+            $cv_id_query = $database->query("SELECT id FROM cv WHERE `responsible_person` = '$responsible_person'");
+            if ($cv_id_query->num_rows > 0) {
+                $cv_id = $cv_id_query->fetch_assoc()['id'];
+            }
+            else {
+                error_function(400, "The class does not exist");
+                return false;
+            }
+
+            $defineClass = $database->query("INSERT INTO `user_cv` (`cv_id`, `user_id`) VALUES ('$cv_id', '$myId');");
+
+            if (!$defineClass) {
+                error_function(400, "faild to define the cv");
+                return false;
+            }
+            message_function(200, "Thanks");
+        }
+        else {
+            return false;
+        }
+    }
+
     function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
 		global $database;
 
@@ -331,7 +388,7 @@
 		}
 	}
 
-    function add_files_to_user($id, $file, $type) {
+    function add_files_to_user($id, $file, $role) {
         global $database;
 
         $result = $database->query("SELECT id FROM blobfiles WHERE file = $file;");
@@ -340,7 +397,7 @@
 		} else if ($result !== true) {
 			if ($result->num_rows > 0) {
 			} else {
-                $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+                $result = $database->query("INSERT INTO blobfiles (id, role, file) VALUES (NULL, '$file', '$role');");
                 if (!$result) {
                     return false;
                 }
@@ -349,7 +406,7 @@
                 }
             }
 		} else {
-            $result = $database->query("INSERT INTO blobfiles (id, type, file) VALUES (NULL, '$file', '$type');");
+            $result = $database->query("INSERT INTO blobfiles (id, role, file) VALUES (NULL, '$file', '$role');");
             if (!$result) {
                 return false;
             }
