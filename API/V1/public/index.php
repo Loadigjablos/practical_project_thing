@@ -65,7 +65,7 @@
 
         $password = hash("sha256", $password);
 
-        $user = get_user_by_username($email);
+        $user = get_user_by_email($email);
 
         if ($user["passwdhash"] !==  $password) {
             error_function(404, "not Found");

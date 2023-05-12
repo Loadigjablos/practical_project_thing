@@ -173,14 +173,16 @@
     });
 
     $app->post("/CV", function (Request $request, Response $response, $args) {
+
+        $id = user_validation();
+
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
+
         $company_id = trim($request_data["company_id"]);
         $responsible_person = trim($request_data["responsible_person"]);
         $state_cv = trim($request_data["state_cv"]);
         $dateoftrialvisit = trim($request_data["dateoftrialvisit"]);
-
-
 
         //The position field cannot be empty and must not exceed 2048 characters
         if (empty($company_id)) {
@@ -212,8 +214,10 @@
             error_function(400, "The (dateoftrialvisit) field must be less than 255 characters.");
         }
 
+        $myId = get_user_id($id);
+        $myId = $myId["id"];
 
-        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit) === true) {
+        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) === true) {
             message_function(200, "The CV was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the CV.");

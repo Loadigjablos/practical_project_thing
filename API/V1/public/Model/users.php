@@ -72,7 +72,7 @@
         }
     }
        
-    function get_user_by_username($email) {
+    function get_user_by_email($email) {
         global $database;
 
         $result = $database->query("SELECT * FROM users WHERE email = '$email';");
@@ -125,13 +125,8 @@
 			} else {
                 error_function(404, "not Found");
             }
-		} else {
-            error_function(404, "not Found");
-        }
-
-        $result = $result->fetch_assoc();
-
-	    echo json_decode($result);
+		} 
+        return; 
     }
 
     function get_id_by_email($email) {
@@ -203,7 +198,7 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT name, role FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT id, name, role FROM users WHERE id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -327,7 +322,7 @@
         return true;
     }
 
-    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit) {
+    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) {
         global $database;
 
         $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
@@ -342,51 +337,13 @@
                 return false;
             }
 
-            $user_id_query = $database->query("SELECT id FROM users WHERE `email` = '$email'");
-            if ($user_id_query->num_rows > 0) {
-                $user_id = $user_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The user does not exist");
-                return false;
-            }
-    
-
-            $defineClass = $database->query("INSERT INTO `user_class` (`user_id`, `class_id`) VALUES ('$user_id', '$class_id');");
+            $defineClass = $database->query("INSERT INTO `user_cv` (`cv_id`, `user_id`) VALUES ('$cv_id', '$myId');");
 
             if (!$defineClass) {
-                error_function(400, "faild to create the user");
+                error_function(400, "faild to define the cv");
                 return false;
             }
-
-            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
-
-            if (!$addAdress) {
-                error_function(400, "faild to create the address");
-                return false;
-            }
-            else {
-               echo $addAdress;
-            }
-
-            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
-            if ($adress_id_query->num_rows > 0) {
-                $adress_id = $adress_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The adress does not exist");
-                return false;
-            }
-    
-            $defineAdress = $database->query("INSERT INTO `user_adress` (`adress_id`, `user_id`) VALUES ('$adress_id', '$user_id');");
-
-            if ($defineAdress) {
-                return true;
-            }
-            else {
-                error_function(400, "faild to create the user");
-                return false;
-            }
+            message_function(200, "Thanks");
         }
         else {
             return false;
