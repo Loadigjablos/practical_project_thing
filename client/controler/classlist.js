@@ -1,11 +1,11 @@
 const createUserField = document.querySelector("#create-user");
 
 const user = JSON.parse(localStorage.getItem("me"));
-
+/*
 if (user.role !== "A") {
   createUserField.className = "hidden";
 }
-
+*/
 const username = document.querySelector("#user-name");
 const userEmail = document.querySelector("#user-email");
 const userland = document.querySelector("#user-land");
@@ -13,29 +13,138 @@ const userstreet = document.querySelector("#user-street");
 const userplz = document.querySelector("#user-plz");
 const usercity = document.querySelector("#user-city");
 
-document.querySelector("#create-user").addEventListener("click", async (e) => {
-  const data = {
-    name: username.value,
-    email: userEmail.value,
-    passwdhash: ,
-    picture_id: ,
-    parents: ,
-    birthdate: ,
-    ahvnumer: ,
-    role: ,
-    class_name: ,
-    land: userland.value,
-    street: userstreet.value,
-    plz: userplz.value,
-    city: usercity.value,
-  };
+const userpasswdhash = document.querySelector("#user-passwdhash");
+const userpicture = document.querySelector("#user-picture");
+const userparents = document.querySelector("#user-parents");
+const userbirthdate = document.querySelector("#user-birthdate");
+const userahvnumer = document.querySelector("#user-ahvnumer");
+const userclassname = document.querySelector("#user-class-name");
+const userrole = document.querySelector("#user-role-");
 
-  const response = await fetch("/API/V1/User", {
-    method: "post",
-    body: JSON.stringify(data),
-    cache: "no-cache",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+document.querySelector("#create-user-").addEventListener("click", async (e) => {
+  let file = userpicture.files[0];
+
+  let roleA = "U";
+
+  for (let i = 0; i < userrole.children.length; i++) {
+    const role = userrole.children[i];
+    if (role.checked) {
+      roleA = role.value
+    }
+  }
+
+  try {
+    // Encode the file using the FileReader API
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      // Use a regex to remove data url part
+      const base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
+
+      const data = {
+        name: username.value,
+        email: userEmail.value,
+        passwdhash: userpasswdhash.value,
+        picture: base64String,
+        parents: userparents.value,
+        birthdate: userbirthdate.value,
+        ahvnumer: userahvnumer.value,
+        role: roleA,
+        class_name: userclassname.value,
+        land: userland.value,
+        street: userstreet.value,
+        plz: userplz.value,
+        city: usercity.value,
+      };
+      
+      addToUserToList(data)
+    
+      const response = await fetch("/API/V1/User", {
+        method: "post",
+        body: JSON.stringify(data),
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        MessageUI("Failed", "Please Try Again")
+        return;
+      }
+      MessageUI("Created", "User: " + username.value + " Was created")
+      addToUserToList(data)
+    };
+
+    reader.readAsDataURL(file);
+
+  } catch (e) {
+    MessageUI("error", "Invalid picture")
+  }
+
 });
+
+const usersList = document.querySelector('#users-list');
+
+function addToUserToList(data) {
+  try {
+    const row = document.createElement('tr');
+
+    const picture = document.createElement('iframe');
+
+    const byteCharacters = atob(data.picture);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray]);
+    picture.src = URL.createObjectURL(blob);
+    picture.width = "150px"
+    picture.height = "150px"
+    row.appendChild(picture)
+
+    const name = document.createElement('td');
+    name.innerText = data.name;
+    row.appendChild(name);
+
+    const email = document.createElement('td');
+    email.innerText = data.email;
+    row.appendChild(email);
+
+    const parents = document.createElement('td');
+    parents.innerText = data.parents;
+    row.appendChild(parents);
+
+    const birthdate = document.createElement('td');
+    birthdate.innerText = data.birthdate;
+    row.appendChild(birthdate);
+
+    const ahvnumer = document.createElement('td');
+    ahvnumer.innerText = data.ahvnumer;
+    row.appendChild(ahvnumer);
+
+    const role = document.createElement('td');
+    role.innerText = data.role;
+    row.appendChild(role);
+
+    const class_name = document.createElement('td');
+    class_name.innerText = data.class_name;
+    row.appendChild(class_name);
+
+    const stelle = document.createElement('td');
+    stelle.innerText = data.stelle;
+    row.appendChild(stelle);
+
+    const adresse = document.createElement('td');
+    adresse.innerText = data.land + ", " + data.street + ", " + data.plz + ", " + data.city;
+    row.appendChild(adresse);
+
+    usersList.appendChild(row)
+  } catch(e) {
+    MessageUI("error", "can't parse data: " + data)
+  }
+}
+
+function addFromDB() {
+
+}
