@@ -1,11 +1,16 @@
 const createUserField = document.querySelector("#create-user");
 
 const user = JSON.parse(localStorage.getItem("me"));
-/*
-if (user.role !== "A") {
-  createUserField.className = "hidden";
+
+try {
+  if (user.role !== "A") {
+    document.querySelector('#admin-only').className = "hidden";
+  }
+} catch(e) {
+  document.querySelector('#admin-only').className = "hidden";
+  MessageUI("error", "you need to login")
 }
-*/
+
 const username = document.querySelector("#user-name");
 const userEmail = document.querySelector("#user-email");
 const userland = document.querySelector("#user-land");
@@ -55,8 +60,6 @@ document.querySelector("#create-user-").addEventListener("click", async (e) => {
         plz: userplz.value,
         city: usercity.value,
       };
-      
-      addToUserToList(data)
     
       const response = await fetch("/API/V1/User", {
         method: "post",
@@ -84,6 +87,11 @@ document.querySelector("#create-user-").addEventListener("click", async (e) => {
 });
 
 const usersList = document.querySelector('#users-list');
+
+let something = {
+  thing: true,
+  elseT: ""
+}
 
 function addToUserToList(data) {
   try {
@@ -139,12 +147,37 @@ function addToUserToList(data) {
     adresse.innerText = data.land + ", " + data.street + ", " + data.plz + ", " + data.city;
     row.appendChild(adresse);
 
+    if (data.class_name !== something.elseT) {
+      something.thing = !(something.thing);
+      something.elseT = data.class_name;
+    }
+    if (something.thing) {
+      row.className = "bg-gray-500";
+    } else {
+      row.className = "bg-blue-500";
+    }
+
     usersList.appendChild(row)
   } catch(e) {
     MessageUI("error", "can't parse data: " + data)
   }
 }
 
-function addFromDB() {
+async function addFromDB() {
+  const response = await fetch("/API/V1/User", {
+    method: "post",
+    body: JSON.stringify(data),
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    MessageUI("Failed", "Please Connect to the internet or conntact the developer")
+    return;
+  }
+
+  response.json()
 
 }

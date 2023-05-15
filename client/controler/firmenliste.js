@@ -1,3 +1,12 @@
+try {
+    if (user.role !== "A") {
+      document.querySelector('#only-admin').className = "hidden";
+    }
+  } catch(e) {
+    //document.querySelector('#only-admin').className = "hidden";
+    MessageUI("error", "you need to login")
+}
+
 const firms = document.querySelector('#firms');
 
 function addFirmToList(data) {
@@ -16,7 +25,7 @@ function addFirmToList(data) {
     row.appendChild(phone);
 
     const mail = document.createElement('td');
-    mail.innerText = data.mail;
+    mail.innerText = data.email;
     row.appendChild(mail);
 
     const owner = document.createElement('td');
@@ -24,17 +33,34 @@ function addFirmToList(data) {
     row.appendChild(owner);
 
     const adress = document.createElement('td');
-    adress.innerText = data.adress;
+    adress.innerText = data.land + ", " + data.street + ", " + data.plz + ", " + data.city
     row.appendChild(adress);
 
     firms.appendChild(row)
 }
 
-addFirmToList({
-    id: "james#1",
-    name: "james#2",
-    phone: "james#3",
-    mail: "james#4",
-    owner: "james#5",
-    adress: "james#6"
+const frimName = document.querySelector('#firm-name');
+const frimphone = document.querySelector('#firm-phone');
+const frimmail = document.querySelector('#firm-mail');
+const frimland = document.querySelector('#firm-land');
+const frimstreet = document.querySelector('#firm-street');
+const frimplz = document.querySelector('#firm-plz');
+const frimcity = document.querySelector('#firm-city');
+const frimowner = document.querySelector('#firm-owner');
+
+document.querySelector('#create-firm-').addEventListener('click', async (e) => {
+
+    const data = {
+        name: frimName.value,
+        email: frimmail.value,
+        phone: frimphone.value,
+        owner: frimowner.value,
+        land: frimland.value,
+        street: frimstreet.value,
+        plz: frimplz.value,
+        city: frimcity.value,
+    };
+
+    addFirmToList(data)
+
 });
