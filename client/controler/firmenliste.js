@@ -1,9 +1,11 @@
+const user = JSON.parse(localStorage.getItem("me"));
+
 try {
     if (user.role !== "A") {
       document.querySelector('#only-admin').className = "hidden";
     }
   } catch(e) {
-    //document.querySelector('#only-admin').className = "hidden";
+    document.querySelector('#only-admin').className = "hidden";
     MessageUI("error", "you need to login")
 }
 
@@ -61,6 +63,19 @@ document.querySelector('#create-firm-').addEventListener('click', async (e) => {
         city: frimcity.value,
     };
 
-    addFirmToList(data)
+    const response = await fetch("/API/V1/Company", {
+        method: "post",
+        body: JSON.stringify(data),
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
+      if (!response.ok) {
+        MessageUI("Failed", "Please Try Again")
+        return;
+      }
+      MessageUI("Created", "User: " + username.value + " Was created")
+      addFirmToList(data)
 });

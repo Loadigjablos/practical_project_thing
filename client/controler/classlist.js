@@ -98,7 +98,6 @@ function addToUserToList(data) {
     const row = document.createElement('tr');
 
     const picture = document.createElement('iframe');
-
     const byteCharacters = atob(data.picture);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
@@ -163,14 +162,12 @@ function addToUserToList(data) {
   }
 }
 
+addFromDB()
+
 async function addFromDB() {
   const response = await fetch("/API/V1/User", {
-    method: "post",
-    body: JSON.stringify(data),
-    cache: "no-cache",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    method: "get",
+    cache: "no-cache"
   });
 
   if (!response.ok) {
@@ -178,6 +175,10 @@ async function addFromDB() {
     return;
   }
 
-  response.json()
+  const dataThing = await response.json();
+
+  dataThing.forEach(userThing => {
+    addToUserToList(userThing)
+  });
 
 }
