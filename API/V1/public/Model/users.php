@@ -547,5 +547,4 @@
 			return true;
 		}
     }
-
 ?>
