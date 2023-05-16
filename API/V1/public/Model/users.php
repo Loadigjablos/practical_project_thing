@@ -14,6 +14,13 @@
                 $result_array = array();
                 while ($user = $result->fetch_assoc()) {
                     // Get the blobfile type for picture_id
+                    $id = $user['id'];
+                    $class_name = get_class_name($id);
+                    $user['class'] = $class_name;
+                    $company_name = get_company_name($id);
+                    $user['company'] = $company_name;
+                    $adress = get_adress($id);
+                    $user['adress'] = $adress;
                     $picture_id = $user['picture_id'];
                     $blobfile_type = get_blobfile_type($picture_id);
                     $user['picture'] = $blobfile_type;
@@ -46,7 +53,60 @@
             $row = $result->fetch_assoc();
             return $row['file'];
         }
-    }    
+    }   
+    
+    function get_class_name($id) {
+        global $database;
+    
+        $getId = $database->query("SELECT class_id FROM user_class WHERE user_id = '$id';")->fetch_assoc()["class_id"];
+       
+
+        $getName =  $database->query("SELECT class_name FROM class WHERE id = '$getId' ORDER BY class_name;");
+    
+        if ($getName == false || $getName->num_rows == 0) {
+            return null;
+        } else {
+            $row = $getName->fetch_assoc();
+            return $row['class_name'];
+        }
+    }
+
+    function get_company_name($id) {
+        global $database;
+    
+        $getId = $database->query("SELECT company_id FROM user_company WHERE user_id = '$id';")->fetch_assoc()["company_id"];
+       
+        $getName =  $database->query("SELECT companyname FROM company WHERE id = '$getId';");
+    
+        if ($getName == false || $getName->num_rows == 0) {
+            return null;
+        } else {
+            $row = $getName->fetch_assoc();
+            return $row['companyname'];
+        }
+    }
+
+    function get_adress($id) {
+        global $database;
+    
+        $getId = $database->query("SELECT adress_id FROM user_adress WHERE user_id = '$id';")->fetch_assoc()["adress_id"];
+       
+        $getName =  $database->query("SELECT land, street, plz, city FROM adress WHERE id = '$getId';");
+    
+        if ($getName == false || $getName->num_rows == 0) {
+            return null;
+        } else {
+            $row = $getName->fetch_assoc();
+            $result_array[] = $row;
+                }
+                
+                $response = array(
+                    'adress' => $result_array
+                );
+                
+                return $response;
+    }
+
 
     function get_user($myId) {
         global $database;

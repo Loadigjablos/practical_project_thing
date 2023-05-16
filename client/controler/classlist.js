@@ -141,15 +141,15 @@ function addToUserToList(data) {
     row.appendChild(role);
 
     const class_name = document.createElement('td');
-    class_name.innerText = data.class_name;
+    class_name.innerText = data.class;
     row.appendChild(class_name);
 
     const stelle = document.createElement('td');
-    stelle.innerText = data.stelle;
+    stelle.innerText = data.company || "Keine Stelle";
     row.appendChild(stelle);
 
     const adresse = document.createElement('td');
-    adresse.innerText = data.land + ", " + data.street + ", " + data.plz + ", " + data.city;
+    adresse.innerText = data.adress.adress[0].land + ", " + data.adress.adress[0].street + ", " + data.adress.adress[0].plz + ", " + data.adress.adress[0].city;
     row.appendChild(adresse);
 
     try {
