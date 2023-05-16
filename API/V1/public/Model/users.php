@@ -4,47 +4,49 @@
  
     function get_all_users() {
         global $database;
-
+    
         $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM users;");
-
+    
         if ($result == false) {
             error_function(500, "Error");
         } else if ($result !== true) {
             if ($result->num_rows > 0) {
                 $result_array = array();
                 while ($user = $result->fetch_assoc()) {
+                    // Get the blobfile type for picture_id
+                    $picture_id = $user['picture_id'];
+                    $blobfile_type = get_blobfile_type($picture_id);
+                    $user['picture'] = $blobfile_type;
+                    
                     $result_array[] = $user;
                 }
-                return $result_array;
+                
+                $response = array(
+                    'users' => $result_array
+                );
+                
+                return $response;
             } else {
-                error_function(404, "not Found");
+                error_function(404, "Not Found");
             }
         } else {
-            error_function(404, "not Found");
+            error_function(404, "Not Found");
         }
-
-        $result_id = $result["id"];
-
-        $class_id = $database->query("SELECT class_id FROM user_class WHERE user_id = '$result_id';");
-
-        if ($class_id == false) {
-            error_function(500, "Error");
-        } else if ($class_id !== true) {
-            if ($class_id->num_rows > 0) {
-                $class_id_array = array();
-                while ($user = $class_id->fetch_assoc()) {
-                    $class_id_array[] = $user;
-                }
-                return $class_id_array;
-            } else {
-                error_function(404, "not Found");
-            }
-        } else {
-            error_function(404, "not Found");
-        }
-
-        echo $result . $class_id;
     }
+    
+    function get_blobfile_type($picture_id) {
+        global $database;
+    
+        $query = "SELECT file FROM blobfiles WHERE id = '$picture_id';";
+        $result = $database->query($query);
+    
+        if ($result == false || $result->num_rows == 0) {
+            return null;
+        } else {
+            $row = $result->fetch_assoc();
+            return $row['file'];
+        }
+    }    
 
     function get_user($myId) {
         global $database;
@@ -295,7 +297,7 @@
         }
     }
 
-    function create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
+    function create_user($name, $email, $password, $picture, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
         global $database;
 
         $existing_place = $database->query("SELECT * FROM `users` WHERE `email` = '$email'")->fetch_assoc();
@@ -305,6 +307,20 @@
             return false;
         }
 
+        $insertFile = $database->query("INSERT INTO `blobfiles` (`type`,`file`) VALUES ('PNG', '$picture');");
+
+        if (!$insertFile) {
+           error_function(400, "Error while uploading the file");
+        }
+
+        $picture_id = $database->query("SELECT id FROM `blobfiles` WHERE `file` = '$picture'")->fetch_assoc();
+
+        if (!$picture_id) {
+            error_function(400, "No Picture");
+        }
+
+        $picture_id = $picture_id["id"];
+
         $result = $database->query("INSERT INTO `users` (`name`,`email`, `passwdhash`, `picture_id`, `parents`, `birthdate`, `ahvnumer`, `role`) VALUES ('$name', '$email', '$password', '$picture_id', '$parents', '$birthdate', '$ahvnumer', '$role');");
 
         if ($result) {
@@ -313,7 +329,7 @@
                 $class_id = $class_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The user does not exist");
+                error_function(400, "The class does not exist");
                 return false;
             }
     
@@ -322,7 +338,7 @@
                 $user_id = $user_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The user does not exist");
+                error_function(400, "The email does not exist");
                 return false;
             }
     
