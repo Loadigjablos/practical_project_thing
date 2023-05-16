@@ -6,7 +6,7 @@
     }
     
     //set error handler
-    //set_error_handler("customError");
+    set_error_handler("customError");
 
     // this handel the request and response.
     use Psr\Http\Message\ResponseInterface as Response; 

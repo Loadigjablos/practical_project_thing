@@ -6,7 +6,7 @@ try {
   if (user.role !== "A") {
     document.querySelector('#admin-only').className = "hidden";
   }
-} catch(e) {
+} catch (e) {
   document.querySelector('#admin-only').className = "hidden";
   MessageUI("error", "you need to login")
 }
@@ -49,7 +49,7 @@ document.querySelector("#create-user-").addEventListener("click", async (e) => {
         name: username.value,
         email: userEmail.value,
         passwdhash: userpasswdhash.value,
-        picture: base64String,
+        picture_id: base64String,
         parents: userparents.value,
         birthdate: userbirthdate.value,
         ahvnumer: userahvnumer.value,
@@ -60,7 +60,7 @@ document.querySelector("#create-user-").addEventListener("click", async (e) => {
         plz: userplz.value,
         city: usercity.value,
       };
-    
+
       const response = await fetch("/API/V1/User", {
         method: "post",
         body: JSON.stringify(data),
@@ -97,18 +97,24 @@ function addToUserToList(data) {
   try {
     const row = document.createElement('tr');
 
-    const picture = document.createElement('iframe');
-    const byteCharacters = atob(data.picture);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    try {
+      const picture = document.createElement('iframe');
+      const byteCharacters = atob(data.picture);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray]);
+      picture.src = URL.createObjectURL(blob);
+      picture.width = "150px"
+      picture.height = "150px"
+      row.appendChild(picture)
+    } catch (e) {
+      const error = document.createElement('td');
+      error.innerText = "No Picture";
+      row.appendChild(error);
     }
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray]);
-    picture.src = URL.createObjectURL(blob);
-    picture.width = "150px"
-    picture.height = "150px"
-    row.appendChild(picture)
 
     const name = document.createElement('td');
     name.innerText = data.name;
@@ -146,18 +152,22 @@ function addToUserToList(data) {
     adresse.innerText = data.land + ", " + data.street + ", " + data.plz + ", " + data.city;
     row.appendChild(adresse);
 
-    if (data.class_name !== something.elseT) {
-      something.thing = !(something.thing);
-      something.elseT = data.class_name;
-    }
-    if (something.thing) {
-      row.className = "bg-gray-500";
-    } else {
-      row.className = "bg-blue-500";
+    try {
+      if (data.class_name !== something.elseT) {
+        something.thing = !(something.thing);
+        something.elseT = data.class_name;
+      }
+      if (something.thing) {
+        row.className = "bg-gray-500";
+      } else {
+        row.className = "bg-blue-500";
+      }
+    } catch (e) {
+      row.className = "bg-red-500";
     }
 
     usersList.appendChild(row)
-  } catch(e) {
+  } catch (e) {
     MessageUI("error", "can't parse data: " + data)
   }
 }
@@ -165,7 +175,7 @@ function addToUserToList(data) {
 addFromDB()
 
 async function addFromDB() {
-  const response = await fetch("/API/V1/User", {
+  const response = await fetch("/API/V1/Users", {
     method: "get",
     cache: "no-cache"
   });
@@ -174,11 +184,11 @@ async function addFromDB() {
     MessageUI("Failed", "Please Connect to the internet or conntact the developer")
     return;
   }
-
   const dataThing = await response.json();
 
-  dataThing.forEach(userThing => {
+  dataThing.users.forEach(userThing => {
     addToUserToList(userThing)
   });
-
 }
+
+addFromDB()
