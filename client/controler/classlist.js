@@ -172,8 +172,6 @@ function addToUserToList(data) {
   }
 }
 
-addFromDB()
-
 async function addFromDB() {
   const response = await fetch("/API/V1/Users", {
     method: "get",

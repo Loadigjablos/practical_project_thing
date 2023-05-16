@@ -3,8 +3,6 @@ const thisOpenFile = document.querySelector('#this-file');
 const filesFromUser = document.querySelector('#files-from-user')
 
 
-
-
 const typeOfFile = document.querySelector('#type-of-file')
 const fileToSend = document.querySelector('#file-adding')
 
@@ -32,5 +30,10 @@ async function getAllFilesFromHashUser() {
       });
 }
 
+location.hash.substring(1);
 
+if (location.hash !== "") {
 
+} else {
+
+}

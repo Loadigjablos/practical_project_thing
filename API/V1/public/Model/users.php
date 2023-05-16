@@ -607,4 +607,29 @@
 			return true;
 		}
     }
+
+    function get_files_from_userid($id) {
+        global $database;
+
+        $result = $database->query("SELECT * FROM user_files WHERE user_id = $id;");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                $allUsersFiles = $result->fetch_assoc();
+
+                $allFiles = array();
+
+                foreach ($allUsersFiles as $value) {
+                    
+                }
+
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+    }
 ?>
