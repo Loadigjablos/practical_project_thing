@@ -172,8 +172,9 @@ function addToUserToList(data) {
   }
 }
 
-async function addFromDB() {
+addFromDB()
 
+async function addFromDB() {
   const response = await fetch("/API/V1/Users", {
     method: "get",
     cache: "no-cache"

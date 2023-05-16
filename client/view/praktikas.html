@@ -1,48 +1,90 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style/style.css">
-</head>
+    <link rel="stylesheet" href="../style/style.css" />
+    <title>Praktikas</title>
+  </head>
+  <body class="bg-black">
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
+          <li>
+            <a href="./client/view/firmenliste-mit-bewerbungen.html"
+              >Firmen mit Bewerbungen</a
+            >
+          </li>
+          <li>
+            <a href="./client/view/firmenliste-mit-praktikas.html"
+              >Firmen mit Praktikas</a
+            >
+          </li>
+          <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
+          <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
+          <li><a href="./client/view/lernender.html">Lernende</a></li>
+          <li><a href="./client/view/praktikas.html">Praktikas</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>liste aller klassen</h1>
+      <table
+        class="bg-blue-500 table-auto border-collapse border border-slate-400 ml-[5%] w-[90%]"
+        id="firms"
+      >
+        <tr>
+          <th>id</th>
+          <th>name</th>
+          <th>specialization</th>
+          <th>yaer qv</th>
+        </tr>
+      </table>
 
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="./index.html">Home</a></li>
-                    <li><a href="./client/view/bewerbungen.html">Bewerbung</a></li>
-                    <li><a href="./client/view/firmenliste-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                    <li><a href="./client/view/firmenliste-mit-praktikas.html">Firmen mit Praktikas</a></li>
-                    <li><a href="./client/view/firmenliste.html">Fimenliste</a></li>
-                    <li><a href="./client/view/klassenliste.html">Klassenliste</a></li>
-                    <li><a href="./client/view/lernender.html">Lernende</a></li>
-                    <li><a href="./client/view/praktikas.html">Praktikas</a></li>
-                </ul>
-            </nav>
-        </header>
-        <title>Praktikas</title>
-        </head>
-        <body class="thing">
-            <h1>Praktikas</h1>
-        <ul>
-            <h2>Klassenliste mit Praktikas</h2>
-            <li>Schüler 2</li>
-            <li>Schüler 2</li>
-            <li>Schüler 2</li>
-        </ul>
-        <ul>
-            <h2>Klassenliste ohne Praktikas</h2>
-            <li>Schüler 2</li>
-            <li>Schüler 2</li>
-            <li>Schüler 2</li>
-        </ul>
-        <button>Neuer Eintrag</button>
-        <button>Eintrag ändern</button>
-    </div>
+      <div id="only-admin">
+        <h1>create a Class</h1>
+        <table
+          class="bg-blue-500 table-auto border-collapse border border-slate-400"
+        >
+          <tr>
+            <td><h2>class name</h2></td>
+            <td>
+              <input required placeholder="inf99" type="text" id="class-name" />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>specialization</h2></td>
+            <td>
+              <input
+                required
+                placeholder="informatiker"
+                type="text"
+                id="class-specialization"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>yaer_qv</h2></td>
+            <td>
+              <input
+                required
+                placeholder="2050"
+                type="date"
+                id="class-yaer_qv"
+              />
+            </td>
+          </tr>
+        </table>
+        <button id="create-class-">Kreieren</button>
+      </div>
+    </main>
     <footer class="footerdesign">
-        <h3><a href="Impressum.html">Impressum</a></h3>
+      <h3><a href="Impressum.html">Impressum</a></h3>
     </footer>
-</body>
+    <script src="../controler/functions.js"></script>
+    <script src="../controler/classesShow.js"></script>
+  </body>
 </html>
