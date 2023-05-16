@@ -2,41 +2,39 @@
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
 
-    $app->get("/Place/{place_name}", function (Request $request, Response $response, $args) {
+    $app->get("/Classes", function (Request $request, Response $response, $args) {
   
         validate_token(); // unotherized pepole will get rejected
 
-		$place_name = $args["place_name"];
+		$class = get_classes();
 
-		$place = get_room($place_name);
-
-		if ($place) {
-            echo json_encode($place);
+		if ($class) {
+            echo json_encode($class);
 		}
-		else if (is_int($place)) {
-			error($place, 500);
+		else if (is_int($class)) {
+			error($class, 500);
 		}
 		else {
-			error("The ID "  . $place_name . " was not found.", 404);
+			error("The ID "  . $class_name . " was not found.", 404);
 		}
 
         return $response;
     });
 
-    $app->get("/Places", function (Request $request, Response $response, $args) {
+    $app->get("/Class", function (Request $request, Response $response, $args) {
         //everyone
         validate_token(); // unotherized pepole will get rejected
 
-        $places = get_all_places();
+        $class = get_all_class();
 
-        if ($places) {
-            echo json_encode($places);
+        if ($class) {
+            echo json_encode($class);
         }
-        else if (is_string($places)) {
-            error($places, 500);
+        else if (is_string($class)) {
+            error($class, 500);
         }
         else {
-            error_funciton(400, "There is no place");
+            error_funciton(400, "There is no class");
         }
 
         return $response;
@@ -44,8 +42,8 @@
 
 
     $app->post("/Class", function (Request $request, Response $response, $args) {
-        //$id = user_validation("A");
-        //validate_token();
+        $id = user_validation("A");
+        validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
@@ -81,24 +79,24 @@
         if (create_class($class_name, $specialization, $yaer_qv) === true) {
             message_function(200, "The class was successfully created.");
         } else {
-            error_function(500, "An error occurred while saving the place.");
+            error_function(500, "An error occurred while saving the class.");
         }
         return $response;        
     });
 
-    $app->delete("/Place/{place_name}", function (Request $request, Response $response, $args) {
+    $app->delete("/class/{class_name}", function (Request $request, Response $response, $args) {
 		$id = user_validation("A");
         validate_token();
 		
-		$place_name = $args["place_name"];
+		$class_name = $args["class_name"];
 		
-		$result = delete_place($place_name);
+		$result = delete_class($class_name);
 		
 		if (!$result) {
-			error_function(404, "No place found for the Name " . $place_name . ".");
+			error_function(404, "No class found for the Name " . $class_name . ".");
 		}
 		else {
-			message_function(200, "The place was succsessfuly deleted.");
+			message_function(200, "The class was succsessfuly deleted.");
 		}
 		
 		return $response;

@@ -1,37 +1,196 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../style/style.css">
-</head>
+    <link rel="stylesheet" href="../style/style.css" />
+  </head>
 
-<body class="bg-black">
+  <body class="bg-black">
     <header>
-        <nav>
-            <ul>
-                <li><a href="../../index.html">Home</a></li>
-                <li><a href="bewerbungen.html">Bewerbung</a></li>
-                <li><a href="firmenliste-mit-bewerbungen.html">Firmen mit Bewerbungen</a></li>
-                <li><a href="firmenliste-mit-praktikas.html">Firmenliste mit Praktikas</a></li>
-                <li><a href="firmenliste.html">Fimenliste</a></li>
-                <li><a href="klassenliste.html">Klassenliste</a></li>
-                <li><a href="lernender.html">Lernende</a></li>
-                <li><a href="praktikas.html">Praktikas</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="bewerbungen.html">Bewerbung</a></li>
+          <li>
+            <a href="firmenliste-mit-bewerbungen.html"
+              >Firmen mit Bewerbungen</a
+            >
+          </li>
+          <li>
+            <a href="firmenliste-mit-praktikas.html"
+              >Firmenliste mit Praktikas</a
+            >
+          </li>
+          <li><a href="firmenliste.html">Fimenliste</a></li>
+          <li><a href="klassenliste.html">Klassenliste</a></li>
+          <li><a href="lernender.html">Lernende</a></li>
+          <li><a href="praktikas.html">klasse kreieren</a></li>
+        </ul>
+      </nav>
     </header>
     <div class="content">
-        <h1>Klassenliste</h1>
-        <ul>
-            <li>Klasse 1</li>
-            <li>Klasse 2</li>
-        </ul>
+      <h1>Klassenliste</h1>
+      <table
+        class="bg-blue-500 table-auto border-collapse border border-slate-400 ml-[5%] w-[90%]"
+        id="users-list"
+      >
+        <tr>
+          <th class="w-[150px]">picture</th>
+          <th>name</th>
+          <th>email</th>
+          <th>parents</th>
+          <th>birthdate</th>
+          <th>ahv</th>
+          <th>role</th>
+          <th>class</th>
+          <th>stelle</th>
+          <th>adresse</th>
+        </tr>
+      </table>
+
+      <div id="admin-only">
+        <h1>benutzer Erstellen</h1>
+        <table
+          id="create-user"
+          class="bg-blue-500 table-auto border-collapse border border-slate-400"
+        >
+          <tr>
+            <td><h2>name</h2></td>
+            <td>
+              <input
+                required
+                placeholder="james henry"
+                type="text"
+                id="user-name"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>email</h2></td>
+            <td>
+              <input
+                required
+                placeholder="james@mail.com"
+                type="text"
+                id="user-email"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>passwdhash</h2></td>
+            <td>
+              <input
+                required
+                placeholder="n0ts3f3&1111111"
+                type="password"
+                id="user-passwdhash"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>picture</h2></td>
+            <td><input type="file" id="user-picture" /></td>
+          </tr>
+          <tr>
+            <td><h2>parents</h2></td>
+            <td>
+              <input
+                required
+                placeholder="carlson henry"
+                type="text"
+                id="user-parents"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>birthdate</h2></td>
+            <td><input required type="date" id="user-birthdate" /></td>
+          </tr>
+          <tr>
+            <td><h2>ahvnumer</h2></td>
+            <td>
+              <input
+                required
+                placeholder="12345678901234567890"
+                type="text"
+                id="user-ahvnumer"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>class name</h2></td>
+            <td>
+              <input
+                required
+                placeholder="class name thing"
+                type="text"
+                id="user-class-name"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>role</h2></td>
+            <td>
+              <div id="user-role-">
+                Admin:
+                <input name="role" type="radio" class="w-[20px]" value="A" />
+                User:
+                <input
+                  checked
+                  name="role"
+                  type="radio"
+                  class="w-[20px]"
+                  value="U"
+                />
+                Teacher:
+                <input name="role" type="radio" class="w-[20px]" value="L" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><h2>land</h2></td>
+            <td>
+              <input
+                required
+                placeholder="switzerland"
+                type="text"
+                id="user-land"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>strasse</h2></td>
+            <td>
+              <input
+                required
+                placeholder="street-thing 33"
+                type="text"
+                id="user-street"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>PLZ</h2></td>
+            <td>
+              <input required placeholder="8436" type="text" id="user-plz" />
+            </td>
+          </tr>
+          <tr>
+            <td><h2>City</h2></td>
+            <td>
+              <input required placeholder="Bern" type="text" id="user-city" />
+            </td>
+          </tr>
+        </table>
+        <button id="create-user-">Kreieren</button>
+      </div>
     </div>
     <footer class="footerdesign">
-        <h3><a href="Impressum.html">Impressum</a></h3>
+      <h3><a href="Impressum.html">Impressum</a></h3>
     </footer>
-</body>
+    <script src="../controler/functions.js"></script>
+    <script src="../controler/classlist.js"></script>
+  </body>
 </html>

@@ -5,6 +5,7 @@
     font-family: "Graviola-CsBe-regular", "Bahnschrift", Arial, sans-serif;
     font-size: 20px;
     border: none;
+    color: #FFFFFF;
 }
 @font-face {
     font-family: 'Graviola-CsBe-regular';
@@ -36,7 +37,6 @@ nav ul li {
 }
 
 nav ul li a {
-	color: #ffffff;
 	font-size: 13px;
 	text-transform: uppercase;
 }
@@ -69,13 +69,17 @@ main {
     width: 100%;
     min-height: 100%;
 }
+input {
+    background-color: #0A0A32;
+    width: 100%;
+    border: solid #2274d1 1px;
+}
 .right {
     width: 55%;
     text-align: left;
 }
 .left {
     width: 45%;
-    color: #FFFFFF;
     background-color: #0A0A32;
     margin: 10px;
     overflow-x: auto;
@@ -132,9 +136,6 @@ td h2, td button, .black-box h1, td a, td p {
 table button, table a {
     text-decoration: underline;
     background-color: rgba(100, 113, 233, 0.1);
-}
-.white {
-    color: #FFFFFF;
 }
 p {
     display: inline-block;
@@ -199,7 +200,6 @@ a:hover, button:hover {
 }
 .thing {    
     font-size: 13px;
-    color:rgb(255, 255, 255)
 }
 .footerdesign {
     position: relative;
@@ -210,14 +210,7 @@ a:hover, button:hover {
 	text-align: center;
 	width: 100%;
 	background-color: #3c3c3c;
-	color: #ffffff;
 }
-
-/* Fix the website */
-.content {
-    color: white;
-}
-
 nav,
 footer,
 section { 

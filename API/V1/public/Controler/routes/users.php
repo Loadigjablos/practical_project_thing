@@ -21,9 +21,30 @@
         return $response;
     });
 
+    $app->get("/User", function (Request $request, Response $response, $args) {
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+        $myId = get_user_id($id);
+        $myId = $myId["id"];
+
+        $users = get_user($myId);
+
+        if ($users) {
+            echo json_encode($users);
+        }
+        else if (is_string($users)) {
+            error($users, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
     $app->post("/User", function (Request $request, Response $response, $args) {
-        //$id = user_validation("A");
-        //validate_token();
+        $id = user_validation("A");
+        validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
@@ -140,6 +161,12 @@
     });
 
     $app->post("/File", function (Request $request, Response $response, $args) {
+
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+        $myId = get_user_id($id);
+        $myId = $myId["id"];
+
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
         $type = trim($request_data["type"]);
@@ -164,7 +191,7 @@
 
         $file = base64_encode($file);
 
-        if (create_file($type, $file) === true) {
+        if (create_file($type, $file, $myId) === true) {
             message_function(200, "The file was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the file.");
@@ -173,7 +200,7 @@
     });
 
     $app->post("/CV", function (Request $request, Response $response, $args) {
-
+        validate_token(); // unotherized pepole will get rejected
         $id = user_validation();
 
         $request_body_string = file_get_contents("php://input");
@@ -183,6 +210,27 @@
         $responsible_person = trim($request_data["responsible_person"]);
         $state_cv = trim($request_data["state_cv"]);
         $dateoftrialvisit = trim($request_data["dateoftrialvisit"]);
+        $type = trim($request_data["type"]);
+        $file = trim($request_data["file"]);
+
+
+        //The position field cannot be empty and must not exceed 2048 characters
+        if (empty($type)) {
+            error_function(400, "The (type) field must not be empty.");
+        } 
+        elseif (strlen($type) > 255) {
+            error_function(400, "The (type) field must be less than 2048 characters.");
+        }
+    
+        //The name field cannot be empty and must not exceed 255 characters
+        if (empty($file)) {
+            error_function(400, "The (file) field must not be empty.");
+        } 
+        elseif (strlen($file) > 255) {
+            error_function(400, "The (file) field must be less than 255 characters.");
+        }
+
+        $file = base64_encode($file);
 
         //The position field cannot be empty and must not exceed 2048 characters
         if (empty($company_id)) {
@@ -217,7 +265,7 @@
         $myId = get_user_id($id);
         $myId = $myId["id"];
 
-        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) === true) {
+        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId, $type, $file) === true) {
             message_function(200, "The CV was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the CV.");
@@ -227,8 +275,8 @@
 
     $app->put("/User/{id}", function (Request $request, Response $response, $args) {
 
-		//$id = user_validation("A");
-        //validate_token();
+		$id = user_validation("A");
+        validate_token();
 		
 		$user_id = $args["id"];
 		

@@ -105,6 +105,20 @@
             return false;
         }
     }
+
+    function create_user_company($company_id, $user_id, $salary, $date_of_approval, $date_of_the_contract) {
+        global $database;
+
+        $result = $database->query("INSERT INTO `user_company` (`company_id`,`user_id`, `salary`, `date_of_approval`, `date_of_the_contract`) VALUES ('$company_id', '$user_id', '$salary', '$date_of_approval', '$date_of_the_contract');");
+
+        if ($result) {
+            message_function(200, "Created");
+        }
+        else {
+            error_function(400, "There is a problem");
+        }
+        return;
+    }
         
     function update_reservation($id, $from_date, $to_date, $place_name, $host, $description) {
         global $database;

@@ -4,8 +4,54 @@
  
     function get_all_users() {
         global $database;
+    
+        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM users;");
+    
+        if ($result == false) {
+            error_function(500, "Error");
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
+                $result_array = array();
+                while ($user = $result->fetch_assoc()) {
+                    // Get the blobfile type for picture_id
+                    $picture_id = $user['picture_id'];
+                    $blobfile_type = get_blobfile_type($picture_id);
+                    $user['picture'] = $blobfile_type;
+                    
+                    $result_array[] = $user;
+                }
+                
+                $response = array(
+                    'users' => $result_array
+                );
+                
+                return $response;
+            } else {
+                error_function(404, "Not Found");
+            }
+        } else {
+            error_function(404, "Not Found");
+        }
+    }
+    
+    function get_blobfile_type($picture_id) {
+        global $database;
+    
+        $query = "SELECT file FROM blobfiles WHERE id = '$picture_id';";
+        $result = $database->query($query);
+    
+        if ($result == false || $result->num_rows == 0) {
+            return null;
+        } else {
+            $row = $result->fetch_assoc();
+            return $row['file'];
+        }
+    }    
 
-        $result = $database->query("SELECT name FROM users;");
+    function get_user($myId) {
+        global $database;
+
+        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM users WHERE id = $myId;");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -114,19 +160,37 @@
 
     function create_temp($user_id, $message2, $timeout) {
         global $database;
-
+    
+        // Check for expired temp and delete it
+        $expired_temp_id = $database->query("SELECT id FROM temp WHERE timeout < NOW();")->fetch_assoc()["id"];
+    
+        if ($expired_temp_id) {
+            $delete_result = $database->query("DELETE FROM temp WHERE id = '$expired_temp_id';");
+        }
+    
+        // Check for user's existing temp and delete it
+        $existing_temp_id = $database->query("SELECT id FROM temp WHERE user_id = $user_id;")->fetch_assoc()["id"];
+    
+        if ($existing_temp_id) {
+            $delete_result = $database->query("DELETE FROM temp WHERE id = '$existing_temp_id';");
+        }
+    
+        // Create new temp
         $result = $database->query("INSERT INTO `temp` (`user_id`, `hash`, `timeout`) VALUES ('$user_id', '$message2', '$timeout');");
-
+    
         if ($result == false) {
-            error_function(500, "Error");
-		} else if ($result !== true) {
-			if ($result->num_rows > 0) {
+            error_function(500, "Error creating new reservation.");
+            return false;
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
                 return $result->fetch_assoc();
-			} else {
-                error_function(404, "not Found");
+            } else {
+                error_function(404, "Not found.");
+                return false;
             }
-		} 
-        return; 
+        } 
+    
+        return true;
     }
 
     function get_id_by_email($email) {
@@ -233,7 +297,7 @@
         }
     }
 
-    function create_user($name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
+    function create_user($name, $email, $password, $picture, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
         global $database;
 
         $existing_place = $database->query("SELECT * FROM `users` WHERE `email` = '$email'")->fetch_assoc();
@@ -242,6 +306,20 @@
             error_function(400, "A user with the email '$email' already exists.");
             return false;
         }
+
+        $insertFile = $database->query("INSERT INTO `blobfiles` (`type`,`file`) VALUES ('PNG', '$picture');");
+
+        if (!$insertFile) {
+           error_function(400, "Error while uploading the file");
+        }
+
+        $picture_id = $database->query("SELECT id FROM `blobfiles` WHERE `file` = '$picture'")->fetch_assoc();
+
+        if (!$picture_id) {
+            error_function(400, "No Picture");
+        }
+
+        $picture_id = $picture_id["id"];
 
         $result = $database->query("INSERT INTO `users` (`name`,`email`, `passwdhash`, `picture_id`, `parents`, `birthdate`, `ahvnumer`, `role`) VALUES ('$name', '$email', '$password', '$picture_id', '$parents', '$birthdate', '$ahvnumer', '$role');");
 
@@ -260,7 +338,7 @@
                 $user_id = $user_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The user does not exist");
+                error_function(400, "The email does not exist");
                 return false;
             }
     
@@ -306,21 +384,30 @@
         }
     }
 
-    function create_file($role, $file) {
+    function create_file($type, $file, $myId) {
         global $database;
 
-        $result = $database->query("INSERT INTO `blobfiles` (`role`, `file`) VALUES ('$role', '$file');");
+        $result = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+
+        if ($result) {
+            $file_id = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'")->fetch_assoc()['id'];
+
+            $userFileDefine = $database->query("INSERT INTO user_files (`user_id`, `file_id`) VALUES ('$file_id', '$myId');");
+
+            if ($userFileDefine) {
+                message_function(200, "Very nice");
+            }
+            return;
+        }
 
         if (!$result) {
             // handle error
             error_function(400, "An error occurred while saving the file.");
             return false;
         }
-    
-        return true;
     }
 
-    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId) {
+    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId, $type, $file) {
         global $database;
 
         $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
@@ -331,15 +418,24 @@
                 $cv_id = $cv_id_query->fetch_assoc()['id'];
             }
             else {
-                error_function(400, "The class does not exist");
-                return false;
+                error_function(400, "The cv does not exist");
             }
 
             $defineClass = $database->query("INSERT INTO `user_cv` (`cv_id`, `user_id`) VALUES ('$cv_id', '$myId');");
 
             if (!$defineClass) {
                 error_function(400, "faild to define the cv");
-                return false;
+            }
+
+            $insertFile = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
+
+            if ($insertFile) {
+                $getId_query = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'");
+                if ($getId_query->num_rows > 0) {
+                    $file_id = $getId_query->fetch_assoc()['id'];
+
+                    $defineFile = $database->query("INSERT INTO `cv_files` (`cv_id`, `file_id`) VALUES ('$cv_id', '$file_id');");
+                }
             }
             message_function(200, "Thanks");
         }

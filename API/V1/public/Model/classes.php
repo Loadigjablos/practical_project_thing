@@ -2,10 +2,33 @@
     // Database conection string
     require "util/database.php";
 
-    function get_room($place_name) {
+    function get_classes() {
         global $database;
 
-        $result = $database->query("SELECT * FROM places where name = '$place_name';");
+        $result = $database->query("SELECT * FROM class");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                $result_array = array();
+				while ($user = $result->fetch_assoc()) {
+                    $result_array[] = $user;
+                }
+                return $result_array;
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+    }
+
+    function get_class_by_id($id) {
+        global $database;
+
+        $result = $database->query("SELECT * FROM class");
 
         if ($result == false) {
             error_function(500, "Error");
