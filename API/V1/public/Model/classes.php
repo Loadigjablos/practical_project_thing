@@ -91,7 +91,7 @@
         }
     }
 
-    function delete_place($place_name) {
+    function delete_class($place_name) {
 		global $database;
 		
 		$result = $database->query("DELETE FROM `places` WHERE name = '$place_name';");

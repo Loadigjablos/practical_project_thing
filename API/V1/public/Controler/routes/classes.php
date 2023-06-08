@@ -12,10 +12,10 @@
             echo json_encode($class);
 		}
 		else if (is_int($class)) {
-			error($class, 500);
+			error_function($class, 500);
 		}
 		else {
-			error("The ID "  . $class_name . " was not found.", 404);
+			error_function(404, "The ID "  . $class["class_name"] . " was not found.");
 		}
 
         return $response;
@@ -25,16 +25,16 @@
         //everyone
         validate_token(); // unotherized pepole will get rejected
 
-        $class = get_all_class();
+        $class = get_classes();
 
         if ($class) {
             echo json_encode($class);
         }
         else if (is_string($class)) {
-            error($class, 500);
+            error_function(500, $class);
         }
         else {
-            error_funciton(400, "There is no class");
+            error_function(400, "There is no class");
         }
 
         return $response;
