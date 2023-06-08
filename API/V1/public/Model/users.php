@@ -2,10 +2,10 @@
     // Database conection string
     require "util/database.php";
  
-    function get_all_users() {
+    function get_all_user() {
         global $database;
     
-        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM users;");
+        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM user;");
     
         if ($result == false) {
             error_function(500, "Error");
@@ -28,7 +28,7 @@
                 }
                 
                 $response = array(
-                    'users' => $result_array
+                    'user' => $result_array
                 );
                 
                 return $response;
@@ -110,7 +110,7 @@
     function get_user($myId) {
         global $database;
 
-        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM users WHERE id = $myId;");
+        $result = $database->query("SELECT name, email, picture_id, parents, birthdate, ahvnumer, role, id FROM user WHERE id = $myId;");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -132,7 +132,7 @@
     function get_my_files($myId) {
         global $database;
 
-        $result = $database->query("SELECT id FROM users WHERE id = '$myId';");
+        $result = $database->query("SELECT id FROM user WHERE id = '$myId';");
     
         if ($result == false) {
             error_function(500, "Error");
@@ -179,7 +179,7 @@
     function change_player_data($data, $id) {
         global $database;
 
-        $result = $database->query("UPDATE users SET player_data = '$data' WHERE users.id = $id;");
+        $result = $database->query("UPDATE user SET player_data = '$data' WHERE user.id = $id;");
 
         if (!$result) {
             error_function(500, "Error");
@@ -189,7 +189,7 @@
     function get_user_by_mail($mail) {
         global $database;
 
-        $result = $database->query("SELECT * FROM users WHERE email = '$mail';");
+        $result = $database->query("SELECT * FROM user WHERE email = '$mail';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -207,7 +207,7 @@
     function get_user_role($id) {
         global $database;
     
-        $result = $database->query("SELECT role FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT role FROM user WHERE user_id = '$id';");
     
         if ($result == false) {
             error_function(500, "Error");
@@ -226,7 +226,7 @@
     function get_user_by_email($email) {
         global $database;
 
-        $result = $database->query("SELECT * FROM users WHERE email = '$email';");
+        $result = $database->query("SELECT * FROM user WHERE email = '$email';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -244,7 +244,7 @@
     function get_user_by_id($user_id) {
         global $database;
 
-        $result = $database->query("SELECT * FROM users WHERE id = '$user_id';");
+        $result = $database->query("SELECT * FROM user WHERE user_id = '$user_id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -301,7 +301,7 @@
     function get_id_by_email($email) {
         global $database;
 
-        $result = $database->query("SELECT id FROM users WHERE email = '$email';");
+        $result = $database->query("SELECT user_id FROM user WHERE email = '$email';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -323,7 +323,7 @@
     function get_password_by_id($tempData) {
         global $database;
 
-        $result = $database->query("SELECT passwdhash FROM users WHERE id = $tempData;");
+        $result = $database->query("SELECT password FROM user WHERE user_id = $tempData;");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -367,7 +367,7 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT id, name, email, role FROM users WHERE id = '$id';");
+        $result = $database->query("SELECT id, name, email, role FROM user WHERE id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -402,87 +402,28 @@
         }
     }
 
-    function create_user($name, $email, $password, $picture, $parents, $birthdate, $ahvnumer, $role, $class_name, $land, $street, $plz, $city) {
+    function create_student($user_id, $name, $surname, $street, $city, $plz, $birthdate, $ahvnumer, $guardian, $specialization, $class_id) {
         global $database;
 
-        $existing_place = $database->query("SELECT * FROM `users` WHERE `email` = '$email'")->fetch_assoc();
+        $existing_place = $database->query("SELECT * FROM `students` WHERE `AHV` = '$ahvnumer'")->fetch_assoc();
         if ($existing_place) {
             // handle error
-            error_function(400, "A user with the email '$email' already exists.");
+            error_function(400, "A user with the AHV '$ahvnumer' already exists.");
             return false;
         }
 
-        $insertFile = $database->query("INSERT INTO `blobfiles` (`type`,`file`) VALUES ('PNG', '$picture');");
-
-        if (!$insertFile) {
-           error_function(400, "Error while uploading the file");
-        }
-
-        $picture_id = $database->query("SELECT id FROM `blobfiles` WHERE `file` = '$picture'")->fetch_assoc();
-
-        if (!$picture_id) {
-            error_function(400, "No Picture");
-        }
-
-        $picture_id = $picture_id["id"];
-
-        $result = $database->query("INSERT INTO `users` (`name`,`email`, `passwdhash`, `picture_id`, `parents`, `birthdate`, `ahvnumer`, `role`) VALUES ('$name', '$email', '$password', '$picture_id', '$parents', '$birthdate', '$ahvnumer', '$role');");
-
+        $result = $database->query("INSERT INTO `students` (`user_id`,`name`, `surname`, `street`, `city`, `zip`, `date_of_birth`, `AHV`, `guardien_id`, `specialization`, `class_id`) VALUES ('$user_id', '$name', '$surname', '$street', '$city', '$plz', '$birthdate', '$ahvnumer', '$guardian', '$specialization', '$class_id');");
         if ($result) {
-            $class_id_query = $database->query("SELECT id FROM class WHERE `class_name` = '$class_name'");
-            if ($class_id_query->num_rows > 0) {
-                $class_id = $class_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The class does not exist");
-                return false;
-            }
-    
-            $user_id_query = $database->query("SELECT id FROM users WHERE `email` = '$email'");
+                
+            $user_id_query = $database->query("SELECT user_id FROM user WHERE `user_id` = '$user_id'");
             if ($user_id_query->num_rows > 0) {
-                $user_id = $user_id_query->fetch_assoc()['id'];
+                $user_id = $user_id_query->fetch_assoc()['user_id'];
             }
             else {
-                error_function(400, "The email does not exist");
+                error_function(400, "The user_id does not exist");
                 return false;
             }
-    
-
-            $defineClass = $database->query("INSERT INTO `user_class` (`user_id`, `class_id`) VALUES ('$user_id', '$class_id');");
-
-            if (!$defineClass) {
-                error_function(400, "faild to create the user");
-                return false;
-            }
-
-            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
-
-            if (!$addAdress) {
-                error_function(400, "faild to create the address");
-                return false;
-            }
-            else {
-               echo $addAdress;
-            }
-
-            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
-            if ($adress_id_query->num_rows > 0) {
-                $adress_id = $adress_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The adress does not exist");
-                return false;
-            }
-    
-            $defineAdress = $database->query("INSERT INTO `user_adress` (`adress_id`, `user_id`) VALUES ('$adress_id', '$user_id');");
-
-            if ($defineAdress) {
-                return true;
-            }
-            else {
-                error_function(400, "faild to create the user");
-                return false;
-            }
+            return true;
         }
         else {
             return false;
@@ -552,7 +493,7 @@
     function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
 		global $database;
 
-		$result = $database->query("UPDATE `users` SET name = '$name', email = '$email', passwdhash = '$password', picture_id = '$picture_id', parents = '$parents', birthdate = '$birthdate', ahvnumer = '$ahvnumer', role = '$role' WHERE id = '$user_id';");
+		$result = $database->query("UPDATE `user` SET name = '$name', email = '$email', passwdhash = '$password', picture_id = '$picture_id', parents = '$parents', birthdate = '$birthdate', ahvnumer = '$ahvnumer', role = '$role' WHERE id = '$user_id';");
 
 		if (!$result) {
 			return false;

@@ -31,7 +31,7 @@
             echo json_encode($class);
         }
         else if (is_string($class)) {
-            error($class, 500);
+            error_funciton(500, $class);
         }
         else {
             error_funciton(400, "There is no class");

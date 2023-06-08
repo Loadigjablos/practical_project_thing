@@ -68,7 +68,7 @@
 
         $user = get_user_by_id($token_exploded[1]); // array of all users
 
-        $user_token = create_token($user["email"], $user["passwdhash"], $token_exploded[1]);
+        $user_token = create_token($user["email"], $user["password"], $token_exploded[1]);
 
         if ($user_token === $the_set_token) {
             return $token_exploded[1];

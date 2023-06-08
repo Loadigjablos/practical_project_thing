@@ -67,7 +67,7 @@
 
         $user = get_user_by_email($email);
 
-        if ($user["passwdhash"] !==  $password) {
+        if ($user["password"] !==  $password) {
             error_function(404, "not Found");
         }
 
@@ -87,7 +87,7 @@
         }
         
         $timeout = date('H:i:s', strtotime('+5 minutes'));
-        $user_id = $user["id"];
+        $user_id = $user["user_id"];
         $temp = create_temp($user_id, $message2, $timeout);
 
         message_function(200, "Successfully logged in");
@@ -122,13 +122,13 @@
         }
 
         $tempData = get_id_by_email($email);
-        $tempData = $tempData["id"];
+        $tempData = $tempData["user_id"];
 
         $temp = get_temp_by_user_id($tempData);
         $temp = $temp["hash"];
 
         $password = get_password_by_id($tempData);
-        $password = $password["passwdhash"];
+        $password = $password["password"];
 
         if ($temp !==  $hash) {
             error_function(404, "not Found");

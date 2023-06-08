@@ -42,15 +42,105 @@
         return $response;
     });
 
+    $app->post("/Student", function (Request $request, Response $response, $args) {
+        $id = user_validation("A");
+        validate_token();
+
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+        $user_id = trim($request_data["user_id"]);
+        $name = trim($request_data["name"]);
+        $surname = trim($request_data["surname"]);
+        $street = trim($request_data["street"]);
+        $city = trim($request_data["city"]);
+        $plz = trim($request_data["zip"]);
+        $birthdate = trim($request_data["date_of_birth"]);
+        $ahvnumer = trim($request_data["AHV"]);
+        $guardien_id = trim($request_data["guardien_id"]);
+        $specialization = trim($request_data["specialization"]);
+        $class_id = trim($request_data["class_id"]);
+        
+        //checking the informations
+        if (empty($name)) {
+            error_function(400, "The (name) field must not be empty.");
+        } elseif (strlen($name) > 2048) {
+            error_function(400, "The (name) field must be less than 2048 characters.");
+        }
+        
+        if (empty($surname)) {
+            error_function(400, "The (surname) field must not be empty.");
+        } elseif (strlen($surname) > 255) {
+            error_function(400, "The (surname) field must be less than 255 characters.");
+        }
+        
+        if (empty($street)) {
+            error_function(400, "The (street) field must not be empty.");
+        } elseif (strlen($street) > 255) {
+            error_function(400, "The (street) field must be less than 255 characters.");
+        }
+        
+        if (empty($city)) {
+            error_function(400, "The (city) field must not be empty.");
+        } elseif (strlen($city) > 255) {
+            error_function(400, "The (city) field must be less than 255 characters.");
+        }
+        
+        if (empty($plz)) {
+            error_function(400, "The (plz) field must not be empty.");
+        } elseif (strlen($plz) > 255) {
+            error_function(400, "The (plz) field must be less than 255 characters.");
+        }
+        
+        if (empty($birthdate)) {
+            error_function(400, "The (birthdate) field must not be empty.");
+        } elseif (strlen($birthdate) > 255) {
+            error_function(400, "The (birthdate) field must be less than 255 characters.");
+        }
+        
+        if (empty($ahvnumer)) {
+            error_function(400, "The (ahvnumer) field must not be empty.");
+        } elseif (strlen($ahvnumer) > 255) {
+            error_function(400, "The (ahvnumer) field must be less than 255 characters.");
+        }
+        
+        if (empty($guardien_id)) {
+            error_function(400, "The (guardien_id) field must not be empty.");
+        } elseif (strlen($guardien_id) > 255) {
+            error_function(400, "The (guardien_id) field must be less than 255 characters.");
+        }
+        
+        if (empty($specialization)) {
+            error_function(400, "The (specialization) field must not be empty.");
+        } elseif (strlen($specialization) > 255) {
+            error_function(400, "The (specialization) field must be less than 255 characters.");
+        }
+
+        if (empty($class_id)) {
+            error_function(400, "The (class_id) field must not be empty.");
+        } elseif (strlen($class_id) > 255) {
+            error_function(400, "The (class_id) field must be less than 255 characters.");
+        }
+
+        $password = hash("sha256", $password);
+    
+        //checking if everything was good
+        if (create_student($user_id, $name, $surname, $street, $city, $plz, $birthdate, $ahvnumer, $guardien_id, $specialization, $class_id)) {
+            message_function(200, "The user was successfully created.");
+        } else {
+            error_function(500, "An error occurred while saving the user data.");
+        }
+        return $response;        
+    });
+
     $app->post("/User", function (Request $request, Response $response, $args) {
         $id = user_validation("A");
         validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
-        $name = trim($request_data["name"]);
+        $name = trim($request_data["username"]);
         $email = trim($request_data["email"]);
-        $password = trim($request_data["passwdhash"]);
+        $password = trim($request_data["password"]);
         $picture_id = trim($request_data["picture_id"]);
         $parents = trim($request_data["parents"]);
         $birthdate = trim($request_data["birthdate"]);
