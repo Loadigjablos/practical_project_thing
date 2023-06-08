@@ -12,10 +12,10 @@
             echo json_encode($users);
         }
         else if (is_string($users)) {
-            error($users, 500);
+            error_function(500, $users);
         }
         else {
-            error("The ID "  . $id . " was not found.", 404);
+            error_function(404, "The ID "  . $id . " was not found.");
         }
 
         return $response;
@@ -33,10 +33,10 @@
             echo json_encode($users);
         }
         else if (is_string($users)) {
-            error($users, 500);
+            error_function(500, $users);
         }
         else {
-            error("The ID "  . $id . " was not found.", 404);
+            error_function(404,"The ID "  . $id . " was not found.");
         }
 
         return $response;
@@ -315,7 +315,7 @@
 			$password = strip_tags(addslashes($request_data["passwdhash"]));
 		
 			if (strlen($password) > 1000) {
-				error_funciton(400, "The password is too long. Please enter less than 1000 letters.");
+				error_function(400, "The password is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["passwdhash"] = $password;
@@ -328,7 +328,7 @@
 			$picture_id = strip_tags(addslashes($request_data["picture_id"]));
 		
 			if (strlen($picture_id) > 1000) {
-				error_funciton(400, "The picture_id is too long. Please enter less than 1000 letters.");
+				error_function(400, "The picture_id is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["picture_id"] = $picture_id;
@@ -338,7 +338,7 @@
 			$parents = strip_tags(addslashes($request_data["parents"]));
 		
 			if (strlen($parents) > 1000) {
-				error_funciton(400, "The parents is too long. Please enter less than 1000 letters.");
+				error_function(400, "The parents is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["parents"] = $parents;
@@ -348,7 +348,7 @@
 			$birthdate = strip_tags(addslashes($request_data["birthdate"]));
 		
 			if (strlen($birthdate) > 1000) {
-				error_funciton(400, "The birthdate is too long. Please enter less than 1000 letters.");
+				error_function(400, "The birthdate is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["birthdate"] = $birthdate;
@@ -358,7 +358,7 @@
 			$ahvnumer = strip_tags(addslashes($request_data["ahvnumer"]));
 		
 			if (strlen($ahvnumer) > 1000) {
-				error_funciton(400, "The ahvnumer is too long. Please enter less than 1000 letters.");
+				error_function(400, "The ahvnumer is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["ahvnumer"] = $ahvnumer;
@@ -368,7 +368,7 @@
 			$role = strip_tags(addslashes($request_data["role"]));
 		
 			if (strlen($role) > 1000) {
-				error_funciton(400, "The role is too long. Please enter less than 1000 letters.");
+				error_function(400, "The role is too long. Please enter less than 1000 letters.");
 			}
 		
 			$user["role"] = $role;
