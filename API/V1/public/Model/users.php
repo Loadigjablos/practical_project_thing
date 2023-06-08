@@ -430,6 +430,26 @@
         }
     }
 
+    function create_user($name, $email, $password, $role) {
+        global $database;
+
+        $existing_place = $database->query("SELECT * FROM `user` WHERE `email` = '$email'")->fetch_assoc();
+        if ($existing_place) {
+            // handle error
+            error_function(400, "A user with the email '$email' already exists.");
+            return false;
+        }
+
+        $result = $database->query("INSERT INTO `user` (`username`, `email`, `password`, `role`) VALUES ('$name', '$email', '$password', '$role');");
+        if ($result) {
+            
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     function create_file($type, $file, $user_id) {
         global $database;
 
