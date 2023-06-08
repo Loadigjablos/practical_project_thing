@@ -53,8 +53,8 @@ const frimowner = document.querySelector("#firm-owner");
 
 document.querySelector("#create-firm-").addEventListener("click", async (e) => {
   const data = {
-    name: frimName.value,
-    email: frimmail.value,
+    companyname: frimName.value,
+    mail: frimmail.value,
     phone: frimphone.value,
     owner: frimowner.value,
     land: frimland.value,

@@ -386,6 +386,26 @@
 		return $response;
 	});
 
+    $app->get("/UserFile", function (Request $request, Response $response, $args) {
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+        $myId = get_user_id($id);
+        $myId = $myId["id"];
+        $files = get_my_files($myId);
+
+        if ($files) {
+            echo json_encode($files);
+        }
+        else if (is_string($files)) {
+            error($files, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
     $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
         //$id = user_validation("A");
         //validate_token();

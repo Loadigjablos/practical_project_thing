@@ -2,7 +2,7 @@
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
 
-    $app->get("/Reservations", function (Request $request, Response $response, $args) {
+    $app->get("/Company", function (Request $request, Response $response, $args) {
         //everyone
         validate_token(); // unotherized pepole will get rejected
 

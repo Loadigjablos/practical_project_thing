@@ -41,7 +41,7 @@
     function get_all_reservations() {
         global $database;
 
-        $result = $database->query("SELECT * FROM events;");
+        $result = $database->query("SELECT * FROM company;");
 
         if ($result == false) {
             error_function(500, "Error");

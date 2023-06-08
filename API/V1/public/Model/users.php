@@ -13,7 +13,6 @@
             if ($result->num_rows > 0) {
                 $result_array = array();
                 while ($user = $result->fetch_assoc()) {
-                    // Get the blobfile type for picture_id
                     $id = $user['id'];
                     $class_name = get_class_name($id);
                     $user['class'] = $class_name;
@@ -127,6 +126,52 @@
             }
         } else {
             error_function(404, "not Found");
+        }
+    }
+
+    function get_my_files($myId) {
+        global $database;
+
+        $result = $database->query("SELECT id FROM users WHERE id = '$myId';");
+    
+        if ($result == false) {
+            error_function(500, "Error");
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
+                $result_array = array();
+                while ($user = $result->fetch_assoc()) {
+                    $id = $user['id'];
+                    $files = get_my_file($id);
+                    $user['files'] = $files;
+                    
+                    $result_array[] = $user;
+                }
+                
+                $response = array(
+                    'files' => $result_array
+                );
+                
+                return $response;
+            } else {
+                error_function(404, "Not Found");
+            }
+        } else {
+            error_function(404, "Not Found");
+        }
+    }
+
+    function get_my_file($id) {
+        global $database;
+    
+        $getId = $database->query("SELECT file_id FROM user_files WHERE user_id = '$id';")->fetch_assoc()["file_id"];
+       
+        $getName =  $database->query("SELECT file FROM blobfiles WHERE id = '$getId';");
+    
+        if ($getName == false || $getName->num_rows == 0) {
+            return null;
+        } else {
+            $row = $getName->fetch_assoc();
+            return $row;
         }
     }
 
@@ -444,7 +489,7 @@
         }
     }
 
-    function create_file($type, $file, $myId) {
+    function create_file($type, $file, $user_id) {
         global $database;
 
         $result = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
@@ -452,7 +497,7 @@
         if ($result) {
             $file_id = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'")->fetch_assoc()['id'];
 
-            $userFileDefine = $database->query("INSERT INTO user_files (`user_id`, `file_id`) VALUES ('$file_id', '$myId');");
+            $userFileDefine = $database->query("INSERT INTO user_files (`user_id`, `file_id`) VALUES ('$user_id', '$file_id');");
 
             if ($userFileDefine) {
                 message_function(200, "Very nice");
@@ -528,10 +573,16 @@
 		return true;
 	}
 
-    function delete_user($name) {
+    function delete_user_file($id) {
 		global $database;
+
+        $deleteMyFile = $database->query("DELETE FROM `user_files` WHERE file_id = '$id';");
+
+        if (!$deleteMyFile) {
+            error_function(400, "Cannot delete it");
+        }
 		
-		$result = $database->query("DELETE FROM `users` WHERE name = '$name';");
+		$result = $database->query("DELETE FROM `blobfiles` WHERE id = '$id';");
         
 		if (!$result) {
 			return false;
@@ -606,30 +657,5 @@
 		else {
 			return true;
 		}
-    }
-
-    function get_files_from_userid($id) {
-        global $database;
-
-        $result = $database->query("SELECT * FROM user_files WHERE user_id = $id;");
-
-        if ($result == false) {
-            error_function(500, "Error");
-		} else if ($result !== true) {
-			if ($result->num_rows > 0) {
-                $allUsersFiles = $result->fetch_assoc();
-
-                $allFiles = array();
-
-                foreach ($allUsersFiles as $value) {
-                    
-                }
-
-			} else {
-                error_function(404, "not Found");
-            }
-		} else {
-            error_function(404, "not Found");
-        }
     }
 ?>
