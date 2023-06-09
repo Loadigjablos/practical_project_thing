@@ -60,48 +60,16 @@
         }
     }
 
-    function create_company($companyname, $phone, $mail, $owner, $land, $street, $plz, $city) {
+    function create_company($company_name, $street, $city, $zip, $collaborative_contract) {
         global $database;
 
-        $result = $database->query("INSERT INTO `company` (`companyname`,`phone`, `mail`, `owner`) VALUES ('$companyname', '$phone', '$mail', '$owner');");
+        $result = $database->query("INSERT INTO `companies` (`company_name`,`street`, `city`, `zip`, `collaborative_contract`) VALUES ('$company_name', '$street', '$city', '$zip', '$collaborative_contract');");
 
         if ($result) {
-            $addAdress = $database->query("INSERT INTO `adress` (`land`, `street`, `plz`, `city`) VALUES ('$land', '$street', '$plz', '$city')");
-
-            if (!$addAdress) {
-                error_function(400, "faild to create the address");
-                return false;
-            }
-
-            $company_id_query = $database->query("SELECT id FROM company WHERE `mail` = '$mail'");
-            if ($company_id_query->num_rows > 0) {
-                $company_id = $company_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The user does not exist");
-                return false;
-            }
-
-            $adress_id_query = $database->query("SELECT id FROM adress WHERE `street` = '$street' AND `city` = '$city'");
-            if ($adress_id_query->num_rows > 0) {
-                $adress_id = $adress_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The adress does not exist");
-                return false;
-            }
-    
-            $defineAdress = $database->query("INSERT INTO `company_adress` (`company_id`, `adress_id`) VALUES ('$company_id', '$adress_id');");
-
-            if ($defineAdress) {
-                return true;
-            }
-            else {
-                error_function(400, "faild to create the user");
-                return false;
-            }
+            message_function(200, "The company was created");
         }
         else {
+            error_function(400, "Bad request");
             return false;
         }
     }

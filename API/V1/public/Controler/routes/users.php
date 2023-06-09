@@ -221,38 +221,41 @@
         return $response; 
     });
 
-    $app->post("/CV", function (Request $request, Response $response, $args) {
+    $app->post("/Application", function (Request $request, Response $response, $args) {
         validate_token(); // unotherized pepole will get rejected
         $id = user_validation();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
 
+        $student_id = trim($request_data["student_id"]);
+        $application_date = trim($request_data["application_date"]);
         $company_id = trim($request_data["company_id"]);
-        $responsible_person = trim($request_data["responsible_person"]);
-        $state_cv = trim($request_data["state_cv"]);
-        $dateoftrialvisit = trim($request_data["dateoftrialvisit"]);
-        $type = trim($request_data["type"]);
-        $file = trim($request_data["file"]);
+        $application_status = trim($request_data["application_status"]);
+        $interview_date = trim($request_data["interview_date"]);
+        $approval_date = trim($request_data["approval_date"]);
+        $try_out_id = trim($request_data["try_out_id"]);
+        $contract = trim($request_data["contract"]);
 
+        //getting the Student ID
+        $student_id = get_student_id($id);
+        $student_id = $student_id["student_id"];
 
         //The position field cannot be empty and must not exceed 2048 characters
-        if (empty($type)) {
-            error_function(400, "The (type) field must not be empty.");
+        if (empty($student_id)) {
+            error_function(400, "The (student_id) field must not be empty.");
         } 
-        elseif (strlen($type) > 255) {
-            error_function(400, "The (type) field must be less than 2048 characters.");
+        elseif (strlen($student_id) > 255) {
+            error_function(400, "The (student_id) field must be less than 2048 characters.");
         }
     
         //The name field cannot be empty and must not exceed 255 characters
-        if (empty($file)) {
-            error_function(400, "The (file) field must not be empty.");
+        if (empty($application_date)) {
+            error_function(400, "The (application_date) field must not be empty.");
         } 
-        elseif (strlen($file) > 255) {
-            error_function(400, "The (file) field must be less than 255 characters.");
+        elseif (strlen($application_date) > 255) {
+            error_function(400, "The (application_date) field must be less than 255 characters.");
         }
-
-        $file = base64_encode($file);
 
         //The position field cannot be empty and must not exceed 2048 characters
         if (empty($company_id)) {
@@ -263,34 +266,47 @@
         }
     
         //The name field cannot be empty and must not exceed 255 characters
-        if (empty($responsible_person)){
-            error_function(400, "The (responsible_person) field must not be empty.");
+        if (empty($application_status)){
+            error_function(400, "The (application_status) field must not be empty.");
         } 
-        elseif (strlen($responsible_person) > 255) {
-            error_function(400, "The (responsible_person) field must be less than 255 characters.");
+        elseif (strlen($application_status) > 255) {
+            error_function(400, "The (application_status) field must be less than 255 characters.");
         }
 
-        if (empty($state_cv)) {
-            error_function(400, "The (state_cv) field must not be empty.");
+        if (empty($interview_date)) {
+            error_function(400, "The (interview_date) field must not be empty.");
         } 
-        elseif (strlen($state_cv) > 255) {
-            error_function(400, "The (state_cv) field must be less than 255 characters.");
+        elseif (strlen($interview_date) > 255) {
+            error_function(400, "The (interview_date) field must be less than 255 characters.");
         }
 
-        if (empty($dateoftrialvisit)) {
-            error_function(400, "The (dateoftrialvisit) field must not be empty.");
+        if (empty($approval_date)) {
+            error_function(400, "The (approval_date) field must not be empty.");
         } 
-        elseif (strlen($dateoftrialvisit) > 255) {
-            error_function(400, "The (dateoftrialvisit) field must be less than 255 characters.");
+        elseif (strlen($approval_date) > 255) {
+            error_function(400, "The (approval_date) field must be less than 255 characters.");
         }
 
-        $myId = get_user_id($id);
-        $myId = $myId["id"];
+        if (empty($try_out_id)) {
+            error_function(400, "The (try_out_id) field must not be empty.");
+        } 
+        elseif (strlen($try_out_id) > 255) {
+            error_function(400, "The (try_out_id) field must be less than 255 characters.");
+        }
 
-        if (create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId, $type, $file) === true) {
-            message_function(200, "The CV was successfully created.");
+        if (empty($contract)) {
+            error_function(400, "The (contract) field must not be empty.");
+        } 
+        elseif (strlen($contract) > 255) {
+            error_function(400, "The (contract) field must be less than 255 characters.");
+        }
+
+        $contract = base64_encode($contract);
+
+        if (create_Application($student_id, $application_date, $company_id, $application_status, $interview_date, $approval_date, $try_out_id, $contract) === true) {
+            message_function(200, "The Application was successfully created.");
         } else {
-            error_function(500, "An error occurred while saving the CV.");
+            error_function(500, "An error occurred while saving the Application.");
         }
         return $response; 
     });

@@ -48,7 +48,7 @@
 
     }
 
-    function create_class($class_name, $specialization, $yaer_qv) {
+    function create_class($class_name, $QV_year) {
         global $database;
     
         // check if a place with the same name already exists
@@ -58,11 +58,11 @@
             return false;
         }
     
-        $result = $database->query("INSERT INTO `class` (`class_name`,`specialization`, `yaer_qv`) VALUES ('$class_name', '$specialization', '$yaer_qv');");
+        $result = $database->query("INSERT INTO `class` (`class_name`,`QV_year`) VALUES ('$class_name', '$QV_year');");
     
         if (!$result) {
             // handle error
-            error_function(400, "An error occurred while creating the place.");
+            error_function(400, "An error occurred while creating the class.");
             return false;
         }
     
