@@ -2,17 +2,17 @@
     use Psr\Http\Message\ResponseInterface as Response;
     use Psr\Http\Message\ServerRequestInterface as Request;
 
-    $app->get("/Company", function (Request $request, Response $response, $args) {
+    $app->get("/Companies", function (Request $request, Response $response, $args) {
         //everyone
         validate_token(); // unotherized pepole will get rejected
 
-        $reservations = get_all_reservations();
+        $companies = get_all_companies();
 
-        if ($reservations) {
-            echo json_encode($reservations);
+        if ($companies) {
+            echo json_encode($companies);
         }
-        else if (is_string($reservations)) {
-            error_function(500, $reservations);
+        else if (is_string($companies)) {
+            error_function(500, $companies);
         }
         else {
             error(400, "Error");

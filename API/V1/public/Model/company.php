@@ -38,11 +38,13 @@
         }
     }
 
-    function get_all_reservations() {
+    function get_all_companies() {
         global $database;
-
-        $result = $database->query("SELECT * FROM company;");
-
+    
+        $result = $database->query("SELECT c.company_name, c.street, c.city, c.zip, c.collaborative_contract, r.name, r.surname, r.email, r.phone 
+                                   FROM companies c
+                                   LEFT JOIN responsible_people r ON c.company_id = r.company_id;");
+    
         if ($result == false) {
             error_function(500, "Error");
         } else if ($result !== true) {
@@ -59,6 +61,7 @@
             error_function(404, "not Found");
         }
     }
+    
 
     function create_company($company_name, $street, $city, $zip, $collaborative_contract) {
         global $database;

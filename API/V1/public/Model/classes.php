@@ -5,7 +5,7 @@
     function get_classes() {
         global $database;
 
-        $result = $database->query("SELECT * FROM class");
+        $result = $database->query("SELECT class_name, QV_year FROM class");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -85,10 +85,10 @@
         return true;
     }   
 
-	function get_all_places() {
+	function get_all_classes() {
         global $database;
 
-        $result = $database->query("SELECT * FROM places;");
+        $result = $database->query("SELECT class_name, QV_year FROM class;");
 
         if ($result == false) {
             error_function(500, "Error");

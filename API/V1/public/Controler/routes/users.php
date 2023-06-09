@@ -311,6 +311,28 @@
         return $response; 
     });
 
+    $app->get("/Applications", function (Request $request, Response $response, $args) {
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+
+        $myId = get_student_id($id);
+        $myId = $myId["student_id"];
+
+        $applications = get_applications($myId);
+
+        if ($applications) {
+            echo json_encode($applications);
+        }
+        else if (is_string($applications)) {
+            error($applications, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
     $app->post("/Blob", function (Request $request, Response $response, $args) {
         validate_token(); // unotherized pepole will get rejected
         $id = user_validation();
@@ -326,7 +348,7 @@
         $student_id = get_student_id($id);
         $student_id = $student_id["student_id"];
 
-        //The position field cannot be empty and must not exceed 2048 characters
+        //The student_id field cannot be empty and must not exceed 2048 characters
         if (empty($student_id)) {
             error_function(400, "The (student_id) field must not be empty.");
         } 
@@ -334,7 +356,7 @@
             error_function(400, "The (student_id) field must be less than 2048 characters.");
         }
     
-        //The name field cannot be empty and must not exceed 255 characters
+        //The type field cannot be empty and must not exceed 255 characters
         if (empty($type)) {
             error_function(400, "The (type) field must not be empty.");
         } 
@@ -342,7 +364,7 @@
             error_function(400, "The (type) field must be less than 255 characters.");
         }
 
-        //The position field cannot be empty and must not exceed 2048 characters
+        //The file field cannot be empty and must not exceed 2048 characters
         if (empty($file)) {
             error_function(400, "The (file) field must not be empty.");
         } 
@@ -359,6 +381,48 @@
         }
         return $response; 
     });
+
+    $app->get("/Blob", function (Request $request, Response $response, $args) {
+        validate_token(); // unotherized pepole will get rejected
+        $id = user_validation();
+
+        $myId = get_student_id($id);
+        $myId = $myId["student_id"];
+
+        $blob = get_blob($myId);
+
+        if ($blob) {
+            echo json_encode($blob);
+        }
+        else if (is_string($blob)) {
+            error($blob, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
+    $app->get("/Students", function (Request $request, Response $response, $args) {
+        $id = user_validation("A");
+        validate_token(); // unotherized pepole will get rejected
+
+        $students = get_all_students();
+
+        if ($students) {
+            echo json_encode($students);
+        }
+        else if (is_string($students)) {
+            error($students, 500);
+        }
+        else {
+            error("The ID "  . $id . " was not found.", 404);
+        }
+
+        return $response;
+    });
+
 
     $app->put("/User/{id}", function (Request $request, Response $response, $args) {
 
