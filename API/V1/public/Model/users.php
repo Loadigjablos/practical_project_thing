@@ -750,5 +750,24 @@
 		else {
 			return true;
 		}
-    }
+    } 
+    
+    
+        function delete_Application_ID($applicaion_id, $student_id) {
+            global $database;
+
+            $check = $database->query("SELECT student_id FROM applicaions WHERE applicaion_id = '$applicaion_id';")->fetch_assoc()["student_id"];
+    
+            if ($check === $student_id) {
+                $result = $database->query("DELETE FROM applicaions WHERE applicaion_id = $applicaion_id;");
+                if ($result) {
+                    message_function(200, "deleted");
+                }
+                error_function(400, "there is a problem by deleting");
+            }
+            else if ($check !== $student_id) {
+                error_function(400, "Access denied");
+            }
+            error_function(400, "There is no application with this id");
+        }
 ?>
