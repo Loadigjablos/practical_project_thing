@@ -545,6 +545,28 @@
             error_function(404, "not Found");
         }
     }
+
+    function get_all_users() {
+        global $database;
+    
+        $result = $database->query("SELECT username, email, role FROM user;");
+    
+        if ($result == false) {
+            error_function(500, "Error");
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
+                $result_array = array();
+                while ($user = $result->fetch_assoc()) {
+                    $result_array[] = $user;
+                }
+                return $result_array;
+            } else {
+                error_function(404, "not Found");
+            }
+        } else {
+            error_function(404, "not Found");
+        }
+    }
     
     function create_Blob($student_id, $type, $file) {
         global $database;
@@ -598,12 +620,11 @@
     function get_all_students() {
         global $database;
     
-        $result = $database->query("SELECT s.name, s.surname, s.street, s.city, s.zip, s.date_of_birth, s.AHV, s.guardien_id, s.specialization, s.class_id, g.name, g.surname FROM students");
-        $result = $database->query("SELECT a.application_date, a.application_status, a.interview_date, a.approval_date, a.contract, c.company_name, t.from_date, t.till 
-        FROM applicaions a
-        LEFT JOIN companies c ON a.company_id = c.company_id
-        LEFT JOIN try_outs t ON a.try_out_id = t.try_out_id
-        WHERE a.student_id = $myId;");
+        $result = $database->query("SELECT s.name, s.surname, s.street, s.city, s.zip, s.date_of_birth, s.AHV, s.specialization, g.name AS guardian_name, g.surname AS guardian_surname, c.class_name
+                                   FROM students s
+                                   LEFT JOIN guardians g ON s.guardien_id = g.guardian
+                                   LEFT JOIN class c ON s.class_id = c.class_id;");
+    
         if ($result == false) {
             error_function(500, "Error");
         } else if ($result !== true) {
