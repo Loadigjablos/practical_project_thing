@@ -48,8 +48,7 @@
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
         $class_name = trim($request_data["class_name"]);
-        $specialization = trim($request_data["specialization"]);
-        $yaer_qv = trim($request_data["yaer_qv"]);
+        $QV_year = trim($request_data["QV_year"]);
     
         //The position field cannot be empty and must not exceed 2048 characters
         if (empty($class_name)) {
@@ -60,23 +59,15 @@
         }
     
         //The name field cannot be empty and must not exceed 255 characters
-        if (empty($specialization)) {
-            error_function(400, "The (name) field must not be empty.");
+        if (empty($QV_year)) {
+            error_function(400, "The (QV_year) field must not be empty.");
         } 
-        elseif (strlen($specialization) > 255) {
-            error_function(400, "The (name) field must be less than 255 characters.");
-        }
-    
-        //The type field must be an uppercase alphabetic character
-        if (empty($yaer_qv)) {
-            error_function(400, "Please provide the (type) field.");
-        } 
-        elseif (strlen($yaer_qv) > 255) {
-            error_function(400, "The (name) field must be less than 255 characters.");
+        elseif (strlen($QV_year) > 255) {
+            error_function(400, "The (QV_year) field must be less than 255 characters.");
         }
     
         //checking if everything was good
-        if (create_class($class_name, $specialization, $yaer_qv) === true) {
+        if (create_class($class_name, $QV_year) === true) {
             message_function(200, "The class was successfully created.");
         } else {
             error_function(500, "An error occurred while saving the class.");

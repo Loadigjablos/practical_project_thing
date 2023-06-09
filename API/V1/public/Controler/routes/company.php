@@ -50,62 +50,25 @@
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
 
-        $companyname = trim($request_data["companyname"]);
-        $phone = trim($request_data["phone"]);
-        $mail = trim($request_data["mail"]);
-        $owner = trim($request_data["owner"]);
-        $land = trim($request_data["land"]);
+        $company_name = trim($request_data["company_name"]);
         $street = trim($request_data["street"]);
-        $plz = trim($request_data["plz"]);
         $city = trim($request_data["city"]);
-    
-        if (empty($companyname)) {
+        $zip = trim($request_data["zip"]);
+        $collaborative_contract = trim($request_data["collaborative_contract"]);
+
+
+        if (empty($company_name)) {
             error_function(400, "Please provide the (companyname) field.");
         } 
-        elseif (strlen($companyname) > 255) {
+        elseif (strlen($company_name) > 255) {
             error_function(400, "The (companyname) field must be less than 255 characters.");
         }
-
-        if (empty($phone)) {
-            error_function(400, "Please provide the (phone) field.");
-        } 
-        elseif (strlen($phone) > 255) {
-            error_function(400, "The (phone) field must be less than 255 characters.");
-        }
-
-        if (empty($mail)) {
-            error_function(400, "Please provide the (mail) field.");
-        } 
-        elseif (strlen($mail) > 255) {
-            error_function(400, "The (mail) field must be less than 255 characters.");
-        }
-
-        if (empty($owner)) {
-            error_function(400, "Please provide the (owner) field.");
-        } 
-        elseif (strlen($owner) > 255) {
-            error_function(400, "The (owner) field must be less than 255 characters.");
-        }
-
-        if (empty($land)) {
-            error_function(400, "Please provide the (land) field.");
-        }
-        elseif (strlen($land) > 255) {
-            error_function(400, "The (land) field must be less than 255 characters.");
-        } 
 
         if (empty($street)) {
             error_function(400, "Please provide the (street) field.");
         }
         elseif (strlen($street) > 255) {
             error_function(400, "The (street) field must be less than 255 characters.");
-        } 
-
-        if (empty($plz)) {
-            error_function(400, "Please provide the (plz) field.");
-        }
-        elseif (strlen($plz) > 255) {
-            error_function(400, "The (plz) field must be less than 255 characters.");
         } 
 
         if (empty($city)) {
@@ -115,8 +78,24 @@
             error_function(400, "The (city) field must be less than 255 characters.");
         } 
 
+        if (empty($zip)) {
+            error_function(400, "Please provide the (zip) field.");
+        }
+        elseif (strlen($zip) > 255) {
+            error_function(400, "The (zip) field must be less than 255 characters.");
+        } 
+
+        if (empty($collaborative_contract)) {
+            error_function(400, "Please provide the (collaborative_contract) field.");
+        }
+        elseif (strlen($collaborative_contract) > 2555) {
+            error_function(400, "The (collaborative_contract) field must be less than 2555 characters.");
+        } 
+
+        $collaborative_contract = base64_encode($collaborative_contract);
+
         //checking if everything was good
-        if (create_company($companyname, $phone, $mail, $owner, $land, $street, $plz, $city) === true) {
+        if (create_company($company_name, $street, $city, $zip, $collaborative_contract) === true) {
             message_function(200, "The company was successfully created.");
         } 
         else {

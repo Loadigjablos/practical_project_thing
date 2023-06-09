@@ -367,7 +367,27 @@
     function get_user_id($id) {
         global $database;
 
-        $result = $database->query("SELECT id, name, email, role FROM user WHERE id = '$id';");
+        $result = $database->query("SELECT student_id, name, user_id FROM user WHERE id = '$id';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		}
+
+        $result = $result->fetch_assoc();
+
+	    return $result;
+    }
+
+    function get_student_id($id) {
+        global $database;
+
+        $result = $database->query("SELECT student_id, name, surname FROM students WHERE user_id = '$id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -473,39 +493,29 @@
         }
     }
 
-    function create_CV($company_id, $responsible_person, $state_cv, $dateoftrialvisit, $myId, $type, $file) {
+    function create_Application($student_id, $application_date, $company_id, $application_status, $interview_date, $approval_date, $try_out_id, $contract) {
         global $database;
 
-        $result = $database->query("INSERT INTO `cv` (`company_id`, `responsible_person`, `state_cv`, `dateoftrialvisit`) VALUES ('$company_id', '$responsible_person', '$state_cv', '$dateoftrialvisit');");
+        $companyExist = $database->query("SELECT * FROM companies WHERE company_id = '$company_id';");
+
+        if ($companyExist->num_rows === 0) {
+            error_function(400, "This company does not exist.");
+            return false;
+        }
+
+        $tryOutExist = $database->query("SELECT * FROM try_outs WHERE try_out_id = '$try_out_id';");
+        if ($tryOutExist->num_rows === 0) {
+            error_function(400, "This try out does not exist");
+            return false;
+        }
+
+        $result = $database->query("INSERT INTO `applicaions` (`student_id`, `application_date`, `company_id`, `application_status`, `interview_date`, `approval_date`, `try_out_id`, `contract`) VALUES ('$student_id', '$application_date', '$company_id', '$application_status', '$interview_date', '$approval_date', '$try_out_id', '$contract');");
 
         if ($result) {
-            $cv_id_query = $database->query("SELECT id FROM cv WHERE `responsible_person` = '$responsible_person'");
-            if ($cv_id_query->num_rows > 0) {
-                $cv_id = $cv_id_query->fetch_assoc()['id'];
-            }
-            else {
-                error_function(400, "The cv does not exist");
-            }
-
-            $defineClass = $database->query("INSERT INTO `user_cv` (`cv_id`, `user_id`) VALUES ('$cv_id', '$myId');");
-
-            if (!$defineClass) {
-                error_function(400, "faild to define the cv");
-            }
-
-            $insertFile = $database->query("INSERT INTO `blobfiles` (`type`, `file`) VALUES ('$type', '$file');");
-
-            if ($insertFile) {
-                $getId_query = $database->query("SELECT id FROM blobfiles WHERE `file` = '$file'");
-                if ($getId_query->num_rows > 0) {
-                    $file_id = $getId_query->fetch_assoc()['id'];
-
-                    $defineFile = $database->query("INSERT INTO `cv_files` (`cv_id`, `file_id`) VALUES ('$cv_id', '$file_id');");
-                }
-            }
-            message_function(200, "Thanks");
+            message_function(200, "The Application was created");
         }
         else {
+            error_function(400, "There is an Error");
             return false;
         }
     }
