@@ -589,6 +589,7 @@
         return $response;
 	});
 
+<<<<<<< HEAD
     $app->delete("/Application/{applicaion_id}", function (Request $request, Response $response, $args) {
 
         $id = user_validation();
@@ -599,13 +600,30 @@
         $student_id = $student_id["student_id"];
 
         if (delete_Application_ID($applicaion_id, $student_id)) {
+=======
+    $app->delete("/DeleteApplicationID/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+    
+        $application_id = $args["id"];
+    
+        if (delete_Application_ID($application_id)) {
+>>>>>>> c7955fc9e93b44a2ce80d7e90506eba73f65f778
             message_function(200, "successfully deleted");
         } else {
             error_function(500, "error");
         }
+<<<<<<< HEAD
    
         return $response;
 
     });
+=======
+    
+        return $response;
+    });
+    
+
+>>>>>>> c7955fc9e93b44a2ce80d7e90506eba73f65f778
 
 ?>
