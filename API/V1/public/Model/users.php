@@ -520,6 +520,33 @@
         }
     }
 
+    function create_Blob($student_id, $type, $file) {
+        global $database;
+
+        $studentExist = $database->query("SELECT * FROM students WHERE student_id = '$student_id';");
+
+        if ($studentExist->num_rows === 0) {
+            error_function(400, "This student does not exist.");
+            return false;
+        }
+
+        $typeExist = $database->query("SELECT * FROM blob_types WHERE type = '$type';");
+        if ($typeExist->num_rows === 0) {
+            error_function(400, "This type does not exist");
+            return false;
+        }
+
+        $result = $database->query("INSERT INTO `blob_files` (`student_id`, `type`, `file`) VALUES ('$student_id', '$type', '$file');");
+
+        if ($result) {
+            message_function(200, "The file was created");
+        }
+        else {
+            error_function(400, "There is an Error");
+            return false;
+        }
+    }
+
     function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
 		global $database;
 
