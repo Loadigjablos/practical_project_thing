@@ -589,4 +589,21 @@
         return $response;
 	});
 
+    $app->delete("/DeleteApplicationID/{id}", function (Request $request, Response $response, $args) {
+        //$id = user_validation("A");
+        //validate_token();
+    
+        $application_id = $args["id"];
+    
+        if (delete_Application_ID($application_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+    
+        return $response;
+    });
+    
+
+
 ?>

@@ -520,31 +520,19 @@
         }
     }
 
-    function get_applications($myId) {
+    function delete_Application_ID($application_id) {
         global $database;
     
-        $result = $database->query("SELECT a.application_date, a.application_status, a.interview_date, a.approval_date, a.contract, c.company_name, t.from_date, t.till 
-                                   FROM applicaions a
-                                   LEFT JOIN companies c ON a.company_id = c.company_id
-                                   LEFT JOIN try_outs t ON a.try_out_id = t.try_out_id
-                                   WHERE a.student_id = $myId;");
+        $result = $database->query("DELETE FROM applicaions WHERE applicaion_id = $application_id");
     
         if ($result == false) {
             error_function(500, "Error");
-        } else if ($result !== true) {
-            if ($result->num_rows > 0) {
-                $result_array = array();
-                while ($user = $result->fetch_assoc()) {
-                    $result_array[] = $user;
-                }
-                return $result_array;
-            } else {
-                error_function(404, "not Found");
-            }
+        } else if ($database->affected_rows > 0) {
+            return true; // Erfolgreich gelöscht
         } else {
-            error_function(404, "not Found");
+            error_function(404, "Not Found");
         }
-    }
+    }    
 
     function get_all_users() {
         global $database;
