@@ -74,13 +74,34 @@
         }
     }
 
-    function create_user_company($company_id, $user_id, $salary, $date_of_approval, $date_of_the_contract) {
+    function create_tryOut($from_date, $till) {
         global $database;
 
-        $result = $database->query("INSERT INTO `user_company` (`company_id`,`user_id`, `salary`, `date_of_approval`, `date_of_the_contract`) VALUES ('$company_id', '$user_id', '$salary', '$date_of_approval', '$date_of_the_contract');");
+        $result = $database->query("INSERT INTO `try_outs` (`from_date`,`till`) VALUES ('$from_date', '$till');");
 
         if ($result) {
-            message_function(200, "Created");
+            message_function(200, "Try out is created");
+        }
+        else {
+            error_function(400, "There is a problem");
+        }
+        return;
+    }
+
+    function create_ResponsiblePeople($company_id, $name, $surname, $email, $phone) {
+        global $database;
+
+        $companyExist = $database->query("SELECT * FROM companies WHERE company_id = '$company_id';");
+
+        if ($companyExist->num_rows === 0) {
+            error_function(400, "This company does not exist.");
+            return false;
+        }
+
+        $result = $database->query("INSERT INTO `responsible_people` (`company_id`, `name`, `surname`, `email`, `phone`) VALUES ('$company_id', '$name', '$surname', '$email', '$phone');");
+
+        if ($result) {
+            message_function(200, "Responsible people is created");
         }
         else {
             error_function(400, "There is a problem");

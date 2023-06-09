@@ -104,20 +104,54 @@
         return $response;        
     });
 
-    $app->post("/UserCompany", function (Request $request, Response $response, $args) {
+    $app->post("/TryOut", function (Request $request, Response $response, $args) {
         //everyone
-        $id = user_validation("A");
         validate_token();
 
         $request_body_string = file_get_contents("php://input");
         $request_data = json_decode($request_body_string, true);
 
         $company_id = trim($request_data["company_id"]);
-        $user_id = trim($request_data["user_id"]);
-        $salary = trim($request_data["salary"]);
-        $date_of_approval = trim($request_data["date_of_approval"]);
-        $date_of_the_contract = trim($request_data["date_of_the_contract"]);
+        $from_date = trim($request_data["from_date"]);
+        $till = trim($request_data["till"]);
     
+        if (empty($from_date)) {
+            error_function(400, "Please provide the (from_date) field.");
+        } 
+        elseif (strlen($from_date) > 255) {
+            error_function(400, "The (from_date) field must be less than 255 characters.");
+        }
+
+        if (empty($till)) {
+            error_function(400, "Please provide the (till) field.");
+        } 
+        elseif (strlen($till) > 255) {
+            error_function(400, "The (till) field must be less than 255 characters.");
+        }
+
+        //checking if everything was good
+        if (create_tryOut($from_date, $till) === true) {
+            message_function(200, "The Try Out was successfully created.");
+        } 
+        else {
+            error_function(500, "An error occurred while saving the Try Out.");
+        }
+        return $response;        
+    });
+
+    $app->post("/ResponsiblePeople", function (Request $request, Response $response, $args) {
+        //everyone
+        validate_token();
+
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+
+        $company_id = trim($request_data["company_id"]);
+        $name = trim($request_data["name"]);
+        $surname = trim($request_data["surname"]);
+        $email = trim($request_data["email"]);
+        $phone = trim($request_data["phone"]);
+
         if (empty($company_id)) {
             error_function(400, "Please provide the (company_id) field.");
         } 
@@ -125,36 +159,36 @@
             error_function(400, "The (company_id) field must be less than 255 characters.");
         }
 
-        if (empty($user_id)) {
-            error_function(400, "Please provide the (user_id) field.");
-        } 
-        elseif (strlen($user_id) > 255) {
-            error_function(400, "The (user_id) field must be less than 255 characters.");
+        if (empty($name)) {
+            error_function(400, "Please provide the (name) field.");
         }
+        elseif (strlen($name) > 255) {
+            error_function(400, "The (name) field must be less than 255 characters.");
+        } 
 
-        if (empty($salary)) {
-            error_function(400, "Please provide the (salary) field.");
-        } 
-        elseif (strlen($salary) > 255) {
-            error_function(400, "The (salary) field must be less than 255 characters.");
+        if (empty($surname)) {
+            error_function(400, "Please provide the (surname) field.");
         }
+        elseif (strlen($surname) > 255) {
+            error_function(400, "The (surname) field must be less than 255 characters.");
+        } 
 
-        if (empty($date_of_approval)) {
-            error_function(400, "Please provide the (date_of_approval) field.");
-        } 
-        elseif (strlen($date_of_approval) > 255) {
-            error_function(400, "The (date_of_approval) field must be less than 255 characters.");
+        if (empty($email)) {
+            error_function(400, "Please provide the (email) field.");
         }
+        elseif (strlen($email) > 255) {
+            error_function(400, "The (email) field must be less than 255 characters.");
+        } 
 
-        if (empty($date_of_the_contract)) {
-            error_function(400, "Please provide the (date_of_the_contract) field.");
+        if (empty($phone)) {
+            error_function(400, "Please provide the (phone) field.");
         }
-        elseif (strlen($date_of_the_contract) > 255) {
-            error_function(400, "The (date_of_the_contract) field must be less than 255 characters.");
-        } 
+        elseif (strlen($phone) > 2555) {
+            error_function(400, "The (phone) field must be less than 2555 characters.");
+        }
 
         //checking if everything was good
-        if (create_user_company($company_id, $user_id, $salary, $date_of_approval, $date_of_the_contract) === true) {
+        if (create_ResponsiblePeople($company_id, $name, $surname, $email, $phone) === true) {
             message_function(200, "The company was successfully created.");
         } 
         else {

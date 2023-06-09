@@ -75,6 +75,64 @@
         return $response;        
     });
 
+    $app->post("/Guardian", function (Request $request, Response $response, $args) {
+        $id = user_validation("A");
+        validate_token();
+
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+        $name = trim($request_data["name"]);
+        $surname = trim($request_data["surname"]);
+        $street = trim($request_data["street"]);
+        $city = trim($request_data["city"]);
+        $zip = trim($request_data["zip"]);
+        $phone = trim($request_data["phone"]);
+
+        if (empty($name)) {
+            error_function(400, "The Feld 'name' can not be empty.");
+        } elseif (strlen($name) > 2048) {
+            error_function(400, "Das Feld 'name' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        if (empty($surname)) {
+            error_function(400, "The Feld 'surname' can not be empty.");
+        } elseif (strlen($surname) > 2048) {
+            error_function(400, "Das Feld 'surname' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        if (empty($street)) {
+            error_function(400, "The Feld 'street' can not be empty.");
+        } elseif (strlen($street) > 2048) {
+            error_function(400, "Das Feld 'street' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        if (empty($city)) {
+            error_function(400, "The Feld 'city' can not be empty.");
+        } elseif (strlen($city) > 2048) {
+            error_function(400, "Das Feld 'city' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        if (empty($zip)) {
+            error_function(400, "The Feld 'zip' can not be empty.");
+        } elseif (strlen($zip) > 2048) {
+            error_function(400, "Das Feld 'zip' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        if (empty($phone)) {
+            error_function(400, "The Feld 'phone' can not be empty.");
+        } elseif (strlen($phone) > 2048) {
+            error_function(400, "Das Feld 'phone' darf maximal 2048 Zeichen lang sein.");
+        }
+
+        //checking if everything was good
+        if (create_guardian($name, $surname, $street, $city, $zip, $phone) === true) {
+            message_function(200, "The guardian was successfully created.");
+        } else {
+            error_function(500, "An error occurred while saving the guardian.");
+        }
+        return $response;        
+    });
+
     $app->delete("/class/{class_name}", function (Request $request, Response $response, $args) {
 		$id = user_validation("A");
         validate_token();

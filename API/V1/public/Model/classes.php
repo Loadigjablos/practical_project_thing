@@ -66,8 +66,24 @@
             return false;
         }
     
+        message_function(200, "Created");
         return true;
-    }    
+    }   
+    
+    function create_guardian($name, $surname, $street, $city, $zip, $phone) {
+        global $database;
+    
+        $result = $database->query("INSERT INTO `guardians` (`name`,`surname`, `street`,`city`, `zip`,`phone`) VALUES ('$name', '$surname', '$street', '$city', '$zip', '$phone');");
+    
+        if (!$result) {
+            // handle error
+            error_function(400, "An error occurred while creating the class.");
+            return false;
+        }
+    
+        message_function(200, "Created");
+        return true;
+    }   
 
 	function get_all_places() {
         global $database;
