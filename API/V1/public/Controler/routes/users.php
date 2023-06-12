@@ -593,8 +593,8 @@
 
         $id = user_validation();
         validate_token();
-        $applicaion_id = $args["applicaion_id"];
 
+        $applicaion_id = $args["applicaion_id"];
         $student_id = get_student_id($id);
         $student_id = $student_id["student_id"];
 
@@ -603,7 +603,6 @@
         } else {
             error_function(500, "error");
         }
-   
         return $response;
 
     });
