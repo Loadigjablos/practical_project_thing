@@ -521,7 +521,7 @@
 
     $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
         //$id = user_validation("A");
-        //validate_token();
+        //validate_token(
 
         $user_id = $args["id"];
 
