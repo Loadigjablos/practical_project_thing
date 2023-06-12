@@ -560,10 +560,10 @@
         }
     }
 
-    function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
+    function update_user($user_id, $username, $email, $password, $role) {
 		global $database;
 
-		$result = $database->query("UPDATE `user` SET name = '$name', email = '$email', passwdhash = '$password', picture_id = '$picture_id', parents = '$parents', birthdate = '$birthdate', ahvnumer = '$ahvnumer', role = '$role' WHERE id = '$user_id';");
+		$result = $database->query("UPDATE `user` SET username = '$username', email = '$email', password = '$password', role = '$role' WHERE user_id = '$user_id';");
 
 		if (!$result) {
 			return false;
