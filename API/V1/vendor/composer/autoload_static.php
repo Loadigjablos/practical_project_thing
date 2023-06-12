@@ -4,14 +4,13 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
+class ComposerStaticInit976d12b84571796db845958a20c43473
 {
     public static $files = array (
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0ccdf99b8f62f02c52cba55802e0c2e7' => __DIR__ . '/..' . '/zircote/swagger-php/src/functions.php',
     );
 
@@ -36,6 +35,7 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'O' => 
         array (
@@ -48,6 +48,7 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
         ),
         'D' => 
         array (
+            'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
             'Doctrine\\Common\\Annotations\\' => 28,
         ),
@@ -84,7 +85,7 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
         ),
         'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+            0 => __DIR__ . '/..' . '/psr/log/src',
         ),
         'Psr\\Http\\Server\\' => 
         array (
@@ -104,6 +105,10 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'OpenApi\\' => 
         array (
             0 => __DIR__ . '/..' . '/zircote/swagger-php/src',
@@ -116,9 +121,13 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
+        'Doctrine\\Deprecations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
+        ),
         'Doctrine\\Common\\Lexer\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/lexer/lib/Doctrine/Common/Lexer',
+            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
         ),
         'Doctrine\\Common\\Annotations\\' => 
         array (
@@ -138,9 +147,9 @@ class ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitfb73543c00448c24b79e1972ecf3ad40::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit976d12b84571796db845958a20c43473::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit976d12b84571796db845958a20c43473::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit976d12b84571796db845958a20c43473::$classMap;
 
         }, null, ClassLoader::class);
     }
