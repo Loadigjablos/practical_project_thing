@@ -518,21 +518,7 @@
             error_function(400, "There is an Error");
             return false;
         }
-    }
-
-    function delete_Application_ID($application_id) {
-        global $database;
-    
-        $result = $database->query("DELETE FROM applicaions WHERE applicaion_id = $application_id");
-    
-        if ($result == false) {
-            error_function(500, "Error");
-        } else if ($database->affected_rows > 0) {
-            return true; // Erfolgreich gelöscht
-        } else {
-            error_function(404, "Not Found");
-        }
-    }    
+    } 
 
     function get_all_users() {
         global $database;

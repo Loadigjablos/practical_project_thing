@@ -15,7 +15,7 @@
             error_function(500, $companies);
         }
         else {
-            error(400, "Error");
+            error_function(400, "Error");
         }
 
         return $response;
@@ -34,10 +34,10 @@
             echo json_encode($reservation);
         }
         else if (is_string($reservation)) {
-            error($reservation, 500);
+            error_function(500, $reservation);
         }
         else {
-            error("The Name "  . $id . " was not found.", 404);
+            error_function(404, "The Name "  . $id . " was not found.");
         }
 
         return $response;
@@ -238,7 +238,7 @@
 			$place_name = strip_tags(addslashes($request_data["place_name"]));
 		
 			if (strlen($place_name) > 1000) {
-				error_funciton(400, "The place_name is too long. Please enter less than 1000 letters.");
+				error_function(400, "The place_name is too long. Please enter less than 1000 letters.");
 			}
 		
 			$reservation["place_name"] = $place_name;
@@ -248,7 +248,7 @@
 			$host = strip_tags(addslashes($request_data["host"]));
 		
 			if (strlen($host) > 1000) {
-				error_funciton(400, "The host is too long. Please enter less than 1000 letters.");
+				error_function(400, "The host is too long. Please enter less than 1000 letters.");
 			}
 		
 			$reservation["host"] = $host;
