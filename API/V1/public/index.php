@@ -90,7 +90,7 @@
     $app->get("/WhoAmI", function (Request $request, Response $response, $args) {
         // unotherized pepole will get rejected
         $id = user_validation();
-		$user = get_user_by_id($id);
+		$user = get_legal_user_by_id($id);
 
 		if ($user) {
 	        echo json_encode($user); 
