@@ -598,7 +598,7 @@
         $student_id = get_student_id($id);
         $student_id = $student_id["student_id"];
 
-        if (delete_Application_ID($applicaion_id, $student_id)) {
+        if (delete_application($applicaion_id, $student_id)) {
             message_function(200, "successfully deleted");
         } else {
             error_function(500, "error");
