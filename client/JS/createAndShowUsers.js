@@ -63,6 +63,15 @@ function createNewUserWindow() {
     form.appendChild(chooseImage);
     form.appendChild(contactDataPerson);
     createUser.appendChild(form);
+    //Show all users
+    const allUsers = getAllUsers();
+    for (let i = 0; i <= allUsers.length; i++) {
+        addNewUser(
+            allUsers.username,
+            allUsers.role,
+            allUsers.password
+        );
+    }
 }
 
 function createNewUser() {
@@ -76,6 +85,12 @@ function createNewUser() {
         customAlert(1, "Password is too short or empty");
     } else {
         addNewUser(username, role, password);
+        const data = {
+            username: username,
+            role: role,
+            password: password
+        }
+        postUser(data);
     }
 }
 

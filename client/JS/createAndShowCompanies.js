@@ -90,7 +90,6 @@ function createNewCompanyWindow() {
         showWindow.style.display = "none";
         createUser.style.display = "none";
     });
-    
     //Appends
     header.appendChild(backArrow);
     header.appendChild(titel);
@@ -99,6 +98,22 @@ function createNewCompanyWindow() {
     form.appendChild(contactDataPerson);
     form.appendChild(contactDataContract);
     createUser.appendChild(form);
+    //Get all companies
+    const allCompanies = getAllCompanies();
+    for (let i = 0; i <= allCompanies.length; i++) {
+        addNewCompany(
+            allCompanies.name,
+            allCompanies.city,
+            allCompanies.street,
+            allCompanies.email,
+            allCompanies.telNum,
+            allCompanies.pName,
+            allCompanies.pSurname,
+            allCompanies.pEmail,
+            allCompanies.pTelNum,
+            allCompanies.contracts
+        );
+    }
 }
 
 function createNewCompany() {  
@@ -144,12 +159,25 @@ function createNewCompany() {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
             addNewCompany(name, city, street, email, telNum, pName, pSurname, pEmail, pTelNum, reader.result, contract);
+            const data = {
+                name: name,
+                city: city,
+                street: street,
+                email: email,
+                telNum: telNum,
+                pName: pName,
+                pSurname: pSurname,
+                pEmail: pEmail,
+                pTelNum: pTelNum,
+                contract: reader.result
+            }
+            postCompany(data);
         })
         reader.readAsDataURL(contract.files[0]);
     }
 }
 
-function addNewCompany(name, city, street, email, telNum, pName, pSurname, pEmail, pTelNum, contracts, contract) {
+function addNewCompany(name, city, street, email, telNum, pName, pSurname, pEmail, pTelNum, contracts, contract = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
