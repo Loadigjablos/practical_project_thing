@@ -16,6 +16,7 @@ function renderStudents() {
     const header = document.createElement("div");
     const backArrow = document.createElement("div");
     const titel = document.createElement("div");
+    const createField = document.createElement("div");
 
     //functions
     backArrow.addEventListener("click", function() {
@@ -28,6 +29,37 @@ function renderStudents() {
     //Text
     titel.innerText = "chose a student";
 
+    //HTML
+    createField.innerHTML = `
+    <div class="relative mb-[1rem] h-[2rem] cursor-pointer">
+		<div class="w-[100%]">
+			<div class="w-[100%] flex">
+				<p class="p-[2px]">mark</p>
+				<input name="file-type" type="Radio" id="file-type-mark" class="p-[2px] bg-[rgba(0,0,0,0)] rounded-[2px] border-2">
+			</div>
+			
+			<div class="w-[100%] flex">
+				<p class="p-[2px]">efz</p>
+				<input name="file-type" type="Radio" id="file-type-efz" class="p-[2px] bg-[rgba(0,0,0,0)] rounded-[2px] border-2">
+			</div>
+			
+			<div class="w-[100%] flex">
+				<p class="p-[2px]">contract</p>
+				<input name="file-type" type="Radio" id="file-type-contract" class="p-[2px] bg-[rgba(0,0,0,0)] rounded-[2px] border-2">
+			</div>
+			
+			<div class="w-[100%] flex">
+				<p class="p-[2px]">picture</p>
+				<input name="file-type" type="Radio" id="file-type-picture" class="p-[2px] bg-[rgba(0,0,0,0)] rounded-[2px] border-2">
+			</div>
+		</div>
+        
+		<input id="contract" type="file" accept="application/pdf" class="w-[100%] h-[100%] text-[1.2rem] m-0 bg-[rgba(0,0,0,0)] mt-[1rem] rounded-[2px] border-2">
+		<button id="add-new-fille">Add File</button>
+    </div>
+	<div id="all-files" class="relative mb-[1rem] h-[2rem] cursor-pointer"></div>
+    `;
+
     //Styles
     header.className = "border-b-2 flex flex-row";
     backArrow.className = "bg-[url('../Materials/arrow.png')] mb-2 bg-cover w-[2rem] h-[2rem] cursor-pointer hover:rounded-[2rem] hover:bg-[rgba(87,87,87,0.4)]";
@@ -37,4 +69,5 @@ function renderStudents() {
     header.appendChild(backArrow);
     header.appendChild(titel);
     createUser.appendChild(header);
+    createUser.appendChild(createField);
 }
