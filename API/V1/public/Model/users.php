@@ -223,6 +223,28 @@
         }
     }
 
+    function get_legal_user_by_id($user_id) {
+        global $database;
+
+        $result = $database->query("SELECT * FROM user WHERE user_id = '$user_id';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
     function get_user_by_id($user_id) {
         global $database;
 
@@ -560,10 +582,10 @@
         }
     }
 
-    function update_user($user_id, $name, $email, $password, $picture_id, $parents, $birthdate, $ahvnumer, $role) {
+    function update_user($user_id, $username, $email, $password, $role) {
 		global $database;
 
-		$result = $database->query("UPDATE `user` SET name = '$name', email = '$email', passwdhash = '$password', picture_id = '$picture_id', parents = '$parents', birthdate = '$birthdate', ahvnumer = '$ahvnumer', role = '$role' WHERE id = '$user_id';");
+		$result = $database->query("UPDATE `user` SET username = '$username', email = '$email', password = '$password', role = '$role' WHERE user_id = '$user_id';");
 
 		if (!$result) {
 			return false;
@@ -687,5 +709,19 @@
                 error_function(400, "Access denied");
             }
             error_function(400, "There is no application with this id");
+        }
+
+        function delete_blob_file($id) {
+            global $database;
+        
+            $getFile = $database->query("SELECT file_id FROM user_files WHERE user_id = '$id';")->fetch_assoc()["file_id"];
+        
+            $result = $database->query("DELETE FROM blobfiles WHERE id = '$getFile';");
+        
+            if ($result) {
+                message_function(200, "File deleted successfully");
+            } else {
+                error_function(400, "Failed to delete file");
+            }
         }
 ?>

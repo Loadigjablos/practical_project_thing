@@ -24,6 +24,7 @@
     require "Model/users.php";
     require "Model/classes.php";
     require "Model/company.php";
+    require "Model/students.php";
     require_once "Controler/error-and-info-messages.php";
 
     // all response data will be in the Json Fromat
@@ -90,7 +91,7 @@
     $app->get("/WhoAmI", function (Request $request, Response $response, $args) {
         // unotherized pepole will get rejected
         $id = user_validation();
-		$user = get_user_by_id($id);
+		$user = get_legal_user_by_id($id);
 
 		if ($user) {
 	        echo json_encode($user); 
@@ -108,6 +109,7 @@
     require "Controler/routes/users.php";
     require "Controler/routes/company.php";
     require "Controler/routes/classes.php";
+    require "Controler/routes/students.php";
 
     $app->run();
 ?>

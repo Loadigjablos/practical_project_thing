@@ -151,6 +151,26 @@ function createNewStudentWindow() {
     form.appendChild(contactDataAnother);
     form.appendChild(contactDataFiles);
     createUser.appendChild(form);
+    //Get all students
+    const allStudents = getAllStudents();
+    for (let i = 0; i <= allStudents.length; i++) {
+        addNewStudent(
+            getFiles(allStudents[i].id),
+            allStudents.name,
+            allStudents.surname,
+            allStudents.gender,
+            allStudents.birthday,
+            allStudents.city,
+            allStudents.street,
+            allStudents.postCode,
+            allStudents.email,
+            allStudents.telNum,
+            allStudents.qv,
+            allStudents.guardian,
+            allStudents.spec,
+            allStudents.classe
+        );
+    }
 }
 
 function createNewStudent() {
@@ -254,7 +274,25 @@ function createNewStudent() {
             } else if (checkOut === 3) {
                 addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 const data = {
-                    
+                    files: files,
+                    name: name,
+                    surname: surname,
+                    gender: gender,
+                    birthday: birthday,
+                    city: city,
+                    street: street,
+                    postCode: postCode,
+                    email: email,
+                    telNum: telNum,
+                    ahv: ahv,
+                    qv: qv,
+                    guardian: guardian,
+                    spec: spec,
+                    classe: classe,
+                    image: image,
+                    contract: contract,
+                    efz: efz,
+                    marks: marks
                 };
                 postStudent(data);
             } 
@@ -263,7 +301,7 @@ function createNewStudent() {
     }
 }
 
-function addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks) {
+function addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
