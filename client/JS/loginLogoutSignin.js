@@ -1,4 +1,4 @@
-function login() {
+async function login() {
     const username = document.getElementById("username");
     const password = document.getElementById("password");
     if (username.value == "" || password.value == "") {
@@ -42,7 +42,7 @@ function signIn() {
 }
 
 function logout() {
-    localStorage.removeItem("username"); 
+    localStorage.removeItem("userdata"); 
     document.location.href = "http://localhost:4200/";
     //postLogout();   
 }
