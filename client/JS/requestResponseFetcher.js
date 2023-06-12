@@ -1,4 +1,4 @@
-const baseUrl = "/csbe-projekte/inf-projektwoche2023/blau/API/V1/";
+const baseUrl = "/API/V1/";
 //GET
 async function getAllStudents() {
     const response = await fetch( baseUrl+"Students", {
