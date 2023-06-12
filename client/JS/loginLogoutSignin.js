@@ -1,4 +1,4 @@
-function login() {
+async function login() {
     const username = document.getElementById("username");
     const password = document.getElementById("password");
     if (username.value == "" || password.value == "") {
@@ -11,7 +11,6 @@ function login() {
             password: password.value
         }
         document.location.href = "mainPage.html";
-        //postLogin(loginData);
     }
 }
 
@@ -41,8 +40,8 @@ function signIn() {
 }
 
 function logout() {
-    localStorage.removeItem("username"); 
-    document.location.href = "http://localhost:4200/";
+    localStorage.removeItem("userdata"); 
+    document.location.href = "http://localhost:5500/";
     //postLogout();   
 }
 

@@ -100,6 +100,22 @@ function createNewApplicationWindow() {
     document.getElementById("tryOut").valueAsDate = new Date();
     document.getElementById("dateContract").valueAsDate = new Date();
     document.getElementById("approve").valueAsDate = new Date();
+    //Get all applications
+    const allApplications = getAllApplications();
+    for (let i = 0; i <= allApplications.length; i++) {
+        createApplication(
+            allApplications.sName,
+            allApplications.rName,
+            allApplications.fSalary,
+            allApplications.sSalary,
+            allApplications.appDate,
+            allApplications.intDate,
+            allApplications.status,
+            allApplications.tryOut,
+            allApplications.dateContract,
+            allApplications.approve
+        );
+    }
 }
 
 function createNewApplication() {
@@ -120,11 +136,24 @@ function createNewApplication() {
     } else if (rName.value.length === undefined || rName.value.length < 3) {
         customAlert(1, "Responsible person name  is too short or empty");
     } else {
-        createApplication(sName, rName, fSalary, sSalary, appDate, intDate, status, intDate, tryOut, dateContract, approve);
+        createApplication(sName, rName, fSalary, sSalary, appDate, intDate, status, tryOut, dateContract, approve);
+        const data = {
+            sName: sName,
+            rName: rName,
+            fSalary: fSalary,
+            sSalary: sSalary,
+            appDate: appDate,
+            intDate: intDate,
+            status: status,
+            tryOut: tryOut,
+            dateContract: dateContract,
+            approve: approve
+        }
+        postApplication(data);
     }
 }
 
-function createApplication(sName, rName, fSalary, sSalary, appDate, intDate, status, intDate, tryOut, dateContract, approve) {
+function createApplication(sName, rName, fSalary, sSalary, appDate, intDate, status, tryOut, dateContract, approve) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
