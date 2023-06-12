@@ -399,9 +399,9 @@
             }
 		}
 
-        $result = $result->fetch_assoc();
+        $return = $result->fetch_assoc();
 
-	    return $result;
+	    return $return;
     }
 
     function get_skill_by_id($id) {
@@ -727,7 +727,7 @@
     } 
     
     
-        function delete_Application_ID($applicaion_id, $student_id) {
+        function delete_application($applicaion_id, $student_id) {
             global $database;
 
             $check = $database->query("SELECT student_id FROM applicaions WHERE applicaion_id = '$applicaion_id';")->fetch_assoc()["student_id"];
