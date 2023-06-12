@@ -681,7 +681,7 @@
                 if ($result) {
                     message_function(200, "deleted");
                 }
-                error_function(400, "there is a problem by deleting");
+                error_function(400, "there is was problem while deleting");
             }
             else if ($check !== $student_id) {
                 error_function(400, "Access denied");
