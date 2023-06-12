@@ -419,10 +419,10 @@
     function create_user($name, $email, $password, $role) {
         global $database;
 
-        $existing_place = $database->query("SELECT * FROM `user` WHERE `email` = '$email'")->fetch_assoc();
+        $existing_place = $database->query("SELECT * FROM `user` WHERE `username` = '$name'")->fetch_assoc();
         if ($existing_place) {
             // handle error
-            error_function(400, "A user with the email '$email' already exists.");
+            error_function(400, "A user with the username '$name' already exists.");
             return false;
         }
 

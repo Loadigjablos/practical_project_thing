@@ -9,13 +9,13 @@
 		
 		$student_id = $args["id"];
 		
-		$user = get_user_by_id($student_id);
+	//	$user = get_user_by_id($student_id);
 		
-		if (!$user) {
+		/*if (!$user) {
 			error_function(404, "No user found for the id ( " . $user_id . " ).");
             return false;
 		}
-		
+		*/
 		$request_body_string = file_get_contents("php://input");
 		
 		$request_data = json_decode($request_body_string, true);
