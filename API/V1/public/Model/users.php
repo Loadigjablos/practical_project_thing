@@ -688,4 +688,18 @@
             }
             error_function(400, "There is no application with this id");
         }
+
+        function delete_blob_file($id) {
+            global $database;
+        
+            $getFile = $database->query("SELECT file_id FROM user_files WHERE user_id = '$id';")->fetch_assoc()["file_id"];
+        
+            $result = $database->query("DELETE FROM blobfiles WHERE id = '$getFile';");
+        
+            if ($result) {
+                message_function(200, "File deleted successfully");
+            } else {
+                error_function(400, "Failed to delete file");
+            }
+        }
 ?>
