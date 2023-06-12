@@ -76,7 +76,7 @@ function createNewApplicationWindow() {
     backArrow.className = "bg-[url('../Materials/arrow.png')] mb-2 bg-cover w-[2rem] h-[2rem] cursor-pointer hover:rounded-[2rem] hover:bg-[rgba(87,87,87,0.4)]";
     contactDataApp.className = blockStyle;
     contactDataContract.className = blockStyle;
-    form.className = "w-[95%] max-h-[26rem] overflow-y-auto";
+    form.className = "w-[95%]";
     //Text
     titel.innerText = "Create application";
     //Functions
@@ -103,6 +103,7 @@ function createNewApplicationWindow() {
 }
 
 function createNewApplication() {
+    location.href = "#";
     const sName = document.getElementById("sName");
     const rName = document.getElementById("rName");
     const fSalary = document.getElementById("fSalary");

@@ -130,7 +130,7 @@ function createNewStudentWindow() {
     contactDataPerson.className = blockStyle;
     contactDataPlace.className = blockStyle;
     contactDataAnother.className = blockStyle;
-    form.className = "w-[95%] max-h-[26rem] overflow-y-auto";
+    form.className = "w-[95%]";
     //Text
     titel.innerText = "Create student";
     //Functions
@@ -154,6 +154,7 @@ function createNewStudentWindow() {
 }
 
 function createNewStudent() {
+    window.location.href = "#";
     //Create user
     const image = document.getElementById("image");     
     const name = document.getElementById("name"); 
@@ -252,6 +253,10 @@ function createNewStudent() {
                 }
             } else if (checkOut === 3) {
                 addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                const data = {
+                    
+                };
+                postStudent(data);
             } 
         })
         reader.readAsDataURL(image.files[0]);
