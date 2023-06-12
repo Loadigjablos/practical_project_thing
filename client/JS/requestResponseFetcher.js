@@ -40,6 +40,16 @@ async function getAllUsers() {
     return await response.json(); 
 }
 
+async function getFiles(id) {
+    const response = await fetch( baseUrl+`UserFiles/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return await response.json(); 
+}
+
 //POST
 async function postStudent(data) {
     const response = await fetch( baseUrl+"Student", {
@@ -187,4 +197,18 @@ async function putUser(data, id) {
         }
     });
     return await response.json(); 
+}
+
+async function WhoAmI() {
+    const response = await fetch( baseUrl+`/WhoAmI`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await response.json();
+
+    localStorage.setItem("userdata", JSON.stringify(data))
+    return;
 }

@@ -521,7 +521,7 @@
 
     $app->post("/UserFiles/{id}", function (Request $request, Response $response, $args) {
         //$id = user_validation("A");
-        //validate_token();
+        //validate_token(
 
         $user_id = $args["id"];
 
@@ -567,6 +567,16 @@
         }
         return $response;
 
+    });
+    
+    $app->delete('/Delete_blob/{id}', function ($request, $response, $args) {
+        $id = $args['id'];
+    
+        // Aufruf der Funktion delete_blob_file mit der übergebenen ID
+        delete_blob_file($id);
+
+        // Rückgabe der Erfolgsmeldung
+        return $response->withJson(['message' => 'Blob-File deleted successfully'], 200);
     });
 
 ?>
