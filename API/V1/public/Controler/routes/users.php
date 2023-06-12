@@ -442,90 +442,52 @@
 		
 		$request_data = json_decode($request_body_string, true);
 
-		if (isset($request_data["name"])) {
-			$name = strip_tags(addslashes($request_data["name"]));
-		
-			if (strlen($name) > 255) {
-				error_function(400, "The name is too long. Please enter less than 255 letters.");
-			}
-		
-			$user["name"] = $name;
-		}
+		if (isset($request_data["username"])) {
+            $username = strip_tags(addslashes($request_data["username"]));
+        
+            if (strlen($username) > 20) {
+                error_function(400, "The username is too long. Please enter less than 20 letters.");
+            }
+        
+            $user["username"] = $username;
+        }
 
         if (isset($request_data["email"])) {
 			$email = strip_tags(addslashes($request_data["email"]));
-		
-			if (strlen($email) > 500) {
-				error_function(400, "The email is too long. Please enter less than 500 letters.");
+			if (strlen($email) > 225) {
+				error_function(400, "The email is too long. Please enter less than 255 letters.");
 			}
-		
 			$user["email"] = $email;
 		}
 
-        if (isset($request_data["passwdhash"])) {
-			$password = strip_tags(addslashes($request_data["passwdhash"]));
+        if (isset($request_data["password"])) {
+			$password = strip_tags(addslashes($request_data["password"]));
 		
-			if (strlen($password) > 1000) {
-				error_function(400, "The password is too long. Please enter less than 1000 letters.");
+			if (strlen($password) > 255) {
+				error_funciton(400, "The password is too long. Please enter less than 255 letters.");
 			}
 		
-			$user["passwdhash"] = $password;
+			$user["password"] = $password;
 
-            $user["passwdhash"] = hash("sha256", $password);
+            $user["password"] = hash("sha256", $password);
 
-		}
-
-        if (isset($request_data["picture_id"])) {
-			$picture_id = strip_tags(addslashes($request_data["picture_id"]));
-		
-			if (strlen($picture_id) > 1000) {
-				error_function(400, "The picture_id is too long. Please enter less than 1000 letters.");
-			}
-		
-			$user["picture_id"] = $picture_id;
-		}
-
-        if (isset($request_data["parents"])) {
-			$parents = strip_tags(addslashes($request_data["parents"]));
-		
-			if (strlen($parents) > 1000) {
-				error_function(400, "The parents is too long. Please enter less than 1000 letters.");
-			}
-		
-			$user["parents"] = $parents;
-		}
-
-        if (isset($request_data["birthdate"])) {
-			$birthdate = strip_tags(addslashes($request_data["birthdate"]));
-		
-			if (strlen($birthdate) > 1000) {
-				error_function(400, "The birthdate is too long. Please enter less than 1000 letters.");
-			}
-		
-			$user["birthdate"] = $birthdate;
-		}
-
-        if (isset($request_data["ahvnumer"])) {
-			$ahvnumer = strip_tags(addslashes($request_data["ahvnumer"]));
-		
-			if (strlen($ahvnumer) > 1000) {
-				error_function(400, "The ahvnumer is too long. Please enter less than 1000 letters.");
-			}
-		
-			$user["ahvnumer"] = $ahvnumer;
 		}
 
         if (isset($request_data["role"])) {
 			$role = strip_tags(addslashes($request_data["role"]));
 		
-			if (strlen($role) > 1000) {
-				error_function(400, "The role is too long. Please enter less than 1000 letters.");
+			if (strlen($role) > 255) {
+				error_funciton(400, "The role is too long. Please enter less than 255 letters.");
 			}
-		
-			$user["role"] = $role;
+            else if (!id_exists_in_table($role, "roles", "role" )) {
+                error_function(400, "The Role $role does not exist.");
+            } else {
+                $user["role"] = $role;
+            }
+			
 		}
 
-		if (update_user($user_id, $user["name"], $user["email"], $user["passwdhash"], $user["picture_id"], $user["parents"], $user["birthdate"], $user["ahvnumer"], $user["role"])) {
+		if (update_user($user_id, $user["username"], $user["email"], $user["password"], $user["role"])) {
 			message_function(200, "The userdata were successfully updated");
             return true;
 		}

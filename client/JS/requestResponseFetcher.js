@@ -40,6 +40,16 @@ async function getAllUsers() {
     return await response.json(); 
 }
 
+async function getFiles(id) {
+    const response = await fetch( baseUrl+`UserFiles/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return await response.json(); 
+}
+
 //POST
 async function postStudent(data) {
     const response = await fetch( baseUrl+"Student", {
