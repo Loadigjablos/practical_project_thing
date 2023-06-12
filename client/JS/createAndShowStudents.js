@@ -105,6 +105,18 @@ function createNewStudentWindow() {
     </div>
     `;
     contactDataFiles.innerHTML = `
+    <div class="relative mb-[1rem] h-[2rem] cursor-pointer">
+        <input id="contract" type="file" accept="application/pdf" class="w-[100%] h-[100%] text-[1.2rem] m-0 bg-[rgba(0,0,0,0)] mt-[1rem] rounded-[2px] border-2">
+        <label class="absolute left-[0.2rem] top-0 text-[1rem] font-normal text-[rgb(112,117,121)] px-[0.25rem] bg-[rgba(255,255,255,0.2)]">Internship contract</label>
+    </div>
+    <div class="relative mb-[1rem] h-[2rem] cursor-pointer">
+        <input id="efz" type="file" accept="application/pdf" class="w-[100%] h-[100%] text-[1.2rem] m-0 bg-[rgba(0,0,0,0)] mt-[1rem] rounded-[2px] border-2">
+        <label class="absolute left-[0.2rem] top-0 text-[1rem] font-normal text-[rgb(112,117,121)] px-[0.25rem] bg-[rgba(255,255,255,0.2)]">EFZ copy</label>
+    </div>
+    <div class="relative mb-[1rem] h-[2rem] cursor-pointer">
+        <input id="note" type="file" accept="application/pdf" class="w-[100%] h-[100%] text-[1.2rem] m-0 bg-[rgba(0,0,0,0)] mt-[1rem] rounded-[2px] border-2">
+        <label class="absolute left-[0.2rem] top-0 text-[1rem] font-normal text-[rgb(112,117,121)] px-[0.25rem] bg-[rgba(255,255,255,0.2)]">Marks</label>
+    </div>
     <button type="button" onclick="createNewStudent()" id="create" class="w-[100%] h-[3.5rem] mt-[0.5rem] mb-[0.25rem] bg-[rgba(0,0,0,0)] text-[1.5rem] hover:bg-[rgba(87,87,87,0.4)] rounded">
         Create new student
     </button>
@@ -142,7 +154,8 @@ function createNewStudentWindow() {
 }
 
 function createNewStudent() {
-    //Create user   
+    //Create user
+    const image = document.getElementById("image");     
     const name = document.getElementById("name"); 
     const surname = document.getElementById("surname"); 
     const gender = document.getElementById("gender");
@@ -157,9 +170,14 @@ function createNewStudent() {
     const spec = document.getElementById("spec");
     const classe = document.getElementById("classe");
     const qv = document.getElementById("qv"); 
+    const contract = document.getElementById("contract"); 
+    const efz = document.getElementById("efz"); 
+    const marks = document.getElementById("note");
     
     if (image.files[0] === undefined) {
         customAlert(1, "Please choose some image");
+    } else if (!image.files[0].name.includes("png")) {
+        customAlert(1, "Image has a false file format");
     } else if (name.value.length === undefined || name.value.length < 3) {
         customAlert(1, "Name is too short or empty");
     } else if (surname.value.length === undefined || surname.value.length < 3) {
@@ -186,23 +204,76 @@ function createNewStudent() {
         customAlert(1, "Qv yaer ist too short or empty");
     } else if (qv.value < 2023 || qv.value > 2027) {
         customAlert(1, "Qv yaer must be between 2023 and 2027");
+    } else if (contract.files[0] !== undefined && !contract.files[0].name.includes("pdf")) {
+        customAlert(1, "Contract has a false file format");
+    } else if (efz.files[0] !== undefined && !efz.files[0].name.includes("pdf")) {
+        customAlert(1, "EFZ has a file format");
     } else {
-        addNewStudent(name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe);
+        const reader = new FileReader();
+        let files = [];
+        let checkOut = 0;
+        reader.addEventListener("load", () => {
+            files.push(reader.result);
+            if (reader.result !== 0 && checkOut === 0) {
+                if (contract.files[0] !== undefined) {
+                    checkOut = 1;
+                    reader.readAsDataURL(contract.files[0]);
+                } else if (efz.files[0] !== undefined) {
+                    checkOut = 2;
+                    if (contract.files[0] === undefined) files.push(0);
+                    reader.readAsDataURL(efz.files[0]); 
+                } else if (marks.files[0] !== undefined) {
+                    checkOut = 3;
+                    if (contract.files[0] === undefined) files.push(0);
+                    if (efz.files[0] === undefined) files.push(0);
+                    reader.readAsDataURL(marks.files[0]); 
+                } else {
+                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                }
+            } else if (checkOut === 1) {
+                if (efz.files[0] !== undefined) {
+                    checkOut = 2;
+                    if (contract.files[0] === undefined) files.push(0);
+                    reader.readAsDataURL(efz.files[0]); 
+                } else if (marks.files[0] !== undefined) {
+                    checkOut = 3;
+                    if (contract.files[0] === undefined) files.push(0);
+                    if (efz.files[0] === undefined) files.push(0);
+                    reader.readAsDataURL(marks.files[0]); 
+                } else {
+                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                }
+            } else if (checkOut === 2) {
+                if (marks.files[0] !== undefined) {
+                    checkOut = 3;
+                    reader.readAsDataURL(marks.files[0]); 
+                } else {
+                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                }
+            } else if (checkOut === 3) {
+                addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+            } 
+        })
+        reader.readAsDataURL(image.files[0]);
     }
 }
 
-function addNewStudent(name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe) {
+function addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
     const postHeader = document.createElement("div");
     const postBody = document.createElement("div");
     const postFooter = document.createElement("div");
+    const postImage = document.createElement("img");
     const postName = document.createElement("div");
     const postAddress = document.createElement("div");
     const postPersInfo = document.createElement("div");
     const postAnother = document.createElement("div");
     const postDownload = document.createElement("div");
+    const postDownloadContract = document.createElement("a");
+    const postDownloadEfz = document.createElement("a");
+    const postDownloadMarks = document.createElement("a");
     const postDelete = document.createElement("button");
     const postEdit = document.createElement("button");
     //Text
@@ -210,6 +281,16 @@ function addNewStudent(name, surname, gender, birthday, city, street, postCode, 
     postAddress.innerText = `Gender: ${gender.value} | Birthday: ${birthday.value}\nAddress: ${city.value}, ${street.value} ${postCode.value}`;
     postPersInfo.innerText = `E-mail: ${email.value} \n Telephone number: ${telNum.value}`;
     postAnother.innerText = `AHV: ${ahv.value} | QV-Year: ${qv.value}\nClase: ${classe.value} | Specialisation: ${spec.value}\nGuardian: ${guardian.value}`;
+    postImage.src = files[0];
+    postDownloadContract.innerText = "Download contract";
+    postDownloadEfz.innerText = "Download efz";
+    postDownloadMarks.innerText = "Download marks";
+    postDownloadContract.download = "contract.pdf";
+    postDownloadContract.href = files[1];
+    postDownloadEfz.download = "EFZ.pdf";
+    postDownloadEfz.href = files[2];
+    postDownloadMarks.download = "Marks.pdf";
+    postDownloadMarks.href = files[3];
     //Styles
     postWindow.className = "bg-white mt-[2rem] border-4 border-gray-300 shadow-lg shadow-black";
     postHeader.className = "flex flex-row mt-[0.5rem]";
@@ -219,6 +300,7 @@ function addNewStudent(name, surname, gender, birthday, city, street, postCode, 
     postName.className = "ml-6 text-[1.2rem]";
     postDelete.className = "bg-[url('../Materials/delete.png')] bg-cover w-[1.4rem] h-[1.4rem] ml-auto mt-[0.2rem] cursor-pointer hover:bg-[rgba(250,20,50,0.4)] rounded";
     postEdit.className = "bg-[url('../Materials/editing.png')] bg-cover w-[1.4rem] h-[1.4rem] ml-[1rem] mr-[1.5rem] mt-[0.2rem] cursor-pointer hover:bg-[rgba(245,255,90,0.4)] rounded";
+    postDownload.className = "text-blue-500 flex flex-col";
     //Functions
     postDelete.addEventListener("click", function() {       
         postWindow.remove();
@@ -227,10 +309,20 @@ function addNewStudent(name, surname, gender, birthday, city, street, postCode, 
         
     });
     //Appends
+    postHeader.appendChild(postImage);
     postHeader.appendChild(postName);
     postBody.appendChild(postAddress);
     postBody.appendChild(postPersInfo);
     postBody.appendChild(postAnother);
+    if (files[1] !== undefined && files[1] !== 0) {
+        postDownload.appendChild(postDownloadContract);
+    } 
+    if (files[2] !== undefined && files[2] !== 0) {
+        postDownload.appendChild(postDownloadEfz);
+    }
+    if (files[3] !== undefined && files[3] !== 0) {
+        postDownload.appendChild(postDownloadMarks);
+    }
     postFooter.appendChild(postDownload);
     postFooter.appendChild(postDelete);
     postFooter.appendChild(postEdit);
@@ -253,6 +345,10 @@ function addNewStudent(name, surname, gender, birthday, city, street, postCode, 
     spec.value = "Application developer";
     classe.value = "inf-21";
     qv.value = "2023";
+    image.value = "";
+    contract.value = "";
+    efz.value = "";
+    marks.value = "";
 }
 
 
