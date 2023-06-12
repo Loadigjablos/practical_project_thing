@@ -71,7 +71,7 @@
             error_function(404, "not Found");
         }        
         
-        $token = create_token($email, $password, $user["id"]);
+        $token = create_token($email, $password, $user["user_id"]);
         setcookie("token", $token, time() + 3600);
         message_function(200, "Successfully logged in");
         
