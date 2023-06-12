@@ -188,3 +188,17 @@ async function putUser(data, id) {
     });
     return await response.json(); 
 }
+
+async function WhoAmI() {
+    const response = await fetch( baseUrl+`/WhoAmI`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const data = await response.json();
+
+    localStorage.setItem("userdata", JSON.stringify(data))
+    return;
+}
