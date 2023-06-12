@@ -27,4 +27,27 @@
 		
 		return true;
 	}
+
+    function get_files_by_id($id) {
+        global $database;
+
+        $result = $database->query("SELECT * FROM `students` WHERE `id` = `$id`;");
+
+        if (!$result) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+				while ($user = $result->fetch_assoc()) {
+                    $result_array[] = $user;
+                }
+                return $result_array;
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+        
+
+    }
 ?>

@@ -166,4 +166,29 @@
 		
 		return $response;
 	});
+
+    $app->get("/UserFiles/{id}", function (Request $request, Response $response, $args) {
+
+        $student_id = $args["id"];
+        $result = get_files_by_id($student_id);
+        
+        if (!$result) {
+            if ($result == false) {
+                error_function(500, "Error");
+            } else if ($result !== true) {
+                if ($result->num_rows > 0) {
+                    $result_array = array();
+                    while ($user = $result->fetch_assoc()) {
+                        $result_array[] = $user;
+                    }
+                    return $result_array;
+                } else {
+                    error_function(404, "not Found");
+                }
+            } else {
+                error_function(404, "not Found");
+            }
+        }
+
+    });
 ?>
