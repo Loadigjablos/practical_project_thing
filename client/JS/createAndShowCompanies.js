@@ -79,7 +79,7 @@ function createNewCompanyWindow() {
     contactDataContact.className = blockStyle;
     contactDataPerson.className = blockStyle;
     contactDataContract.className = blockStyle;
-    form.className = "w-[95%] max-h-[26rem] overflow-y-auto";
+    form.className = "w-[95%]";
     //Text
     titel.innerText = "Create company";
     //Functions
@@ -101,7 +101,8 @@ function createNewCompanyWindow() {
     createUser.appendChild(form);
 }
 
-function createNewCompany() {   
+function createNewCompany() {  
+    location.href = "#"; 
     const name = document.getElementById("name"); 
     const city = document.getElementById("city"); 
     const street = document.getElementById("street"); 

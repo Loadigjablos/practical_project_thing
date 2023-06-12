@@ -7,7 +7,7 @@ function login() {
         customAlert(1, "Username or password field are to short");
     } else {
         const loginData = {
-            name: username.value,
+            username: username.value,
             password: password.value
         }
         document.location.href = "mainPage.html";

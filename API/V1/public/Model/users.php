@@ -223,6 +223,28 @@
         }
     }
 
+    function get_legal_user_by_id($user_id) {
+        global $database;
+
+        $result = $database->query("SELECT * FROM user WHERE user_id = '$user_id';");
+
+        if ($result == false) {
+            error_function(500, "Error");
+		} else if ($result !== true) {
+			if ($result->num_rows > 0) {
+                return $result->fetch_assoc();
+			} else {
+                error_function(404, "not Found");
+            }
+		} else {
+            error_function(404, "not Found");
+        }
+
+        $result = $result->fetch_assoc();
+
+	    echo json_decode($result);
+    }
+
     function get_user_by_id($user_id) {
         global $database;
 
