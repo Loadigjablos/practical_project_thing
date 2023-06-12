@@ -46,32 +46,32 @@
         $JSON_data = json_decode($body_content, true);
 
         // if JSON data doesn't have these then there is an error
-        if (isset($JSON_data["email"]) && isset($JSON_data["password"])) {
+        if (isset($JSON_data["username"]) && isset($JSON_data["password"])) {
         } else {
-            error_function(400, "Please fill in the fields (email & Password)");
+            error_function(400, "Please fill in the fields (username & Password)");
         }
 
         // Prepares the data to prevent bad data, SQL injection andCross site scripting
-        $email = validate_string($JSON_data["email"]);
+        $username = validate_string($JSON_data["username"]);
         $password = validate_string($JSON_data["password"]);
 
         if (!$password) {
             error_function(400, "password is invalid, must contain at least 5 characters");
         }
         
-        if (!$email) {
-            error_function(400, "email is invalid, must contain at least 5 characters");
+        if (!$username) {
+            error_function(400, "username is invalid, must contain at least 5 characters");
         }
         
         $password = hash("sha256", $password);
         
-        $user = get_user_by_email($email);
+        $user = get_user_by_username($username);
         
         if ($user["password"] !==  $password) {
             error_function(404, "not Found");
         }        
         
-        $token = create_token($email, $password, $user["user_id"]);
+        $token = create_token($username, $password, $user["user_id"]);
         setcookie("token", $token, time() + 3600);
         message_function(200, "Successfully logged in");
         
@@ -90,7 +90,7 @@
     $app->get("/WhoAmI", function (Request $request, Response $response, $args) {
         // unotherized pepole will get rejected
         $id = user_validation();
-		$user = get_user_id($id);
+		$user = get_user_by_id($id);
 
 		if ($user) {
 	        echo json_encode($user);
