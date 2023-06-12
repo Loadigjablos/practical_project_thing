@@ -7,7 +7,7 @@ async function getAllStudents() {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json();
+    return await response.json();
 }
 
 async function getAllCompanies() {
@@ -17,7 +17,7 @@ async function getAllCompanies() {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json();
+    return await response.json();
 }
 
 async function getAllApplications() {
@@ -27,7 +27,7 @@ async function getAllApplications() {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json();
+    return await response.json();
 }
 
 async function getAllUsers() {
@@ -37,7 +37,7 @@ async function getAllUsers() {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 //POST
@@ -49,7 +49,7 @@ async function postStudent(data) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function postCompany(data) {
@@ -60,7 +60,7 @@ async function postCompany(data) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function postApplication(data) {
@@ -71,7 +71,7 @@ async function postApplication(data) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function postUser(data) {
@@ -82,7 +82,7 @@ async function postUser(data) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 //Login and Logout
@@ -94,7 +94,7 @@ async function postLogin(data) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 async function postLogout() {
     const response = await fetch( baseUrl+"Logout", {
@@ -103,7 +103,7 @@ async function postLogout() {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 //DELETE
@@ -114,7 +114,7 @@ async function deleteStudent(id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function deleteCompany(id) {
@@ -124,7 +124,7 @@ async function deleteCompany(id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function deleteApplication(id) {
@@ -134,7 +134,7 @@ async function deleteApplication(id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 async function deleteUser(id) {
@@ -144,7 +144,7 @@ async function deleteUser(id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 
 //PUT
@@ -156,7 +156,7 @@ async function putStudent(data, id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 async function putCompany(data, id) {
     const response = await fetch( baseUrl+`Company/${id}`, {
@@ -166,7 +166,7 @@ async function putCompany(data, id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 async function putApplication(data, id) {
     const response = await fetch( baseUrl+`Application/${id}`, {
@@ -176,7 +176,7 @@ async function putApplication(data, id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }
 async function putUser(data, id) {
     const response = await fetch( baseUrl+`User/${id}`, {
@@ -186,5 +186,5 @@ async function putUser(data, id) {
             'Content-Type': 'application/json'
         }
     });
-    const result = await response.json(); 
+    return await response.json(); 
 }

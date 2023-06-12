@@ -186,10 +186,10 @@
         }
     }
 
-    function get_user_by_mail($mail) {
+    function get_user_by_username($username) {
         global $database;
 
-        $result = $database->query("SELECT * FROM user WHERE email = '$mail';");
+        $result = $database->query("SELECT * FROM user WHERE username = '$username';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -219,24 +219,6 @@
                 error_function(404, "not Found");
             }
         } else {
-            error_function(404, "not Found");
-        }
-    }
-       
-    function get_user_by_email($email) {
-        global $database;
-
-        $result = $database->query("SELECT * FROM user WHERE email = '$email';");
-
-        if ($result == false) {
-            error_function(500, "Error");
-		} 
-        else if ($result !== true) {
-			if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-			} 
-		} 
-        else {
             error_function(404, "not Found");
         }
     }
@@ -298,10 +280,10 @@
         return true;
     }
 
-    function get_id_by_email($email) {
+    function get_id_by_username($username) {
         global $database;
 
-        $result = $database->query("SELECT user_id FROM user WHERE email = '$email';");
+        $result = $database->query("SELECT user_id FROM user WHERE username = '$username';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -364,26 +346,6 @@
 	    echo json_decode($result);
     }
 
-    function get_user_id($id) {
-        global $database;
-
-        $result = $database->query("SELECT student_id, name, user_id FROM user WHERE id = '$id';");
-
-        if ($result == false) {
-            error_function(500, "Error");
-		} else if ($result !== true) {
-			if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-			} else {
-                error_function(404, "not Found");
-            }
-		}
-
-        $result = $result->fetch_assoc();
-
-	    return $result;
-    }
-
     function get_student_id($id) {
         global $database;
 
@@ -402,24 +364,6 @@
         $return = $result->fetch_assoc();
 
 	    return $return;
-    }
-
-    function get_skill_by_id($id) {
-        global $database;
-
-        $result = $database->query("SELECT * FROM skills WHERE id = '$id';");
-
-        if ($result == false) {
-            error_function(500, "Error");
-		} else if ($result !== true) {
-			if ($result->num_rows > 0) {
-                return $result->fetch_assoc();
-			} else {
-                error_function(404, "not Found");
-            }
-		} else {
-            error_function(404, "not Found");
-        }
     }
 
     function create_student($user_id, $name, $surname, $street, $city, $plz, $birthdate, $ahvnumer, $guardian, $specialization, $class_id) {
@@ -523,7 +467,7 @@
     function get_all_users() {
         global $database;
     
-        $result = $database->query("SELECT username, email, role FROM user;");
+        $result = $database->query("SELECT username, role FROM user;");
     
         if ($result == false) {
             error_function(500, "Error");
@@ -737,7 +681,7 @@
                 if ($result) {
                     message_function(200, "deleted");
                 }
-                error_function(400, "there is a problem by deleting");
+                error_function(400, "there is was problem while deleting");
             }
             else if ($check !== $student_id) {
                 error_function(400, "Access denied");
