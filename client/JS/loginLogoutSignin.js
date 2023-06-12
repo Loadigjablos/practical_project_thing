@@ -43,7 +43,7 @@ function signIn() {
 
 function logout() {
     localStorage.removeItem("userdata"); 
-    document.location.href = "http://localhost:4200/";
+    document.location.href = "http://localhost:5500/";
     //postLogout();   
 }
 
