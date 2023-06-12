@@ -499,7 +499,7 @@
 		return $response;
 	});
 
-    $app->get("/UserFile", function (Request $request, Response $response, $args) {
+   /* $app->get("/UserFile", function (Request $request, Response $response, $args) {
         validate_token(); // unotherized pepole will get rejected
         $id = user_validation();
         $myId = get_user_id($id);
@@ -549,7 +549,7 @@
         echo json_encode(get_files_from_userid($user_id));
 		
         return $response;
-	});
+	});*/
 
     $app->delete("/Application/{applicaion_id}", function (Request $request, Response $response, $args) {
 
