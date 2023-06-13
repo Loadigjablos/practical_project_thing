@@ -102,16 +102,16 @@ function createNewCompanyWindow() {
     const allCompanies = getAllCompanies();
     for (let i = 0; i <= allCompanies.length; i++) {
         addNewCompany(
-            allCompanies.name,
-            allCompanies.city,
-            allCompanies.street,
-            allCompanies.email,
-            allCompanies.telNum,
-            allCompanies.pName,
-            allCompanies.pSurname,
-            allCompanies.pEmail,
-            allCompanies.pTelNum,
-            allCompanies.contracts
+            allCompanies[i].name,
+            allCompanies[i].city,
+            allCompanies[i].street,
+            allCompanies[i].email,
+            allCompanies[i].telNum,
+            allCompanies[i].pName,
+            allCompanies[i].pSurname,
+            allCompanies[i].pEmail,
+            allCompanies[i].pTelNum,
+            allCompanies[i].contracts
         );
     }
 }

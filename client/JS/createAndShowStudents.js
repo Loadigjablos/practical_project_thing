@@ -156,19 +156,19 @@ function createNewStudentWindow() {
     for (let i = 0; i <= allStudents.length; i++) {
         addNewStudent(
             getFiles(allStudents[i].id),
-            allStudents.name,
-            allStudents.surname,
-            allStudents.gender,
-            allStudents.birthday,
-            allStudents.city,
-            allStudents.street,
-            allStudents.postCode,
-            allStudents.email,
-            allStudents.telNum,
-            allStudents.qv,
-            allStudents.guardian,
-            allStudents.spec,
-            allStudents.classe
+            allStudents[i].name,
+            allStudents[i].surname,
+            allStudents[i].gender,
+            allStudents[i].birthday,
+            allStudents[i].city,
+            allStudents[i].street,
+            allStudents[i].postCode,
+            allStudents[i].email,
+            allStudents[i].telNum,
+            allStudents[i].qv,
+            allStudents[i].guardian,
+            allStudents[i].spec,
+            allStudents[i].classe
         );
     }
 }

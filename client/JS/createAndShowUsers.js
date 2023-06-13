@@ -67,9 +67,9 @@ function createNewUserWindow() {
     const allUsers = getAllUsers();
     for (let i = 0; i <= allUsers.length; i++) {
         addNewUser(
-            allUsers.username,
-            allUsers.role,
-            allUsers.password
+            allUsers[i].username,
+            allUsers[i].role,
+            allUsers[i].password
         );
     }
 }
