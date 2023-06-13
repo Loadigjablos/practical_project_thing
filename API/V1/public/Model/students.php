@@ -31,7 +31,7 @@
     function get_files_by_id($id) {
         global $database;
 
-        $result = $database->query("SELECT * FROM `students` WHERE `id` = `$id`;");
+        $result = $database->querya("SELECT * FROM `students` WHERE `id` = `$id`;");
 
         if (!$result) {
             error_function(500, "Error");
