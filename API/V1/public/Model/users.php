@@ -398,6 +398,13 @@
             return false;
         }
 
+        $existing_user = $database->query("SELECT * FROM `students` WHERE `user_id` = '$user_id'")->fetch_assoc();
+        if ($existing_user) {
+            // handle error
+            error_function(400, "A user with the user_id '$user_id' already exists.");
+            return false;
+        }
+
         $result = $database->query("INSERT INTO `students` (`user_id`,`name`, `surname`, `street`, `city`, `zip`, `date_of_birth`, `AHV`, `guardien_id`, `specialization`, `class_id`) VALUES ('$user_id', '$name', '$surname', '$street', '$city', '$plz', '$birthdate', '$ahvnumer', '$guardian', '$specialization', '$class_id');");
         if ($result) {
                 
