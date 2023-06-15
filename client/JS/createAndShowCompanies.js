@@ -102,16 +102,13 @@ function createNewCompanyWindow() {
     const allCompanies = getAllCompanies();
     for (let i = 0; i <= allCompanies.length; i++) {
         addNewCompany(
-            allCompanies[i].name,
+            allCompanies[i].company_name,
             allCompanies[i].city,
             allCompanies[i].street,
             allCompanies[i].email,
-            allCompanies[i].telNum,
-            allCompanies[i].pName,
-            allCompanies[i].pSurname,
-            allCompanies[i].pEmail,
-            allCompanies[i].pTelNum,
-            allCompanies[i].contracts
+            allCompanies[i].phone,
+            allCompanies[i].surname,
+            allCompanies[i].collaborative_contract
         );
     }
 }
@@ -158,18 +155,16 @@ function createNewCompany() {
     } else {
         const reader = new FileReader();
         reader.addEventListener("load", () => {
-            addNewCompany(name, city, street, email, telNum, pName, pSurname, pEmail, pTelNum, reader.result, contract);
+            addNewCompany(name, city, street, email, telNum, pSurname, reader.result, pName, pEmail, pTelNum, contract);
             const data = {
-                name: name,
+                company_name: name,
                 city: city,
                 street: street,
                 email: email,
-                telNum: telNum,
-                pName: pName,
-                pSurname: pSurname,
-                pEmail: pEmail,
-                pTelNum: pTelNum,
-                contract: reader.result
+                phone: telNum,
+                surname: pSurname,
+                email: pEmail,
+                collaborative_contract: reader.result
             }
             postCompany(data);
         })
@@ -177,7 +172,7 @@ function createNewCompany() {
     }
 }
 
-function addNewCompany(name, city, street, email, telNum, pName, pSurname, pEmail, pTelNum, contracts, contract = 0) {
+function addNewCompany(name, city, street, email, telNum, pSurname, contracts, pName, pEmail, pTelNum, contract = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");

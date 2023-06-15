@@ -158,16 +158,16 @@ function createNewStudentWindow() {
             getFiles(allStudents[i].id),
             allStudents[i].name,
             allStudents[i].surname,
-            allStudents[i].gender,
-            allStudents[i].birthday,
+            allStudents[i].date_of_birth,
             allStudents[i].city,
             allStudents[i].street,
-            allStudents[i].postCode,
+            allStudents[i].zip,
             allStudents[i].email,
             allStudents[i].telNum,
+            allStudents[i].AHV,
             allStudents[i].qv,
             allStudents[i].guardian,
-            allStudents[i].spec,
+            allStudents[i].specialisation,
             allStudents[i].classe
         );
     }
@@ -249,7 +249,7 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 1) {
                 if (efz.files[0] !== undefined) {
@@ -262,32 +262,31 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 2) {
                 if (marks.files[0] !== undefined) {
                     checkOut = 3;
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 3) {
-                addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 const data = {
                     files: files,
                     name: name,
                     surname: surname,
-                    gender: gender,
-                    birthday: birthday,
+                    date_of_birth: birthday,
                     city: city,
                     street: street,
-                    postCode: postCode,
+                    zip: postCode,
                     email: email,
                     telNum: telNum,
-                    ahv: ahv,
+                    AHV: ahv,
                     qv: qv,
                     guardian: guardian,
-                    spec: spec,
+                    specialisation: spec,
                     classe: classe,
                     image: image,
                     contract: contract,
@@ -301,7 +300,7 @@ function createNewStudent() {
     }
 }
 
-function addNewStudent(files, name, surname, gender, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
+function addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
