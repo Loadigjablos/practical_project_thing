@@ -86,6 +86,7 @@ function createNewUser() {
     } else {
         addNewUser(username, role, password);
         const data = {
+            email: "Jamie oliver",
             username: username,
             role: role,
             password: password
