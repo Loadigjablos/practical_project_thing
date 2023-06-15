@@ -333,7 +333,7 @@
         return $response;
     });
 
-    $app->post("/Blob", function (Request $request, Response $response, $args) {
+    $app->post("/UserFiles", function (Request $request, Response $response, $args) {
         validate_token(); // unotherized pepole will get rejected
         $id = user_validation();
 
