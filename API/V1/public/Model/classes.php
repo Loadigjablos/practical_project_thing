@@ -134,4 +134,3 @@
         error_function(400, "There is a problem while delting the class");
     }
 ?>
-3

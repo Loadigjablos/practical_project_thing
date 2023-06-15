@@ -226,7 +226,7 @@
     function get_legal_user_by_id($user_id) {
         global $database;
 
-        $result = $database->query("SELECT * FROM user WHERE user_id = '$user_id';");
+        $result = $database->query("SELECT user_id, username, role FROM user WHERE user_id = '$user_id';");
 
         if ($result == false) {
             error_function(500, "Error");
@@ -567,7 +567,7 @@
     function get_all_students() {
         global $database;
     
-        $result = $database->query("SELECT s.name, s.surname, s.street, s.city, s.zip, s.date_of_birth, s.AHV, s.specialization, g.name AS guardian_name, g.surname AS guardian_surname, c.class_name
+        $result = $database->query("SELECT s.student_id, s.name, s.surname, s.street, s.city, s.zip, s.date_of_birth, s.AHV, s.specialization, g.name AS guardian_name, g.surname AS guardian_surname, c.class_name
                                    FROM students s
                                    LEFT JOIN guardians g ON s.guardien_id = g.guardian
                                    LEFT JOIN class c ON s.class_id = c.class_id;");
