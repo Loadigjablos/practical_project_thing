@@ -151,6 +151,22 @@
 		return $response;
 	});
 
+    $app->delete("/Guardian/{guardian}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $guardian = $args["guardian"];
+
+        if (delete_guardian($guardian)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+	
     $app->put("/Class/{id}", function (Request $request, Response $response, $args) {
 
 		$id = user_validation("A");
