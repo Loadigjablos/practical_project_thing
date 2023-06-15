@@ -139,6 +139,46 @@
             return true;
         }
     }
+
+    function get_company_by_id($id) {
+        global $database;
+        $result = $database->query("SELECT * FROM companies WHERE company_id = '$id';");
+    
+        if ($result == false) {
+            error_function(500, "Error");
+        } else if ($result !== true) {
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                return $row['company_id'];  // return only the company_id
+            } else {
+                error_function(404, "not Found");
+            }
+        } else {
+            error_function(404, "not Found");
+        }
+    }
+    
+    function update_company($company_id, $company_name, $street, $city, $zip, $collaborative_contract ) {
+        global $database;
+        $result = $database->query("UPDATE `companies` SET company_name = '$company_name', street = '$street', city = '$city', zip = '$zip', collaborative_contract = '$collaborative_contract' WHERE company_id  = '$company_id';");
+
+        if (!$result) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    function delete_company($company_id) {
+        global $database;
+
+        $result = $database->query("DELETE FROM companies WHERE company_id = $company_id;");
+
+        if ($result) {
+            message_fcuntion(200, "Deleted");
+        }
+        error_function(400, "There is a problem while delting the class");
+    }
     
 
 

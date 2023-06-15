@@ -197,6 +197,78 @@
         return $response;        
     });
 
+    $app->put("/Company/{id}", function (Request $request, Response $response, $args) {
+
+		$id = user_validation("A");
+        validate_token();
+		$id = $args["id"];
+		$company_id = get_company_by_id($id);
+        
+        if (!$company_id) {
+            error_function(404, "No company found for the id ( " . $id . " ).");
+        }
+        $request_body_string = file_get_contents("php://input");
+        $request_data = json_decode($request_body_string, true);
+
+        $user = array();  // initialize the array
+        
+        //companyName
+        if (isset($request_data["companyName"])) {
+            $companyName = strip_tags(addslashes($request_data["companyName"]));
+        
+            if (strlen($companyName) > 30) {
+                error_function(400, "The companyName is too long. Please enter less than 30 letters.");
+            }
+        
+            $user["companyName"] = $companyName;
+        }
+        //street
+        if (isset($request_data["street"])) {
+            $street = strip_tags(addslashes($request_data["street"]));
+            if (strlen($street) > 20) {
+                error_function(400, "The street is too long. Please enter less than 20 letters.");
+            }
+            $user["street"] = $street;
+        }
+        //city
+        if (isset($request_data["city"])) {
+            $city = strip_tags(addslashes($request_data["city"]));
+            if (strlen($city) > 20) {
+                error_function(400, "The city is too long. Please enter less than 20 letters.");
+            }
+            $user["city"] = $city;
+        }
+        //zip
+        if (isset($request_data["zip"])) {
+            $zip = strip_tags(addslashes($request_data["zip"]));
+        
+            if (!is_numeric($zip)) {
+                error_function(400, "The zip code must be numeric.");
+            } else if (strlen($zip) != 4) {
+                error_function(400, "The zip code must be exactly 4 digits.");
+            } else {
+                $user["zip"] = $zip;
+            }
+        }
+        //collaborative_contract
+        if (isset($request_data["collaborative_contract"])) {
+            $collaborative_contract = strip_tags(addslashes($request_data["collaborative_contract"]));
+            $user["collaborative_contract"] = $collaborative_contract;
+        }
+
+
+        if (update_company($company_id, $user["companyName"], $user["street"], $user["city"], $user["zip"], $user["collaborative_contract"])) {
+            message_function(200, "The Company Data were successfully updated");
+            return true;
+        } else {
+            error_function(500, "An error occurred while saving the Company data.");
+            return false;
+        }
+    
+        return $response;
+
+    });
+
     $app->put("/Reservation/{id}", function (Request $request, Response $response, $args) {
 
 		$id = user_validation("A");
@@ -290,6 +362,22 @@
         }
         
         return $response;
+    });
+
+    $app->delete("/Company/{Company_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $Company_id = $args["Company_id"];
+
+        if (delete_company($Company_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
     });
 
 ?>

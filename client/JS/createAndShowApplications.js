@@ -104,16 +104,16 @@ function createNewApplicationWindow() {
     const allApplications = getAllApplications();
     for (let i = 0; i <= allApplications.length; i++) {
         createApplication(
-            allApplications.sName,
-            allApplications.rName,
-            allApplications.fSalary,
-            allApplications.sSalary,
-            allApplications.appDate,
-            allApplications.intDate,
-            allApplications.status,
-            allApplications.tryOut,
-            allApplications.dateContract,
-            allApplications.approve
+            allApplications[i].sName,
+            allApplications[i].rName,
+            allApplications[i].fSalary,
+            allApplications[i].sSalary,
+            allApplications[i].appDate,
+            allApplications[i].intDate,
+            allApplications[i].status,
+            allApplications[i].tryOut,
+            allApplications[i].dateContract,
+            allApplications[i].approve
         );
     }
 }

@@ -568,4 +568,39 @@
         return $response;
 
     });
+    
+    $app->delete("/Blob/{blob_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation();
+        validate_token();
+
+        $blob_id = $args["blob_id"];
+        $student_id = get_student_id($id);
+        $student_id = $student_id["student_id"];
+
+        if (delete_blob($blob_id, $student_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+
+    $app->delete("/Class/{class_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $class_id = $args["class_id"];
+
+        if (delete_class($class_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+
 ?>
