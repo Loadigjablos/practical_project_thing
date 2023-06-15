@@ -169,17 +169,32 @@
         return true;
     }
 
+    function delete_ResponsiblePeople($responsible_person_id) {
+        global $database;
+    
+        $result = $database->query("DELETE FROM `responsible_people` WHERE `responsible_person_id` = '$responsible_person_id';");
+    
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     function delete_company($company_id) {
         global $database;
-
-        $result = $database->query("DELETE FROM companies WHERE company_id = $company_id;");
-
-        if ($result) {
-            message_fcuntion(200, "Deleted");
+    
+        $company = get_company_by_id($company_id);
+        if (!$company) {
+            return false;
         }
-        error_function(400, "There is a problem while delting the class");
+        $result = $database->query("DELETE FROM `companies` WHERE `company_id` = '$company_id';");
+    
+        if ($result) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
-
-
 ?>
