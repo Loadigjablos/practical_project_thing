@@ -1,4 +1,4 @@
-const baseUrl = "/API/V1/";
+const baseUrl = "../../API/V1/";
 //GET
 async function getAllStudents() {
     const response = await fetch( baseUrl+"Students", {
@@ -97,14 +97,14 @@ async function postUser(data) {
 
 //Login and Logout
 async function postLogin(data) {
-    const response = await fetch( baseUrl+"Login", {
+    await fetch( baseUrl+"Login", {
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json'
         }
     });
-    return await response.json(); 
+    return;
 }
 async function postLogout() {
     const response = await fetch( baseUrl+"Logout", {
@@ -200,7 +200,7 @@ async function putUser(data, id) {
 }
 
 async function WhoAmI() {
-    const response = await fetch( baseUrl+`/WhoAmI`, {
+    const response = await fetch( baseUrl+`WhoAmI`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
