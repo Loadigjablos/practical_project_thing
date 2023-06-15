@@ -348,7 +348,14 @@ function addNewStudent(files, name, surname, birthday, city, street, postCode, e
         postWindow.remove();
     });
     postEdit.addEventListener("click", function() {       
-        
+        if (postName.contentEditable == "true") {
+
+        } else {
+            postName.contentEditable = "true";
+            postAddress.contentEditable = "true";
+            postPersInfo.contentEditable = "true";
+            postAnother.contentEditable = "true";
+        }  
     });
     //Appends
     postHeader.appendChild(postImage);
