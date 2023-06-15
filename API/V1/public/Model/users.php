@@ -690,23 +690,20 @@
 		else {
 			return true;
 		}
-    } 
-    
-    
-        function delete_application($applicaion_id, $student_id) {
-            global $database;
-
-            $check = $database->query("SELECT student_id FROM applicaions WHERE applicaion_id = '$applicaion_id';")->fetch_assoc()["student_id"];
-    
-            if ($check === $student_id) {
-                $result = $database->query("DELETE FROM applicaions WHERE applicaion_id = $applicaion_id;");
-                if ($result) {
-                    message_function(200, "deleted");
-                }
-                error_function(400, "there is was problem while deleting");
+    }
+      function delete_application($applicaion_id, $student_id) {
+        global $database;
+       
+        $check = $database->query("SELECT student_id FROM applicaions WHERE applicaion_id = '$applicaion_id';")->fetch_assoc()["student_id"];
+        if ($check === $student_id) {
+            $result = $database->query("DELETE FROM applicaions WHERE applicaion_id = $applicaion_id;");
+            if ($result) {
+                message_function(200, "deleted");
             }
-            else if ($check !== $student_id) {
-                error_function(400, "Access denied");
+            error_function(400, "there is was problem while deleting");
+        }
+        else if ($check !== $student_id) {
+            error_function(400, "Access denied");
             }
             error_function(400, "There is no application with this id");
         }
@@ -715,7 +712,6 @@
             global $database;
         
             $getFile = $database->query("SELECT file_id FROM user_files WHERE user_id = '$id';")->fetch_assoc()["file_id"];
-        
             $result = $database->query("DELETE FROM blobfiles WHERE id = '$getFile';");
         
             if ($result) {

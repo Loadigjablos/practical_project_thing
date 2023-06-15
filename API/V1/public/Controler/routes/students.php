@@ -191,4 +191,23 @@
         }
 
     });
+
+    $app->delete("/Students/{student_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $student_id = $args["student_id"];
+        $user_id = get_user_by_id($id);
+        $user_id = $user_id["user_id"];
+
+        if (delete_student($student_id, $user_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+
 ?>
