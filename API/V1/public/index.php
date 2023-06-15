@@ -2,7 +2,7 @@
 
     //error handler function
     function customError($errno, $errstr) {
-        echo " ";
+        echo "";
     }
     
     //set error handler

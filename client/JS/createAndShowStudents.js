@@ -155,7 +155,7 @@ async function createNewStudentWindow() {
     const allStudents = await getAllStudents();
     for (let i = 0; i <= allStudents.length; i++) {
         addNewStudent(
-            getFiles(allStudents[i].id),
+            //await getFiles(allStudents[i].id),
             allStudents[i].name,
             allStudents[i].surname,
             allStudents[i].date_of_birth,
@@ -163,10 +163,9 @@ async function createNewStudentWindow() {
             allStudents[i].street,
             allStudents[i].zip,
             allStudents[i].AHV,
-            allStudents[i].qv,
-            allStudents[i].guardian,
-            allStudents[i].specialisation,
-            allStudents[i].classe
+            allStudents[i].guardian_name,
+            allStudents[i].specialization,
+            allStudents[i].class_name
         );
     }
 }
@@ -247,7 +246,7 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 1) {
                 if (efz.files[0] !== undefined) {
@@ -260,17 +259,17 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 2) {
                 if (marks.files[0] !== undefined) {
                     checkOut = 3;
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 3) {
-                addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, guardian, spec, classe, image, contract, efz, marks);
                 const data = {
                     files: files,
                     name: name,
@@ -297,7 +296,7 @@ function createNewStudent() {
     }
 }
 
-function addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
+function addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
@@ -319,7 +318,7 @@ function addNewStudent(files, name, surname, birthday, city, street, postCode, a
     postName.innerText = `Name: ${name.value} ${surname.value}`;
     postAddress.innerText = `Gender: ${gender.value} | Birthday: ${birthday.value}\nAddress: ${city.value}, ${street.value} ${postCode.value}`;
     postPersInfo.innerText = ``;
-    postAnother.innerText = `AHV: ${ahv.value} | QV-Year: ${qv.value}\nClase: ${classe.value} | Specialisation: ${spec.value}\nGuardian: ${guardian.value}`;
+    postAnother.innerText = `AHV: ${ahv.value} | Clase: ${classe.value} \n Specialisation: ${spec.value} | Guardian: ${guardian.value}`;
     postImage.src = files[0];
     postDownloadContract.innerText = "Download contract";
     postDownloadEfz.innerText = "Download efz";

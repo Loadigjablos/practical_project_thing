@@ -1,4 +1,5 @@
 const baseUrl = "../../API/V1/";
+
 //GET
 async function getAllStudents() {
     const response = await fetch( baseUrl+"Students", {
