@@ -380,4 +380,19 @@
 
     });
 
+    $app->delete("/ResponsiblePeople_delete/{responsible_person_id}", function (Request $request, Response $response, $args) {
+        $id = user_validation("A");
+        validate_token();
+    
+        $responsible_person_id = $args["responsible_person_id"];
+    
+        if (($responsible_person_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+    
+        return $response;
+    });
+    
 ?>
