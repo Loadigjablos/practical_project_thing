@@ -1,4 +1,4 @@
-function createNewCompanyWindow() {
+async function createNewCompanyWindow() {
     //Get elements from mainPage.html and hidde or show their
     const userFunctions = document.getElementById("userFunctions");
     const mainWindow = document.getElementById("showMain");
@@ -99,7 +99,7 @@ function createNewCompanyWindow() {
     form.appendChild(contactDataContract);
     createUser.appendChild(form);
     //Get all companies
-    const allCompanies = getAllCompanies();
+    const allCompanies = await getAllCompanies();
     for (let i = 0; i <= allCompanies.length; i++) {
         addNewCompany(
             allCompanies[i].company_name,

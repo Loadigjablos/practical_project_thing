@@ -1,4 +1,4 @@
-function createNewUserWindow() {
+async function createNewUserWindow() {
     //Get elements from mainPage.html and hidde or show their
     const userFunctions = document.getElementById("userFunctions");
     const mainWindow = document.getElementById("showMain");
@@ -64,7 +64,7 @@ function createNewUserWindow() {
     form.appendChild(contactDataPerson);
     createUser.appendChild(form);
     //Show all users
-    const allUsers = getAllUsers();
+    const allUsers = await getAllUsers();
     for (let i = 0; i <= allUsers.length; i++) {
         addNewUser(
             allUsers[i].username,

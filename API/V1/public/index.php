@@ -2,7 +2,7 @@
 
     //error handler function
     function customError($errno, $errstr) {
-        echo " ";
+        echo "";
     }
     
     //set error handler
@@ -25,6 +25,8 @@
     require "Model/classes.php";
     require "Model/company.php";
     require "Model/students.php";
+    require "Model/resp_people.php";
+
     require_once "Controler/error-and-info-messages.php";
 
     // all response data will be in the Json Fromat
@@ -110,6 +112,7 @@
     require "Controler/routes/company.php";
     require "Controler/routes/classes.php";
     require "Controler/routes/students.php";
+    require "Controler/routes/resp_people.php";
 
     $app->run();
 ?>
