@@ -151,7 +151,6 @@
 		return $response;
 	});
 
-<<<<<<< HEAD
     $app->delete("/Guardian/{guardian}", function (Request $request, Response $response, $args) {
 
         $id = user_validation("A");
@@ -167,7 +166,7 @@
         return $response;
 
     });
-=======
+	
     $app->put("/Class/{id}", function (Request $request, Response $response, $args) {
 
 		$id = user_validation("A");
@@ -221,5 +220,4 @@
 		
 		return $response;
 	});
->>>>>>> c118154b9c784801c0549059f0e2ff25a3326cff
 ?>
