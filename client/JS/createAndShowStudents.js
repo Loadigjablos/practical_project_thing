@@ -155,7 +155,7 @@ async function createNewStudentWindow() {
     const allStudents = await getAllStudents();
     for (let i = 0; i <= allStudents.length; i++) {
         addNewStudent(
-            //await getFiles(allStudents[i].id),
+            await getFiles(allStudents[i].student_id),
             allStudents[i].name,
             allStudents[i].surname,
             allStudents[i].date_of_birth,
