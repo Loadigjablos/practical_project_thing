@@ -122,4 +122,15 @@
 			return true;
 		}
 	}
+
+    function delete_guardian($guardian) {
+        global $database;
+
+        $result = $database->query("DELETE FROM guardians WHERE guardian = $guardian;");
+
+        if ($result) {
+            message_fcuntion(200, "Deleted");
+        }
+        error_function(400, "There is a problem while delting the class");
+    }
 ?>

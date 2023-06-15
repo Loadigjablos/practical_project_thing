@@ -464,7 +464,7 @@
 			$password = strip_tags(addslashes($request_data["password"]));
 		
 			if (strlen($password) > 255) {
-				error_funciton(400, "The password is too long. Please enter less than 255 letters.");
+				error_function(400, "The password is too long. Please enter less than 255 letters.");
 			}
 		
 			$user["password"] = $password;
@@ -477,7 +477,7 @@
 			$role = strip_tags(addslashes($request_data["role"]));
 		
 			if (strlen($role) > 255) {
-				error_funciton(400, "The role is too long. Please enter less than 255 letters.");
+				error_function(400, "The role is too long. Please enter less than 255 letters.");
 			}
             else if (!id_exists_in_table($role, "roles", "role" )) {
                 error_function(400, "The Role $role does not exist.");
@@ -569,14 +569,38 @@
 
     });
     
-    $app->delete('/Delete_blob/{id}', function ($request, $response, $args) {
-        $id = $args['id'];
-    
-        // Aufruf der Funktion delete_blob_file mit der übergebenen ID
-        delete_blob_file($id);
+    $app->delete("/Blob/{blob_id}", function (Request $request, Response $response, $args) {
 
-        // Rückgabe der Erfolgsmeldung
-        return $response->withJson(['message' => 'Blob-File deleted successfully'], 200);
+        $id = user_validation();
+        validate_token();
+
+        $blob_id = $args["blob_id"];
+        $student_id = get_student_id($id);
+        $student_id = $student_id["student_id"];
+
+        if (delete_blob($blob_id, $student_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+
+    $app->delete("/Class/{class_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $class_id = $args["class_id"];
+
+        if (delete_class($class_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
     });
 
 ?>

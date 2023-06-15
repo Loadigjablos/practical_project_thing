@@ -50,4 +50,57 @@
         
 
     }
+
+    function delete_student($student_id, $user_id) {
+
+        global $database;
+        $check = $database->query("SELECT user_id FROM students WHERE user_id = '$user_id';")->fetch_assoc()["user_id"];
+
+        if ($check === $user_id) {
+            $result = $database->query("DELETE FROM students WHERE student_id = '$student_id';");
+            if ($result) {
+                message_function(200, "User deleted successfully");
+            } else {
+                $roleCheck = $database->query("SELECT user_id FROM students WHERE student_id = '$student_id';")->fetch_assoc()["user_id"];
+                if (!$roleCheck) {
+                    error_function(400, "This student does not have an user");
+                }
+                $getRole = $database->query("SELECT role FROM user WHERE user_id = '$roleCheck';")->fetch_assoc()["role"];
+                if (!$getRole) {
+                    error_function(400, "There is no Role");
+                }
+                if ($getRole === "A") {
+                    $deleteUser = $database->query("DELETE FROM students WHERE student_id = '$student_id';");
+                    if ($result) {
+                        message_function(200, "User deleted successfully");
+                    }
+                    else {
+                        error_function(400,"Can't remove this user.");
+                    }
+                }
+            }
+        }
+        else if ($check !== $student_id) {
+            error_function(400, "Access denied");
+        }       
+    }
+
+    /**
+     * function delete_student($student_id, $user_id) {
+        global $database;
+       
+        $check = $database->query("SELECT user_id FROM students WHERE user_id = '$user_id';")->fetch_assoc()["user_id"];
+        if ($check === $student_id) {
+            $result = $database->query("DELETE FROM students WHERE student_id = $student_id;");
+            if ($result) {
+                message_function(200, "deleted");
+            }
+            error_function(400, "there is was problem while deleting");
+        }
+        else if ($check !== $student_id) {
+            error_function(400, "Access denied");
+            }
+            error_function(400, "There is no application with this id");
+        }
+     */
 ?>

@@ -10,6 +10,8 @@ async function login() {
             username: username.value,
             password: password.value
         }
+        await postLogin(loginData);
+        await WhoAmI();
         document.location.href = "mainPage.html";
     }
 }
