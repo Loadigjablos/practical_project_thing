@@ -122,4 +122,15 @@
 			return true;
 		}
 	}
+
+    function update_class($class_id, $class_name, $qv_year) {
+		global $database;
+        $result = $database->query("UPDATE `class` SET class_name = '$class_name', QV_year = '$qv_year' WHERE class_id  = '$class_id';");
+
+        if (!$result) {
+            return false;
+        }
+        
+        return true;
+	}
 ?>

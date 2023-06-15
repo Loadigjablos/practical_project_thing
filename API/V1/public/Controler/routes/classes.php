@@ -150,4 +150,58 @@
 		
 		return $response;
 	});
+
+    $app->put("/Class/{id}", function (Request $request, Response $response, $args) {
+
+		$id = user_validation("A");
+        validate_token();
+		
+		$class_id = $args["id"];
+		
+		$user = get_class_by_id($class_id);
+		
+		if (!$user) {
+			error_function(404, "No user found for the id ( " . $class_id . " ).");
+            return false;
+		}
+		
+		$request_body_string = file_get_contents("php://input");
+		
+		$request_data = json_decode($request_body_string, true);
+
+		if (isset($request_data["class_name"])) {
+            $class_name = strip_tags(addslashes($request_data["class_name"]));
+        
+            if (strlen($class_name) > 5) {
+                error_function(400, "The class_name is too long. Please enter less than 5 letters.");
+            }
+        
+            $user["class_name"] = $class_name;
+        }
+
+        if (isset($request_data["qv_year"])) {
+            $qv_year = strip_tags(addslashes($request_data["qv_year"]));
+            $dt = DateTime::createFromFormat('Y-m-d', $qv_year);
+
+            if ($dt === false || array_sum($dt::getLastErrors())) {
+                error_function(400, "The qv_year is not valid. Please enter a valid date (yyyy-mm-dd).");
+            } else if ($qv_year != $dt->format('Y-m-d')) {
+                error_function(400, "The qv_year is not in correct format. Please enter a date in the format (yyyy-mm-dd).");
+            } else {
+            $user["qv_year"] = $qv_year;
+            }
+        }
+
+
+		if (update_class($class_id, $user["class_name"], $user["qv_year"])) {
+			message_function(200, "The classdate were successfully updated");
+            return true;
+		}
+		else {
+			error_function(500, "An error occurred while saving the class data.");
+            return false;
+		}
+		
+		return $response;
+	});
 ?>
