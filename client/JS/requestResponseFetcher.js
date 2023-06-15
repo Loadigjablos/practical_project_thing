@@ -168,6 +168,7 @@ async function putStudent(data, id) {
     });
     return await response.json(); 
 }
+
 async function putCompany(data, id) {
     const response = await fetch( baseUrl+`Company/${id}`, {
         method: 'PUT',
@@ -178,6 +179,7 @@ async function putCompany(data, id) {
     });
     return await response.json(); 
 }
+
 async function putApplication(data, id) {
     const response = await fetch( baseUrl+`Application/${id}`, {
         method: 'PUT',
@@ -188,6 +190,7 @@ async function putApplication(data, id) {
     });
     return await response.json(); 
 }
+
 async function putUser(data, id) {
     const response = await fetch( baseUrl+`User/${id}`, {
         method: 'PUT',

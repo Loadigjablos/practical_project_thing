@@ -1,4 +1,4 @@
-function createNewApplicationWindow() {
+async function createNewApplicationWindow() {
     //Get elements from mainPage.html and hidde or show their
     const userFunctions = document.getElementById("userFunctions");
     const mainWindow = document.getElementById("showMain");
@@ -101,7 +101,7 @@ function createNewApplicationWindow() {
     document.getElementById("dateContract").valueAsDate = new Date();
     document.getElementById("approve").valueAsDate = new Date();
     //Get all applications
-    const allApplications = getAllApplications();
+    const allApplications = await getAllApplications();
     for (let i = 0; i <= allApplications.length; i++) {
         createApplication(
             allApplications[i].sName,

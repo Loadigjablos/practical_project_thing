@@ -1,4 +1,4 @@
-function createNewStudentWindow() {
+async function createNewStudentWindow() {
     //Get elements from mainPage.html and hidde or show their
     const userFunctions = document.getElementById("userFunctions");
     const mainWindow = document.getElementById("showMain");
@@ -152,7 +152,7 @@ function createNewStudentWindow() {
     form.appendChild(contactDataFiles);
     createUser.appendChild(form);
     //Get all students
-    const allStudents = getAllStudents();
+    const allStudents = await getAllStudents();
     for (let i = 0; i <= allStudents.length; i++) {
         addNewStudent(
             getFiles(allStudents[i].id),
@@ -162,8 +162,6 @@ function createNewStudentWindow() {
             allStudents[i].city,
             allStudents[i].street,
             allStudents[i].zip,
-            allStudents[i].email,
-            allStudents[i].telNum,
             allStudents[i].AHV,
             allStudents[i].qv,
             allStudents[i].guardian,
@@ -249,7 +247,7 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 1) {
                 if (efz.files[0] !== undefined) {
@@ -262,17 +260,17 @@ function createNewStudent() {
                     if (efz.files[0] === undefined) files.push(0);
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 2) {
                 if (marks.files[0] !== undefined) {
                     checkOut = 3;
                     reader.readAsDataURL(marks.files[0]); 
                 } else {
-                    addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                    addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 }
             } else if (checkOut === 3) {
-                addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
+                addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image, contract, efz, marks);
                 const data = {
                     files: files,
                     name: name,
@@ -281,7 +279,6 @@ function createNewStudent() {
                     city: city,
                     street: street,
                     zip: postCode,
-                    email: email,
                     telNum: telNum,
                     AHV: ahv,
                     qv: qv,
@@ -300,7 +297,7 @@ function createNewStudent() {
     }
 }
 
-function addNewStudent(files, name, surname, birthday, city, street, postCode, email, telNum, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
+function addNewStudent(files, name, surname, birthday, city, street, postCode, ahv, qv, guardian, spec, classe, image = 0, contract = 0, efz = 0, marks = 0) {
     //Create DOM elements
     const postsWindow = document.getElementById("postsWindow");
     const postWindow = document.createElement("div");
@@ -321,7 +318,7 @@ function addNewStudent(files, name, surname, birthday, city, street, postCode, e
     //Text
     postName.innerText = `Name: ${name.value} ${surname.value}`;
     postAddress.innerText = `Gender: ${gender.value} | Birthday: ${birthday.value}\nAddress: ${city.value}, ${street.value} ${postCode.value}`;
-    postPersInfo.innerText = `E-mail: ${email.value} \n Telephone number: ${telNum.value}`;
+    postPersInfo.innerText = ``;
     postAnother.innerText = `AHV: ${ahv.value} | QV-Year: ${qv.value}\nClase: ${classe.value} | Specialisation: ${spec.value}\nGuardian: ${guardian.value}`;
     postImage.src = files[0];
     postDownloadContract.innerText = "Download contract";
