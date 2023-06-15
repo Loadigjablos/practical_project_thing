@@ -168,6 +168,17 @@
         
         return true;
     }
+
+    function delete_company($company_id) {
+        global $database;
+
+        $result = $database->query("DELETE FROM companies WHERE company_id = $company_id;");
+
+        if ($result) {
+            message_fcuntion(200, "Deleted");
+        }
+        error_function(400, "There is a problem while delting the class");
+    }
     
 
 

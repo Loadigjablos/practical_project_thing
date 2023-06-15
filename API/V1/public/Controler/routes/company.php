@@ -364,4 +364,20 @@
         return $response;
     });
 
+    $app->delete("/Company/{Company_id}", function (Request $request, Response $response, $args) {
+
+        $id = user_validation("A");
+        validate_token();
+
+        $Company_id = $args["Company_id"];
+
+        if (delete_company($Company_id)) {
+            message_function(200, "successfully deleted");
+        } else {
+            error_function(500, "error");
+        }
+        return $response;
+
+    });
+
 ?>

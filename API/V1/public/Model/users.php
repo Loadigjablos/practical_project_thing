@@ -711,17 +711,55 @@
             error_function(400, "There is no application with this id");
         }
 
-        function delete_blob_file($id) {
+        function delete_blob($blob_id, $student_id) {
             global $database;
-        
-            $getFile = $database->query("SELECT file_id FROM user_files WHERE user_id = '$id';")->fetch_assoc()["file_id"];
-        
-            $result = $database->query("DELETE FROM blobfiles WHERE id = '$getFile';");
-        
-            if ($result) {
-                message_function(200, "File deleted successfully");
-            } else {
-                error_function(400, "Failed to delete file");
+
+            $check = $database->query("SELECT student_id FROM blob_files WHERE student_id = '$student_id';")->fetch_assoc()["student_id"];
+
+            if ($check === $student_id) {
+                $result = $database->query("DELETE FROM blob_files WHERE blob_id = '$blob_id';");
+                if ($result) {
+                    message_function(200, "File deleted successfully");
+                } else {
+                    $roleCheck = $database->query("SELECT user_id FROM students WHERE student_id = '$student_id';")->fetch_assoc()["user_id"];
+
+                    if (!$roleCheck) {
+                        error_function(400, "This student does not have an user");
+                    }
+
+                    $getRole = $database->query("SELECT role FROM user WHERE user_id = '$roleCheck';")->fetch_assoc()["role"];
+
+                    if (!$getRole) {
+                        error_funciton(400, "There is no Role");
+                    }
+
+                    if ($getRole === "A") {
+                        $deleteFile = $database->query("DELETE FROM blob_files WHERE blob_id = '$blob_id';");
+
+                        if ($result) {
+                            message_function(200, "File deleted successfully");
+                        }
+                        else {
+                            error_function(400,"Can't remove this file.");
+                        }
+                    }
+                }
             }
+
+            else if ($check !== $student_id) {
+                error_function(400, "Access denied");
+            }
+                
+        }
+
+        function delete_class($class_id) {
+            global $database;
+
+            $result = $database->query("DELETE FROM class WHERE class_id = $class_id;");
+
+            if ($result) {
+                message_fcuntion(200, "Deleted");
+            }
+            error_function(400, "There is a problem while delting the class");
         }
 ?>
